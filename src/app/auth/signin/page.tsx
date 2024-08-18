@@ -41,7 +41,7 @@ const SignIn = () => {
         mt={8}
         direction={"column"}
         alignItems={"center"}
-        spacing={2}
+        spacing={1}
         boxShadow={"lg"}
         p={6}
         component={"form"}
