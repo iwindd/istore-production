@@ -12,6 +12,7 @@
     "@emotion/cache": "^11.13.1",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
+    "@hookform/resolvers": "^3.3.2",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@mui/material-nextjs": "^5.16.6",
@@ -23,7 +24,9 @@
     "next": "14.2.5",
     "react": "^18",
     "react-apexcharts": "^1.4.1",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hook-form": "^7.47.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.7",
