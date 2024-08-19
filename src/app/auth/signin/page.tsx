@@ -17,6 +17,8 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const SignIn = () => {
   const {
@@ -24,15 +26,37 @@ const SignIn = () => {
     handleSubmit,
     resetField,
     setError,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<SignInValues>({
     resolver: zodResolver(SignInSchema),
   });
 
+  const {data: session} = useSession();
+  const router = useRouter();
+
   const onSubmit: SubmitHandler<SignInValues> = async (
     payload: SignInValues
   ) => {
-    console.log("submit", payload);
+    if (session) return router.push("/");
+    try {
+      const resp = await signIn("credentials", {
+        ...payload,
+        redirect: false
+      })
+
+      if (resp && resp.ok) {
+        router.push("/");
+        router.refresh();
+      }else{
+        throw Error("no_response");
+      }
+    } catch (error) {
+      resetField("password");
+      setError("email", {
+        type: "string",
+        message: "ไม่พบผู้ใช้งาน"
+      }, {shouldFocus: true})
+    }
   };
 
   return (
@@ -87,6 +111,7 @@ const SignIn = () => {
             type="submit"
             variant="contained"
             startIcon={<LoginTwoTone />}
+            disabled={isSubmitting}
           >
             เข้าสู่ระบบ
           </Button>
