@@ -19,6 +19,7 @@ import { useInterface } from "@/providers/InterfaceProvider";
 import { CategorySchema, CategoryValues } from "@/schema/Category";
 import { useDialog } from "@/hooks/use-dialog";
 import CreateCategory from "@/actions/category/create";
+import UpdateCategory from "@/actions/category/update";
 
 interface AddDialogProps {
   onClose: () => void;
@@ -47,7 +48,7 @@ export function CategoryFormDialog({
   ) => {
     try {
       setBackdrop(true);
-      const resp = await CreateCategory(payload);
+      const resp = await (!category ? CreateCategory(payload) : UpdateCategory(payload, category.id));
       if (!resp.success) throw Error("error");
       onClose();
       reset();

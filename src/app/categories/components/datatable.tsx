@@ -11,14 +11,20 @@ import GridLinkAction from "@/components/GridLinkAction";
 import { Category } from "@prisma/client";
 import { Path } from "@/config/Path";
 import GetCategories from "@/actions/category/get";
+import { CategoryFormDialog } from "./add-controller";
+import { useDialog } from "@/hooks/use-dialog";
 
 const CategoryDatatable = () => {
+  const editDialog = useDialog();
+  const [category, setCategory] = React.useState<Category | null>(null);
+
   const menu = {
     edit: React.useCallback(
       (category: Category) => () => {
-        console.log("on edit");
+        setCategory(category);
+        editDialog.handleOpen();
       },
-      []
+      [setCategory, editDialog]
     ),
     delete: React.useCallback(
       (category: Category) => () => {
@@ -70,6 +76,8 @@ const CategoryDatatable = () => {
         fetch={GetCategories}
         height={700}
       />
+
+      <CategoryFormDialog open={editDialog.open} onClose={editDialog.handleClose} category={category} />
     </>
   );
 };
