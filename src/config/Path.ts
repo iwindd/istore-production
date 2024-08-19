@@ -21,4 +21,4 @@ const Paths = {
 } satisfies Record<string, Path>
 
 export const Path = (name: keyof typeof Paths) => Paths[name];
-export default Object.values(Paths);
+export default Object.values(Paths) as Path[];

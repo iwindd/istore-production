@@ -89,7 +89,7 @@ function renderNavItems({
   pathname: string;
   session: Session | null;
 }): React.JSX.Element {
-  const items = Paths;
+  const items = Paths.filter(path => !path.disableNav);
   const children = items.reduce(
     (acc: React.ReactNode[], curr: NavItemConfig): React.ReactNode[] => {
       const { key, ...item } = curr;

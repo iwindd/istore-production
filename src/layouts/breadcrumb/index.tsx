@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import Path from "@/config/Path";
 
 const findRoute = (pathSegments: string[]) => {
-  return Path.find((route) => {
+  return Path.filter(path => !path.disableBreadcrumb).find((route) => {
     const routeSegments = route.href.split("/").filter((segment) => segment);
     if (routeSegments.length !== pathSegments.length) return false;
     return routeSegments.every((segment, index) => {
