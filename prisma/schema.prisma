@@ -27,6 +27,7 @@ model Store {
   user   User @relation(fields: [user_id], references: [id])
   name    String
   categories Category[]
+  product Product[]
 }
 
 model Category {
@@ -34,5 +35,24 @@ model Category {
   label String
   store_id Int
   store Store @relation(fields: [store_id], references: [id])
+  product Product[]
+
   @@unique([label, store_id])
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  serial String
+  label String
+  price Int @default(0)
+  cost Int @default(0)
+  stock Int @default(0)
+  sold Int @default(0)
+  store_id Int
+  store Store @relation(fields: [store_id], references: [id])
+  category_id  Int
+  category Category @relation(fields: [category_id], references: [id])
+  keywords    String   @default("")
+
+  @@unique([serial, store_id])
 }
