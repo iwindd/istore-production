@@ -25,4 +25,5 @@ model Store {
   id     Int  @id @default(autoincrement())
   user_id Int // Foreign key to User
   user   User @relation(fields: [user_id], references: [id])
+  name    String
 }
