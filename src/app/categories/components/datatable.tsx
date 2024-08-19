@@ -43,13 +43,6 @@ const CategoryDatatable = () => {
         headerName: "เครื่องมือ",
         flex: 1,
         getActions: ({ row }: { row: Category }) => [
-          <GridLinkAction
-            key="view"
-            to={`${Path("categories").href}/${row.id}`}
-            icon={<ViewAgendaTwoTone />}
-            label="ดูรายละเอียด"
-            showInMenu
-          />,
           <GridActionsCellItem
             key="edit"
             icon={<EditTwoTone />}
