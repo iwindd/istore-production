@@ -2,6 +2,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  EmailTwoTone,
   LoginTwoTone,
   NumbersTwoTone,
   PeopleTwoTone,
@@ -17,6 +18,9 @@ import {
 } from "@mui/material";
 import React from "react";
 import { SignUpSchema, SignUpValues } from "@/schema/Signup";
+import Signup from "@/actions/user/signup";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const SignIn = () => {
   const {
@@ -29,10 +33,32 @@ const SignIn = () => {
     resolver: zodResolver(SignUpSchema),
   });
 
+  const router = useRouter();
+
   const onSubmit: SubmitHandler<SignUpValues> = async (
     payload: SignUpValues
   ) => {
-    console.log("submit", payload);
+    try {
+      const resp = await Signup(payload);
+      if (!resp.success) throw Error("signUpError");
+      const resp2 = await signIn("credentials", {
+        ...payload,
+        redirect: false,
+      });
+
+      router.push(resp2 && resp2.ok ? "/" : "/auth/signin");
+      router.refresh();
+    } catch (error) {
+      resetField("email");
+      setError(
+        "email",
+        {
+          type: "string",
+          message: "อีเมลนี้ถูกใช้ไปแล้ว!",
+        },
+        { shouldFocus: true }
+      );
+    }
   };
 
   return (
@@ -71,7 +97,7 @@ const SignIn = () => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <PeopleTwoTone />
+                <EmailTwoTone />
               </InputAdornment>
             ),
           }}
