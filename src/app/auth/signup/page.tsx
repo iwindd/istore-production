@@ -12,6 +12,7 @@ import {
   Button,
   Container,
   InputAdornment,
+  Link,
   Stack,
   TextField,
   Typography,
@@ -21,6 +22,7 @@ import { SignUpSchema, SignUpValues } from "@/schema/Signup";
 import Signup from "@/actions/user/signup";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import RouterLink from 'next/link';
 
 const SignIn = () => {
   const {
@@ -137,7 +139,7 @@ const SignIn = () => {
           helperText={errors["password_confirmation"]?.message}
           {...register("password_confirmation")}
         />
-        <Stack justifyContent={"end"} alignItems={"end"}>
+        <Stack justifyContent={"center"} alignItems={"center"} spacing={1}>
           <Button
             type="submit"
             variant="contained"
@@ -145,6 +147,9 @@ const SignIn = () => {
           >
             ลงทะเบียน
           </Button>
+          <Link component={RouterLink} href={'/auth/signin'}>
+            ฉันมีบัญชีอยู่แล้ว?
+          </Link>
         </Stack>
       </Stack>
     </Container>

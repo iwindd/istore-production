@@ -12,6 +12,7 @@ import {
   Button,
   Container,
   InputAdornment,
+  Link,
   Stack,
   TextField,
   Typography,
@@ -19,6 +20,7 @@ import {
 import React from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import RouterLink from 'next/link';
 
 const SignIn = () => {
   const {
@@ -106,7 +108,7 @@ const SignIn = () => {
           helperText={errors["password"]?.message}
           {...register("password")}
         />
-        <Stack justifyContent={"end"} alignItems={"end"}>
+        <Stack justifyContent={"center"} alignItems={"center"} spacing={1}>
           <Button
             type="submit"
             variant="contained"
@@ -115,6 +117,9 @@ const SignIn = () => {
           >
             เข้าสู่ระบบ
           </Button>
+          <Link component={RouterLink} href={'/auth/signup'}>
+            ฉันไม่มีบัญชี?
+          </Link>
         </Stack>
       </Stack>
     </Container>
