@@ -30,7 +30,7 @@ const GetCategories = async (
     return {
       success: true,
       data: categories[0],
-      count: categories[1],
+      total: categories[1],
     };
   } catch (error) {
     return ActionError(error) as ActionResponse<Category[]>;
