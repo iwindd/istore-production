@@ -3,6 +3,7 @@ import { z, ZodIssue } from "zod";
 export interface ActionResponse<T>{
   success: boolean,
   data: T,
+  count?: number
   errors?: Record<keyof T, ZodIssue>,
   message?: string
 }
