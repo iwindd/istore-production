@@ -13,10 +13,37 @@ import { Path } from "@/config/Path";
 import GetCategories from "@/actions/category/get";
 import { CategoryFormDialog } from "./add-controller";
 import { useDialog } from "@/hooks/use-dialog";
+import { Confirmation, useConfirm } from "@/hooks/use-confirm";
+import { useSnackbar } from "notistack";
+import { useQueryClient } from "@tanstack/react-query";
+import DeleteCategory from "@/actions/category/delete";
 
 const CategoryDatatable = () => {
   const editDialog = useDialog();
   const [category, setCategory] = React.useState<Category | null>(null);
+  const { enqueueSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
+
+  const confirmation = useConfirm({
+    title: "แจ้งเตือน",
+    text: "คุณต้องการที่จะลบประเภทสินค้าหรือไม่",
+    onConfirm: async (id: number) => {
+      try {
+        const resp = await DeleteCategory(id);
+
+        if (!resp.success) throw Error("error");
+        enqueueSnackbar("ลบรายการประเภทสินค้าสำเร็จแล้ว!", {
+          variant: "success",
+        });
+        await queryClient.refetchQueries({
+          queryKey: ["categories"],
+          type: "active",
+        });
+      } catch (error) {
+        enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง");
+      }
+    },
+  });
 
   const menu = {
     edit: React.useCallback(
@@ -28,9 +55,10 @@ const CategoryDatatable = () => {
     ),
     delete: React.useCallback(
       (category: Category) => () => {
-        console.log("on delete");
+        confirmation.with(category.id);
+        confirmation.handleOpen();
       },
-      []
+      [confirmation]
     ),
   };
 
@@ -78,6 +106,7 @@ const CategoryDatatable = () => {
       />
 
       <CategoryFormDialog open={editDialog.open} onClose={editDialog.handleClose} category={category} />
+      <Confirmation {...confirmation.props} />
     </>
   );
 };
