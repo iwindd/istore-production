@@ -28,6 +28,7 @@ model Store {
   name    String
   categories Category[]
   product Product[]
+  orders Order[]
 }
 
 model Category {
@@ -55,4 +56,37 @@ model Product {
   keywords    String   @default("")
 
   @@unique([serial, store_id])
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+  price Int 
+  cost Int
+  profit Int
+  type OrderType @default(CASH)
+  note String 
+  text String
+  store_id Int
+  store Store @relation(fields: [store_id], references: [id])
+  products OrderProduct[]
+}
+
+model OrderProduct {
+  id Int @id @default(autoincrement())
+  serial String
+  label String
+  category String
+  price Int
+  cost Int
+  count Int
+  overstock Boolean @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  order_id Int
+  order Order @relation(fields: [order_id], references: [id])
+}
+
+enum OrderType {
+  CASH
+  BANK
 }
