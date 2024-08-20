@@ -30,7 +30,7 @@ const CashierPage = () => {
     <>
       <Grid container spacing={2}>
         <Grid xs={12}>
-          <Cashier onPayment={onPayment} />
+          <Cashier />
         </Grid>
         <Grid xs={9}>
           <CartContainer />
