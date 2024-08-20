@@ -17,7 +17,7 @@ const StockDatatable = () => {
   const columns = (): GridColDef[] => {
     return [
       { field: "serial", flex: 1, sortable: true, headerName: "#" },
-      { field: "title", flex: 1, sortable: true, headerName: "ชื่อสินค้า" },
+      { field: "label", flex: 1, sortable: true, headerName: "ชื่อสินค้า" },
       {
         field: "stock",
         flex: 1,
@@ -39,7 +39,7 @@ const StockDatatable = () => {
         sortable: true,
         editable: true,
         headerName: "รวม",
-        valueFormatter: (data: any) => ff.number(data.value),
+        valueFormatter: (data: any) => 0,
       },
     ];
   };

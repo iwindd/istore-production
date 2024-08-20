@@ -5,10 +5,9 @@ import { PersistStorage, recoilPersist } from 'recoil-persist'
 export interface StockItem {
   id: number,
   serial: string,
-  title: string,
+  label: string,
   stock: number,
   payload: number,
-  all: number
 }
 
 const localStorage = typeof window !== `undefined` ? window.localStorage : null
