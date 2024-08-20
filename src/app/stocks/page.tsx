@@ -19,7 +19,7 @@ const Stocks = () => {
       setBackdrop(true);
       try {
         const state = await commit();
-        if (!state) throw Error('error');
+        if (!state) throw Error("error");
         enqueueSnackbar("จัดการสต๊อกสินค้าสำเร็จแล้ว!", { variant: "success" });
       } catch (error) {
         enqueueSnackbar("ไม่สามารถทำรายการได้ กรุณาลองอีกครั้งภายหลัง!", {
@@ -35,7 +35,12 @@ const Stocks = () => {
     <Stack spacing={3}>
       <Stack direction="row" alignItems={"center"} spacing={3}>
         <Stack spacing={1} sx={{ flex: "1 1 auto" }}>
-          <Typography variant="h4">จัดการสต๊อก</Typography>
+          <Typography variant="h4">สต๊อก</Typography>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ alignItems: "center" }}
+          ></Stack>
         </Stack>
         <>
           <AddController />
