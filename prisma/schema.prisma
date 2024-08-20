@@ -67,6 +67,8 @@ model Order {
   note String 
   text String
   store_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt 
   store Store @relation(fields: [store_id], references: [id])
   products OrderProduct[]
 }
@@ -80,8 +82,6 @@ model OrderProduct {
   cost Int
   count Int
   overstock Boolean @default(false)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
   order_id Int
   order Order @relation(fields: [order_id], references: [id])
 }
