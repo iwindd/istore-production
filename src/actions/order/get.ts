@@ -27,16 +27,12 @@ const GetHistories = async (
       }),
     ]);
 
-    console.log(histories[0]);
-    
     return {
       success: true,
       data: histories[0],
       total: histories[1],
     };
   } catch (error) {
-    console.log(error);
-    
     return ActionError(error) as ActionResponse<Order[]>;
   }
 };
