@@ -17,6 +17,7 @@ import Datatable from "@/components/Datatable";
 import { useInterface } from "@/providers/InterfaceProvider";
 import { Product } from "@prisma/client";
 import GetProducts from "@/actions/product/get";
+import DeleteProduct from "@/actions/product/delete";
 
 const ProductDatatable = () => {
   const editDialog = useDialog();
@@ -28,7 +29,20 @@ const ProductDatatable = () => {
   const confirmation = useConfirm({
     title: "แจ้งเตือน",
     text: "คุณต้องการที่จะลบสินค้าหรือไม่",
-    onConfirm: async (id: number) => {},
+    onConfirm: async (id: number) => {
+      try {
+        const resp = await DeleteProduct(id);
+
+        if (!resp.success) throw Error(resp.message);
+        enqueueSnackbar("ลบรายการสินค้าสำเร็จแล้ว!", { variant: "success" });
+        await queryClient.refetchQueries({
+          queryKey: ["products"],
+          type: "active",
+        });
+      } catch (error) {
+        enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง");
+      }
+    },
   });
 
   const menu = {
@@ -36,7 +50,10 @@ const ProductDatatable = () => {
       (product: Product) => () => {},
       [editDialog, setProduct]
     ),
-    delete: React.useCallback((product: Product) => () => {}, [confirmation]),
+    delete: React.useCallback((product: Product) => () => {
+      confirmation.with(product.id);
+      confirmation.handleOpen();
+    }, [confirmation])
   };
 
   const columns = (): GridColDef[] => {
