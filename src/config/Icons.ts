@@ -10,6 +10,7 @@ import {
   PersonTwoTone,
   BadgeTwoTone,
   BackHandTwoTone,
+  ReceiptLongTwoTone,
 } from "@mui/icons-material";
 import { ElementType } from "react";
 
@@ -24,5 +25,6 @@ export default {
   store: StoreTwoTone,
   category: CategoryTwoTone,
   cashier: ShoppingBagTwoTone,
-  borrows: BackHandTwoTone
+  borrows: BackHandTwoTone,
+  purchase: ReceiptLongTwoTone
 } as Record<string, ElementType>;
