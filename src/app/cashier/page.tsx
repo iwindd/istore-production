@@ -7,6 +7,7 @@ import { Button } from "@mui/material";
 import dynamic from "next/dynamic";
 import { DeleteTwoTone } from "@mui/icons-material";
 import { useCart } from "@/hooks/use-cart";
+import usePayment from "@/hooks/use-payment";
 
 const CartContainer = dynamic(() => import("./components/Cart"), {
   ssr: false,
@@ -14,14 +15,13 @@ const CartContainer = dynamic(() => import("./components/Cart"), {
 
 const CashierPage = () => {
   const { clear } = useCart();
+  const { Dialog } = usePayment();
 
   const confirmation = useConfirm({
     title: "แจ้งเตือน",
     text: "คุณต้องการจะล้างตะกร้าหรือไม่? สินค้าภายในตะกร้าจะถูกลบและไม่สามารถย้อนกลับได้!",
     onConfirm: async () => clear(),
   });
-
-  const onPayment = () => {};
 
   return (
     <>
@@ -44,6 +44,8 @@ const CashierPage = () => {
           <Confirmation {...confirmation.props} />
         </Grid>
       </Grid>
+
+      {Dialog}
     </>
   );
 };
