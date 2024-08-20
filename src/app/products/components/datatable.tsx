@@ -87,13 +87,6 @@ const ProductDatatable = () => {
         headerName: "เครื่องมือ",
         flex: 1,
         getActions: ({ row }: { row: Product }) => [
-          <GridLinkAction
-            key="view"
-            to={`${Path("products").href}/${row.id}`}
-            icon={<ViewAgendaTwoTone />}
-            label="ดูรายละเอียด"
-            showInMenu
-          />,
           <GridActionsCellItem
             key="edit"
             icon={<EditTwoTone />}
