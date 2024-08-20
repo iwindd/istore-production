@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 interface CartHook {
   cart: CartItem[];
   clear(): void;
+  total(): number;
   addProduct(product: Product): void;
 }
 
@@ -36,5 +37,9 @@ export function useCart(): CartHook {
     setCart([]);
   };
 
-  return { cart, clear, addProduct };
+  const total = () : number => {
+    return cart.reduce((total, item) => total + item.price * item.count, 0)
+  }
+
+  return { cart, clear, total, addProduct };
 }
