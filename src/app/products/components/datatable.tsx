@@ -15,11 +15,12 @@ import GridLinkAction from "@/components/GridLinkAction";
 import { Path } from "@/config/Path";
 import Datatable from "@/components/Datatable";
 import { useInterface } from "@/providers/InterfaceProvider";
-import { Product } from "@prisma/client";
+import { Category, Product } from "@prisma/client";
 import GetProducts from "@/actions/product/get";
 import DeleteProduct from "@/actions/product/delete";
+import { ProductFormDialog } from "./add-controller";
 
-const ProductDatatable = () => {
+const ProductDatatable = ({ categories }: { categories: Category[] }) => {
   const editDialog = useDialog();
   const { setBackdrop, isBackdrop } = useInterface();
   const { enqueueSnackbar } = useSnackbar();
@@ -47,13 +48,19 @@ const ProductDatatable = () => {
 
   const menu = {
     edit: React.useCallback(
-      (product: Product) => () => {},
+      (product: Product) => () => {
+        setProduct(product);
+        editDialog.handleOpen();
+      },
       [editDialog, setProduct]
     ),
-    delete: React.useCallback((product: Product) => () => {
-      confirmation.with(product.id);
-      confirmation.handleOpen();
-    }, [confirmation])
+    delete: React.useCallback(
+      (product: Product) => () => {
+        confirmation.with(product.id);
+        confirmation.handleOpen();
+      },
+      [confirmation]
+    ),
   };
 
   const columns = (): GridColDef[] => {
@@ -132,6 +139,13 @@ const ProductDatatable = () => {
         height={700}
       />
 
+      <ProductFormDialog
+        open={editDialog.open && !isBackdrop}
+        onClose={editDialog.handleClose}
+        setLoading={setBackdrop}
+        product={product}
+        categories={categories}
+      />
       <Confirmation {...confirmation.props} />
     </>
   );

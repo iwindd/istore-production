@@ -18,7 +18,7 @@ const Products = async () => {
           <AddController categories={categories.data} />
         </>
       </Stack>
-      <ProductDatatable />
+      <ProductDatatable categories={categories.data}/>
     </Stack>
   )
 }

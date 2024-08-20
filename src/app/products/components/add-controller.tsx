@@ -32,6 +32,7 @@ import {
 import GetProduct from "@/actions/product/find";
 import { randomEan } from "@/lib/ean";
 import CreateProduct from "@/actions/product/create";
+import UpdateProduct from "@/actions/product/update";
 
 interface AddDialogProps {
   onClose: () => void;
@@ -152,8 +153,7 @@ export function ProductFormDialog({
   ) => {
     setLoading(true);
     try {
-      const resp = await CreateProduct(payload);
-
+      const resp = await (!product ? CreateProduct(payload) : UpdateProduct(payload, product.id));
       if (!resp.success) throw Error(resp.message);
       reset();
       await queryClient.refetchQueries({
