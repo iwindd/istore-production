@@ -23,6 +23,9 @@ import React, { KeyboardEvent, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCart } from "./use-cart";
 import { money } from "@/lib/formatter";
+import { enqueueSnackbar } from "notistack";
+import Cashout from "@/actions/cashier/cashout";
+import { useInterface } from "@/providers/InterfaceProvider";
 const Keys = ["Space"];
 
 interface PaymentDialogProps {
@@ -31,7 +34,8 @@ interface PaymentDialogProps {
 }
 
 const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
-  const { cart, total } = useCart();
+  const { cart, total, clear } = useCart();
+  const { setBackdrop, isBackdrop } = useInterface();
   const [receipt, setReceipt] = React.useState<boolean>(false);
 
   const {
@@ -39,6 +43,7 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<PaymentValues>({
     resolver: zodResolver(PaymentSchema),
@@ -55,12 +60,30 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
   const onSubmit: SubmitHandler<PaymentValues> = async (
     payload: PaymentValues
   ) => {
-    console.log("submit");
+    setBackdrop(true);
+    try {
+      const resp = await Cashout({...payload, cart: cart});
+      if (!resp.success) throw Error(resp.message);
+
+      onClose();
+      clear();
+      reset();
+      enqueueSnackbar("ทำรายการคิดเงินสำเร็จแล้ว!", {
+        variant: "success",
+      });
+    } catch (error) {
+      onClose();
+      enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง", {
+        variant: "error",
+      });
+    } finally {
+      setBackdrop(false);
+    }
   };
 
   return (
     <Dialog
-      open={open}
+      open={open && !isBackdrop}
       onClose={onClose}
       fullWidth
       PaperProps={{

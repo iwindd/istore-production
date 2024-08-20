@@ -6,7 +6,7 @@ const CartItemSchema = z.object({
   label: z.string(),
   price: z.number(),
   count: z.number(),
-  stock: z.number(),
+  stock: z.number()
 });
 
 export const PaymentSchema = z
