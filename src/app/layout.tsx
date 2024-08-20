@@ -5,6 +5,7 @@ import MainLayout from "@/providers/LayoutProvider";
 import LocalizationProvider from "@/providers/LocalizationProvider";
 import QueryProvider from "@/providers/QueryProvider";
 import SessionProvider from "@/providers/SessionProvder";
+import RecoilProvider from '@/providers/RecoilProvider';
 
 /* THEME */
 import ThemeRegistry from "@/styles/ThemeRegistry";
@@ -24,15 +25,17 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body>
-        <LocalizationProvider>
-          <ThemeRegistry>
-            <SessionProvider session={session}>
-              <QueryProvider>
-                <MainLayout session={session}>{children}</MainLayout>
-              </QueryProvider>
-            </SessionProvider>
-          </ThemeRegistry>
-        </LocalizationProvider>
+        <RecoilProvider>
+          <LocalizationProvider>
+            <ThemeRegistry>
+              <SessionProvider session={session}>
+                <QueryProvider>
+                  <MainLayout session={session}>{children}</MainLayout>
+                </QueryProvider>
+              </SessionProvider>
+            </ThemeRegistry>
+          </LocalizationProvider>
+        </RecoilProvider>
       </body>
     </html>
   );
