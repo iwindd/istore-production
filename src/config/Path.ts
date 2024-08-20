@@ -13,6 +13,7 @@ const Paths = {
   'overview' : { key: 'overview', title: 'ภาพรวม', href: "/", icon: 'chart-pie' },
   'cashier': { key: 'cashier', title: 'ขายสินค้า', href: "/cashier", icon: 'cashier' },
   'products': { key: 'products', title: 'สินค้า', href: "/products", icon: 'product' },
+  'borrows': { key: 'borrows', title: 'การเบิก', href: "/borrows", icon: 'borrows' },
   'stock': { key: 'stock', title: 'จัดการสต๊อก', href: "/stocks", icon: 'stock' },
   'categories': { key: 'categories', title: 'ประเภทสินค้า', href: "/categories", icon: 'category' },
   'histories': { key: 'histories', title: 'ประวัติการขายสินค้า', href: "/histories", icon: 'history' },

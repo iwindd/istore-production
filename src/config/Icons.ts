@@ -9,6 +9,7 @@ import {
   BusinessTwoTone,
   PersonTwoTone,
   BadgeTwoTone,
+  BackHandTwoTone,
 } from "@mui/icons-material";
 import { ElementType } from "react";
 
@@ -23,4 +24,5 @@ export default {
   store: StoreTwoTone,
   category: CategoryTwoTone,
   cashier: ShoppingBagTwoTone,
+  borrows: BackHandTwoTone
 } as Record<string, ElementType>;
