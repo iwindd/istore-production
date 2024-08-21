@@ -12,7 +12,7 @@ import thTHGrid from "@/components/locale/datatable";
 import { useStock } from "@/hooks/use-stock";
 
 const StockDatatable = () => {
-  const { stocks } = useStock();
+  const { stocks, addProduct} = useStock();
 
   const columns = (): GridColDef[] => {
     return [
@@ -29,6 +29,7 @@ const StockDatatable = () => {
         field: "payload",
         flex: 1,
         sortable: true,
+        editable: true,
         headerName: "เปลี่ยนแปลง",
         renderCell: (data: any) =>
           `${data.value > 0 ? "+" : "-"} ${ff.absNumber(data.value) as string} รายการ`,
@@ -39,15 +40,39 @@ const StockDatatable = () => {
         sortable: true,
         editable: true,
         headerName: "ยอดรวม",
-        renderCell: ({row}) => `${ff.number(row.stock-row.payload)} รายการ`,
+        renderCell: ({row}) => `${ff.number(row.stock+row.payload)} รายการ`,
       },
     ];
   };
 
   const onUpdate = async (newData: any, oldData: any) => {
-    // TODO :: UPDATE STOCK STATE
+    let newAll = Number(newData.all)
+    let oldAll =  Number(oldData.all);
+    newData.payload = Number(newData.payload);
+    oldData.payload = Number(oldData.payload);
 
-    return newData;
+    if (isNaN(newData.payload)) newData.payload = 0
+    if (isNaN(oldData.payload)) oldData.payload = 0
+    if (isNaN(newAll)) newAll = 0
+    if (isNaN(oldAll)) oldAll = 0
+
+    if (newAll != oldAll) {
+      newData.payload = (newData.payload) + (newAll - oldAll)
+
+      if (newData.payload == 0) return oldData;
+      addProduct(oldData, newData.payload);
+
+      return newData
+    }
+
+    if (newData.payload != oldData.payload){
+      if (newData.payload == 0) return oldData;
+      addProduct(oldData, newData.payload)
+
+      return newData
+    }
+
+    return newData
   };
 
   return (
