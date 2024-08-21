@@ -4,8 +4,27 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { TasksProgress } from "./components/Stats/components/TasksProgress";
 import { CancelTwoTone, CheckTwoTone, TimerTwoTone } from "@mui/icons-material";
 import BorrowDatatable from "./components/datatable";
+import GetBorrowStats from "@/actions/borrow/stats";
 
 const Borrows = async () => {
+  const data = { progress: 0, success: 0, cancel: 0, all: 0 };
+
+  try {
+    const resp = await GetBorrowStats();
+    if (!resp.success) throw Error(resp.message);
+    const stats = resp.data;
+    const all = stats.length;
+
+    data.progress =
+      (stats.filter((i) => i.status == "PROGRESS").length / all) * 100;
+    data.success =
+      (stats.filter((i) => i.status == "SUCCESS").length / all) * 100;
+    data.cancel =
+      (stats.filter((i) => i.status == "CANCEL").length / all) * 100;
+  } catch (error) {
+    console.error("ERROR :", error);
+  }
+
   return (
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
@@ -26,19 +45,19 @@ const Borrows = async () => {
           <Stack sx={{ height: "100%" }} justifyContent={"space-between"}>
             <TasksProgress
               label="กำลังดำเนินการ"
-              value={0}
+              value={data.progress}
               color="warning"
               icon={<TimerTwoTone />}
             />
             <TasksProgress
               label="สำเร็จ"
-              value={0}
+              value={data.success}
               color="success"
               icon={<CheckTwoTone />}
             />
             <TasksProgress
               label="ยกเลิก"
-              value={0}
+              value={data.cancel}
               color="error"
               icon={<CancelTwoTone />}
             />
