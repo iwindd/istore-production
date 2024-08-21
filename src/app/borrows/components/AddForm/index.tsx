@@ -72,7 +72,7 @@ const AddForm = () => {
       <CardHeader title="เพิ่มรายการเบิก" />
       <Divider />
       <CardContent>
-        <Stack component={"form"} spacing={1}>
+        <Stack spacing={1}>
           <Selector onSubmit={onSelect} />
           <TextField
             label="จำนวน"
