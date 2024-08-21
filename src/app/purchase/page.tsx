@@ -1,5 +1,6 @@
 import { Stack, Typography } from "@mui/material"
 import AddController from "./components/add-controller"
+import PurchaseDatatable from "./components/datatable"
 
 const Purchase = async () => {
   return (
@@ -13,6 +14,7 @@ const Purchase = async () => {
           <AddController />
         </>
       </Stack>
+      <PurchaseDatatable />
     </Stack>
   )
 }
