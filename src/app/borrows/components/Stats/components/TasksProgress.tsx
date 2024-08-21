@@ -23,6 +23,9 @@ export interface TasksProgressProps {
 }
 
 export function TasksProgress(props: TasksProgressProps): React.JSX.Element {
+  let value = props.value;
+  if (isNaN(value)) value = 0;
+
   return (
     <Card sx={props.sx}>
       <CardContent>
@@ -42,11 +45,11 @@ export function TasksProgress(props: TasksProgressProps): React.JSX.Element {
                 {" "}
                 {props.label}{" "}
               </Typography>
-              <Typography variant="h4">{props.value.toFixed(0)}%</Typography>
+              <Typography variant="h4">{value.toFixed(0)}%</Typography>
             </Stack>
             <div>
               <LinearProgress
-                value={props.value}
+                value={value}
                 color={props.color}
                 variant="determinate"
               />
