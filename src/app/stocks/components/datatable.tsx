@@ -23,7 +23,7 @@ const StockDatatable = () => {
         flex: 1,
         sortable: true,
         headerName: "คงเหลือ",
-        renderCell: (data: any) => ff.number(data.value),
+        renderCell: (data: any) => `${ ff.number(data.value)} รายการ`,
       },
       {
         field: "payload",
@@ -31,7 +31,7 @@ const StockDatatable = () => {
         sortable: true,
         headerName: "เปลี่ยนแปลง",
         renderCell: (data: any) =>
-          `${data.value > 0 ? "+" : "-"} ${ff.absNumber(data.value) as string}`,
+          `${data.value > 0 ? "+" : "-"} ${ff.absNumber(data.value) as string} รายการ`,
       },
       {
         field: "all",
