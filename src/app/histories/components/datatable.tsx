@@ -18,7 +18,7 @@ const HistoryDatatable = () => {
         headerName: "วันทำรายการ",
         flex: 1,
         editable: false,
-        valueFormatter: (data: any) => ff.date(data.value),
+        renderCell: (data: any) => ff.date(data.value),
       },
       {
         field: "price",
@@ -26,7 +26,7 @@ const HistoryDatatable = () => {
         headerName: "ราคา",
         flex: 1,
         editable: false,
-        valueFormatter: (data: any) => ff.money(data.value),
+        renderCell: (data: any) => ff.money(data.value),
       },
       {
         field: "cost",
@@ -34,7 +34,7 @@ const HistoryDatatable = () => {
         headerName: "ต้นทุน",
         flex: 1,
         editable: false,
-        valueFormatter: (data: any) => ff.money(data.value),
+        renderCell: (data: any) => ff.money(data.value),
       },
       {
         field: "profit",
@@ -42,7 +42,7 @@ const HistoryDatatable = () => {
         headerName: "กำไร",
         flex: 1,
         editable: false,
-        valueFormatter: (data: any) => ff.money(data.value),
+        renderCell: (data: any) => ff.money(data.value),
       },
       {
         field: "text",
@@ -57,7 +57,7 @@ const HistoryDatatable = () => {
         headerName: "หมายเหตุ",
         flex: 1,
         editable: false,
-        valueFormatter: (data: any) => ff.text(data.value),
+        renderCell: (data: any) => ff.text(data.value),
       },
       {
         field: "actions",

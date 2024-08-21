@@ -18,7 +18,7 @@ const PurchaseDatatable = () => {
         headerName: "วันทำรายการ",
         flex: 1,
         editable: false,
-        valueFormatter: (data: any) => ff.date(data.value),
+        renderCell: (data: any) => ff.date(data.value),
       },
       {
         field: "cost",
@@ -26,7 +26,7 @@ const PurchaseDatatable = () => {
         headerName: "ราคา",
         flex: 1,
         editable: false,
-        valueFormatter: (data: any) => ff.money(data.value),
+        renderCell: (data: any) => ff.money(data.value),
       },
       {
         field: "text",
@@ -34,7 +34,7 @@ const PurchaseDatatable = () => {
         headerName: "สินค้า",
         flex: 1,
         editable: false,
-        valueFormatter: (_, row: Purchase) => `${row.text} x${row.products[0].count}`,
+        renderCell: ({row}: {row:Purchase}) => `${row.text} x${row.products[0].count}`,
       },
       {
         field: "note",
@@ -42,7 +42,7 @@ const PurchaseDatatable = () => {
         headerName: "หมายเหตุ",
         flex: 1,
         editable: false,
-        valueFormatter: (data: any) => ff.text(data.value),
+        renderCell: (data: any) => ff.text(data.value),
       },
       {
         field: "actions",

@@ -72,14 +72,14 @@ const ProductDatatable = ({ categories }: { categories: Category[] }) => {
         sortable: true,
         headerName: "คีย์เวิร์ด",
         flex: 1,
-        valueFormatter: (data: any) => ff.text(data.value),
+        renderCell: (data: any) => ff.text(data.value),
       },
       {
         field: "category",
         sortable: true,
         headerName: "ประเภทสินค้า",
         flex: 1,
-        valueFormatter: (data: any) => data.label,
+        renderCell: ({row}: any) => row.label,
       },
       {
         field: "price",
@@ -87,7 +87,7 @@ const ProductDatatable = ({ categories }: { categories: Category[] }) => {
         headerName: "ราคา",
         flex: 1,
         type: "number",
-        valueFormatter: ({ value }) => ff.money(value),
+        renderCell: ({ value }) => ff.money(value),
       },
       {
         field: "cost",
@@ -95,7 +95,7 @@ const ProductDatatable = ({ categories }: { categories: Category[] }) => {
         headerName: "ต้นทุน",
         flex: 1,
         type: "number",
-        valueFormatter: ({ value }) => ff.money(value),
+        renderCell: ({ value }) => ff.money(value),
       },
       {
         field: "stock",
@@ -103,7 +103,7 @@ const ProductDatatable = ({ categories }: { categories: Category[] }) => {
         headerName: "ของในสต๊อก",
         flex: 1,
         type: "number",
-        valueFormatter: (data: any) => ff.number(data.value),
+        renderCell: (data: any) => ff.number(data.value),
       },
       {
         field: "actions",
