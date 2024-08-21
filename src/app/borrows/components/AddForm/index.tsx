@@ -52,7 +52,7 @@ const AddForm = () => {
       if (!resp.success) throw Error("error");
       reset();
       await queryClient.refetchQueries({
-        queryKey: ["purchase"],
+        queryKey: ["borrows"],
         type: "active",
       });
       enqueueSnackbar("บันทึกการซื้อสินค้าเรียบร้อยแล้ว!", {
