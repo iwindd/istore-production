@@ -38,8 +38,8 @@ const StockDatatable = () => {
         flex: 1,
         sortable: true,
         editable: true,
-        headerName: "รวม",
-        renderCell: (data: any) => 0,
+        headerName: "ยอดรวม",
+        renderCell: ({row}) => `${ff.number(row.stock-row.payload)} รายการ`,
       },
     ];
   };
