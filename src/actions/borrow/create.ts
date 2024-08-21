@@ -9,14 +9,14 @@ const CreateBorrow = async (
 ): Promise<ActionResponse<BorrowsValues>> => {
   try {
     const session = await getServerSession();
-    const validated = BorrowsSchema.parse(payload);
+    BorrowsSchema.parse(payload);
     const product = await db.product.findFirst({
       where: {
-        id: payload.productId,
+        id: payload.product.id,
         store_id: Number(session?.user.store),
       },
     });
-
+    const validated = BorrowsSchema.parse(payload); // revalidate
     if (!product) throw Error("not_found_product");
 
     await db.borrows.create({
@@ -24,8 +24,19 @@ const CreateBorrow = async (
         amount: payload.count,
         note: payload.note,
         status: "PROGRESS",
-        product_id: payload.productId,
-        store_id: Number(session?.user.store)
+        product_id: payload.product.id,
+        store_id: Number(session?.user.store),
+      },
+    });
+
+    await db.product.update({
+      where: {
+        id: payload.product.id,
+      },
+      data: {
+        stock: {
+          decrement: payload.count,
+        },
       },
     });
 

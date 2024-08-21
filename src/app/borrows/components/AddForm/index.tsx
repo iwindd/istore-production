@@ -35,13 +35,10 @@ const AddForm = () => {
     formState: { errors },
   } = useForm<BorrowsValues>({
     resolver: zodResolver(BorrowsSchema),
-    defaultValues: {
-      productId: selectProduct?.id || 0,
-    },
   });
 
-  const onSelect = (Product: SearchProduct | null) =>
-    setValue("productId", Product?.id || NaN);
+  const onSelect = (product: SearchProduct | null) =>
+    setValue("product", product as SearchProduct);
 
   const onSubmit: SubmitHandler<BorrowsValues> = async (
     payload: BorrowsValues
