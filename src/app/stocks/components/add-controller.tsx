@@ -49,6 +49,7 @@ function StockFormDialog({
     if (!product) return;
     if (!changedBy) return;
     addProduct(product, +changedBy);
+    setChangedBy("");
     Close();
   };
 
