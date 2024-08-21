@@ -69,7 +69,7 @@ const CategoryDatatable = () => {
         sortable: true,
         headerName: "ประเภทสินค้า",
         flex: 3,
-        editable: true,
+        editable: false,
       },
       {
         field: "actions",
