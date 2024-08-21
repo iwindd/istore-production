@@ -155,7 +155,7 @@ const BorrowDatatable = () => {
         sortable: true,
         headerName: "วันที่เบิก",
         flex: 3,
-        editable: true,
+        editable: false,
         renderCell: ({value}) => ff.date(value)
       },
       {
@@ -163,7 +163,7 @@ const BorrowDatatable = () => {
         sortable: true,
         headerName: "จำนวนที่เบิก",
         flex: 3,
-        editable: true,
+        editable: false,
         renderCell: ({row} : {row : Borrows}) => `${ff.number(row.amount)} รายการ`
       },
       {
@@ -171,15 +171,15 @@ const BorrowDatatable = () => {
         sortable: true,
         headerName: "จำนวนที่ขายได้",
         flex: 3,
-        editable: true,
+        editable: false,
         renderCell: ({row} : {row : Borrows}) => `${ff.number(row.count)} รายการ`
       },
       {
         field: "status",
-        sortable: true,
+        sortable: false,
         headerName: "สถานะ",
         flex: 3,
-        editable: true,
+        editable: false,
         renderCell: ({value}) => ff.borrowStatus(value)
       },
       {
