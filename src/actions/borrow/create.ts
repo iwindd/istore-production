@@ -25,6 +25,7 @@ const CreateBorrow = async (
         note: payload.note,
         status: "PROGRESS",
         product_id: payload.productId,
+        store_id: Number(session?.user.store)
       },
     });
 
