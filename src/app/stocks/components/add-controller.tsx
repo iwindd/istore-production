@@ -40,10 +40,10 @@ function StockFormDialog({
   };
 
   const onSubmit = (product: Product) => {
-    const stock = stocks.find(product => product.id == product.id);
+    const stock = stocks.find((product) => product.id == product.id);
     if (stock) setChangedBy(stock.payload);
     setProduct(product);
-  }
+  };
 
   const onConfirm = () => {
     if (!product) return;
@@ -54,39 +54,28 @@ function StockFormDialog({
   };
 
   return (
-    <Dialog open={open} onClose={Close} fullWidth disableRestoreFocus>
+    <Dialog open={open} maxWidth="xs" onClose={Close} fullWidth disableRestoreFocus>
       <DialogTitle>
-        {!product ? "ค้นหาสินค้า" : `สินค้า : ${product.label}`}
+        เพิ่มรายการ
       </DialogTitle>
       <DialogContent>
         <Stack sx={{ mt: 2 }}>
           <Stack flexDirection={"column"} spacing={2}>
-            {!product ? (
-              <Selector onSubmit={onSubmit} />
-            ) : (
-              <TextField 
-                type="number"
-                value={changedBy}
-                onChange={(e) => setChangedBy(e.target.value)}
-                fullWidth
-                label="จำนวน"
-              />
-            )}
+            <Selector onSubmit={onSubmit} />
+            <TextField
+              type="number"
+              value={changedBy}
+              onChange={(e) => setChangedBy(e.target.value)}
+              fullWidth
+              label="จำนวน"
+            />
           </Stack>
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Stack
-          sx={{ width: "100%" }}
-          direction={"row"}
-          justifyContent={product ? "space-between" : "end"}
-        >
-          {product && <Button onClick={reset}>เปลี่ยนสินค้า</Button>}
-
-          <Stack direction={"row"}>
-            <Button onClick={Close}>ปิด</Button>
-            {product && <Button onClick={onConfirm}>บันทึก</Button>}
-          </Stack>
+        <Stack sx={{ width: "100%" }} direction={"row"} justifyContent={"end"}>
+          <Button onClick={Close}>ปิด</Button>
+          {product && <Button onClick={onConfirm}>บันทึก</Button>}
         </Stack>
       </DialogActions>
     </Dialog>
