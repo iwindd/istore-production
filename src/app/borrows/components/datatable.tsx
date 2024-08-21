@@ -9,6 +9,7 @@ import { enqueueSnackbar } from "notistack";
 import { Confirmation, useConfirm } from "@/hooks/use-confirm";
 import { useQueryClient } from "@tanstack/react-query";
 import PatchBorrow from "@/actions/borrow/patch";
+import * as ff from '@/libs/formatter';
 import {
   Button,
   Dialog,
@@ -137,18 +138,28 @@ const BorrowDatatable = () => {
   const columns = (): GridColDef[] => {
     return [
       {
-        field: "label",
+        field: "created_at",
         sortable: true,
         headerName: "วันที่เบิก",
         flex: 3,
         editable: true,
+        renderCell: ({value}) => ff.date(value)
       },
       {
-        field: "label",
+        field: "amount",
         sortable: true,
-        headerName: "จำนวนคงเหลือ",
+        headerName: "จำนวนที่เบิก",
         flex: 3,
         editable: true,
+        renderCell: ({row} : {row : Borrows}) => `${ff.number(row.amount)} รายการ`
+      },
+      {
+        field: "count",
+        sortable: true,
+        headerName: "จำนวนที่ขายได้",
+        flex: 3,
+        editable: true,
+        renderCell: ({row} : {row : Borrows}) => `${ff.number(row.count)} รายการ`
       },
       {
         field: "status",
