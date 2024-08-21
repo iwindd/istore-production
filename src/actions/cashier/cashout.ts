@@ -58,7 +58,7 @@ const Cashout = async (
     const totalPrice = products.reduce((total, item) => total + item.price * item.count, 0);
     const totalCost = products.reduce((total, item) => total + item.cost * item.count, 0);
     const totalProfit = totalPrice - totalCost;
-    const type = payload.type == "bank" ? "BANK" : "CASH";
+    const method = payload.method == "bank" ? "BANK" : "CASH";
 
     // CREATE ORDER
     await db.order.create({
@@ -66,7 +66,7 @@ const Cashout = async (
         price: totalPrice,
         cost: totalCost,
         profit: totalProfit,
-        type: type,
+        method: method,
         note: payload.note,
         text: products.map((item) => item.label).join(", "),
         store_id: Number(session?.user.store),

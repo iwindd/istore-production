@@ -63,7 +63,7 @@ model Order {
   price Int 
   cost Int
   profit Int
-  type OrderType @default(CASH)
+  method Method @default(CASH)
   note String 
   text String
   store_id Int
@@ -86,7 +86,7 @@ model OrderProduct {
   order Order @relation(fields: [order_id], references: [id])
 }
 
-enum OrderType {
+enum Method {
   CASH
   BANK
 }

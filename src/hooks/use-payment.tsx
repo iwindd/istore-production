@@ -49,7 +49,7 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
     resolver: zodResolver(PaymentSchema),
     defaultValues: {
       cart: cart,
-      type: "cash",
+      method: "cash",
     },
   });
 
@@ -130,8 +130,8 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
             <Select
               labelId="payment"
               label="ช่องทางการชำระเงิน"
-              value={watch("type")}
-              {...register("type")}
+              value={watch("method")}
+              {...register("method")}
             >
               <MenuItem value={"cash"}>เงินสด</MenuItem>
               <MenuItem value={"bank"}>ธนาคาร</MenuItem>

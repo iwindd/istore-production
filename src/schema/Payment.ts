@@ -11,7 +11,7 @@ const CartItemSchema = z.object({
 
 export const PaymentSchema = z
   .object({
-    type: z.enum(["cash", "bank"]),
+    method: z.enum(["cash", "bank"]),
     note: z.string(),
     money: z.number(),
     cart: z.array(CartItemSchema).min(1),
