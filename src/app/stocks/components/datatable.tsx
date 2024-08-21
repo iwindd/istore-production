@@ -104,6 +104,7 @@ const StockDatatable = () => {
           },
           [`& .text-color-error`]: { color: "var(--mui-palette-error-main)" },
         }}
+        getCellClassName={(params) => params.field == 'payload' ? `text-color-${params.value > 0 ? "success":"error"}` : ""}
       />
     </Paper>
   );
