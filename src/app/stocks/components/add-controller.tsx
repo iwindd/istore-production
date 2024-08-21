@@ -27,7 +27,7 @@ function StockFormDialog({
 }: StockDialogProps): React.JSX.Element {
   const { stocks, addProduct } = useStock();
   const [product, setProduct] = React.useState<Product | null>(null);
-  const [changedBy, setChangedBy] = React.useState<number>();
+  const [changedBy, setChangedBy] = React.useState<string | number>();
 
   const reset = () => {
     setProduct(null);
@@ -48,7 +48,7 @@ function StockFormDialog({
   const onConfirm = () => {
     if (!product) return;
     if (!changedBy) return;
-    addProduct(product, changedBy);
+    addProduct(product, +changedBy);
     Close();
   };
 
@@ -66,7 +66,7 @@ function StockFormDialog({
               <TextField 
                 type="number"
                 value={changedBy}
-                onChange={(e) => setChangedBy(Number(e.target.value))}
+                onChange={(e) => setChangedBy(e.target.value)}
                 fullWidth
                 label="จำนวน"
               />
