@@ -111,6 +111,7 @@ enum Method {
 enum OrderType {
   CASHOUT
   PURCHASE
+  BORROW
 }
 
 enum BorrowState {
