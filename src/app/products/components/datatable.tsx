@@ -66,7 +66,7 @@ const ProductDatatable = ({ categories }: { categories: Category[] }) => {
   const columns = (): GridColDef[] => {
     return [
       { field: "serial", sortable: false, headerName: "รหัสสินค้า", flex: 1 },
-      { field: "title", sortable: false, headerName: "ชื่อสินค้า", flex: 1 },
+      { field: "label", sortable: false, headerName: "ชื่อสินค้า", flex: 1 },
       {
         field: "keywords",
         sortable: true,
