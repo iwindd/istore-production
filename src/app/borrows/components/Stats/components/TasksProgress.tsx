@@ -42,7 +42,7 @@ export function TasksProgress(props: TasksProgressProps): React.JSX.Element {
                 {" "}
                 {props.label}{" "}
               </Typography>
-              <Typography variant="h4">{props.value}%</Typography>
+              <Typography variant="h4">{props.value.toFixed(0)}%</Typography>
             </Stack>
             <div>
               <LinearProgress
