@@ -54,6 +54,7 @@ model Product {
   category_id  Int
   category Category @relation(fields: [category_id], references: [id])
   keywords    String   @default("")
+  borrows Borrows[]
 
   @@unique([serial, store_id])
 }
@@ -72,6 +73,15 @@ model Order {
   updated_at DateTime @updatedAt 
   store Store @relation(fields: [store_id], references: [id])
   products OrderProduct[]
+}
+
+model Borrows {
+  id Int @id @default(autoincrement())
+  amount Int
+  note String
+  status BorrowState @default(PROGRESS)
+  product_id Int
+  product Product @relation(fields: [product_id], references: [id])
 }
 
 model OrderProduct {
@@ -95,4 +105,10 @@ enum Method {
 enum OrderType {
   CASHOUT
   PURCHASE
+}
+
+enum BorrowState {
+  PROGRESS
+  SUCCESS
+  CANCEL
 }
