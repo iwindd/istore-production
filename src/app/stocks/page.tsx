@@ -6,7 +6,7 @@ import { useStock } from "@/hooks/use-stock";
 import { Confirmation, useConfirm } from "@/hooks/use-confirm";
 import { enqueueSnackbar } from "notistack";
 import { useInterface } from "@/providers/InterfaceProvider";
-import StockDatatable from "./components/aadatatable";
+import StockDatatable from "./components/datatable";
 
 const Stocks = () => {
   const { stocks, commit } = useStock();
