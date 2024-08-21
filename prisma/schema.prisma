@@ -64,6 +64,7 @@ model Order {
   cost Int
   profit Int
   method Method @default(CASH)
+  type OrderType @default(CASHOUT)
   note String 
   text String
   store_id Int
@@ -89,4 +90,9 @@ model OrderProduct {
 enum Method {
   CASH
   BANK
+}
+
+enum OrderType {
+  CASHOUT
+  PURCHASE
 }

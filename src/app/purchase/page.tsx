@@ -1,4 +1,5 @@
 import { Stack, Typography } from "@mui/material"
+import AddController from "./components/add-controller"
 
 const Purchase = async () => {
   return (
@@ -8,6 +9,9 @@ const Purchase = async () => {
           <Typography variant="h4">ซื้อสินค้า</Typography>
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}></Stack>
         </Stack>
+        <>
+          <AddController />
+        </>
       </Stack>
     </Stack>
   )
