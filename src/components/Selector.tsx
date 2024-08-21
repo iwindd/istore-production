@@ -7,7 +7,7 @@ import { debounce } from "@mui/material/utils";
 import SearchProducts, { SearchProduct } from "@/actions/product/search";
 
 interface SelectorProps {
-  onSubmit(Product: SearchProduct): void;
+  onSubmit(Product: SearchProduct | null): void;
 }
 
 const Selector = (props: SelectorProps) => {
@@ -72,7 +72,7 @@ const Selector = (props: SelectorProps) => {
       onChange={(_: any, newValue: SearchProduct | null) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
-        if (newValue) props.onSubmit(newValue);
+        props.onSubmit(newValue);
       }}
       onInputChange={(_, newInputValue) => {
         setInputValue(newInputValue);
