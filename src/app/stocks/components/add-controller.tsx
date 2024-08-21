@@ -12,7 +12,7 @@ import {
 import { AddTwoTone } from "@mui/icons-material";
 import { useDialog } from "@/hooks/use-dialog";
 import { useInterface } from "@/providers/InterfaceProvider";
-import Scanner from "@/components/Scanner";
+import Selector from "@/components/Selector";
 import { useStock } from "@/hooks/use-stock";
 import { Product } from "@prisma/client";
 
@@ -62,7 +62,7 @@ function StockFormDialog({
         <Stack sx={{ mt: 2 }}>
           <Stack flexDirection={"column"} spacing={2}>
             {!product ? (
-              <Scanner onSubmit={onSubmit} />
+              <Selector onSubmit={onSubmit} />
             ) : (
               <TextField 
                 type="number"
