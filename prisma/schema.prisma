@@ -86,6 +86,8 @@ model Borrows {
   product Product @relation(fields: [product_id], references: [id])
   store_id Int
   store Store @relation(fields: [store_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt 
 }
 
 model OrderProduct {
