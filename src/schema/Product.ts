@@ -1,4 +1,4 @@
-import { isValid } from "@/lib/ean";
+import { isValid } from "@/libs/ean";
 import { z } from "zod";
 
 export const ProductSchema = z

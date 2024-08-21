@@ -1,8 +1,8 @@
 "use server";
 import { CartItem } from "@/atoms/cart";
-import { ActionError, ActionResponse } from "@/lib/action";
-import db from "@/lib/db";
-import { getServerSession } from "@/lib/session";
+import { ActionError, ActionResponse } from "@/libs/action";
+import db from "@/libs/db";
+import { getServerSession } from "@/libs/session";
 import { PaymentSchema, PaymentValues } from "@/schema/Payment";
 import { Session } from "next-auth";
 

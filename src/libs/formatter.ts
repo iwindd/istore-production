@@ -1,6 +1,6 @@
 import { SortDirection } from "@mui/material";
 import { GridFilterModel, GridSortModel } from "@mui/x-data-grid";
-import dayjs from "@/lib/dayjs";
+import dayjs from "@/libs/dayjs";
 
 export const money = (val: number) => {
   try {

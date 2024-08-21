@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import * as ff from "@/lib/formatter";
+import * as ff from "@/libs/formatter";
 import { ViewAgendaTwoTone } from "@mui/icons-material";
 import { Category } from "@prisma/client";
 import GridLinkAction from "@/components/GridLinkAction";

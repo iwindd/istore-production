@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import React from "react";
 import { HistoryProductTable } from "./components/table/table-product";
 import { NoteCard } from "./components/card/NoteCard";
-import * as ff from "@/lib/formatter";
+import * as ff from "@/libs/formatter";
 import { PriceCard } from "./components/card/PriceCard";
 import { CostCard } from "./components/card/CostCard";
 import { ProfitCard } from "./components/card/ProfitCard";

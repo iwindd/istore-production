@@ -30,7 +30,7 @@ import {
   ProductValues,
 } from "@/schema/Product";
 import GetProduct from "@/actions/product/find";
-import { randomEan } from "@/lib/ean";
+import { randomEan } from "@/libs/ean";
 import CreateProduct from "@/actions/product/create";
 import UpdateProduct from "@/actions/product/update";
 

@@ -1,4 +1,4 @@
-import { getServerSession } from "@/lib/session";
+import { getServerSession } from "@/libs/session";
 import MainLayout from "@/providers/LayoutProvider";
 
 /* PROVIDERS */

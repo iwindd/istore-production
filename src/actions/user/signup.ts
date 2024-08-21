@@ -1,7 +1,7 @@
 "use server";
-import { ActionError, ActionResponse } from "@/lib/action";
+import { ActionError, ActionResponse } from "@/libs/action";
 import { SignUpSchema, SignUpValues } from "@/schema/Signup";
-import db from "@/lib/db";
+import db from "@/libs/db";
 
 const Signup = async (
   payload: SignUpValues

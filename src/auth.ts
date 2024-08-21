@@ -1,6 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import AuthConfig from "./config/AuthConfig";
-import db from "./lib/db";
+import db from "./libs/db";
 
 export const authOptions = {
   pages: {

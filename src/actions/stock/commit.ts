@@ -1,8 +1,8 @@
 "use server";
 import { StockItem } from "@/atoms/stock";
-import { ActionError, ActionResponse } from "@/lib/action";
-import { getServerSession } from "@/lib/session";
-import db from "@/lib/db";
+import { ActionError, ActionResponse } from "@/libs/action";
+import { getServerSession } from "@/libs/session";
+import db from "@/libs/db";
 
 const Commit = async (
   payload: StockItem[]

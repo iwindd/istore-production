@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import * as ff from "@/lib/formatter";
+import * as ff from "@/libs/formatter";
 import {
   DeleteTwoTone,
   EditTwoTone,

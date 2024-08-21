@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import * as ff from "@/lib/formatter";
+import * as ff from "@/libs/formatter";
 import {
   DataGrid,
   GridColDef,

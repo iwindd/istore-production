@@ -22,7 +22,7 @@ import {
 import React, { KeyboardEvent, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCart } from "./use-cart";
-import { money } from "@/lib/formatter";
+import { money } from "@/libs/formatter";
 import { enqueueSnackbar } from "notistack";
 import Cashout from "@/actions/cashier/cashout";
 import { useInterface } from "@/providers/InterfaceProvider";
