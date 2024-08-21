@@ -39,15 +39,17 @@ function StockFormDialog({
     onClose();
   };
 
-  const onSubmit = (product: Product) => {
-    const stock = stocks.find((product) => product.id == product.id);
+  const onSubmit = (newProduct: Product) => {
+    if (!newProduct) return setProduct(null);
+    const stock = stocks.find((product) => product.id == newProduct.id);
     if (stock) setChangedBy(stock.payload);
-    setProduct(product);
+    setProduct(newProduct);
   };
 
   const onConfirm = () => {
     if (!product) return;
     if (!changedBy) return;
+    if (isNaN(+changedBy) || +changedBy == 0) return;
     addProduct(product, +changedBy);
     setChangedBy("");
     Close();
@@ -75,7 +77,7 @@ function StockFormDialog({
       <DialogActions>
         <Stack sx={{ width: "100%" }} direction={"row"} justifyContent={"end"}>
           <Button onClick={Close}>ปิด</Button>
-          {product && <Button onClick={onConfirm}>บันทึก</Button>}
+          <Button onClick={onConfirm}>บันทึก</Button>
         </Stack>
       </DialogActions>
     </Dialog>

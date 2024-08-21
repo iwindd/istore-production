@@ -14,26 +14,30 @@ export function useStock(): StockHook {
 
   const addProduct = (product: Product, amount: number) => {
     setStocks((prev) => {
-      const oldData = stocks.find(
-        (product) => product.serial == product.serial
-      );
-
-      if (oldData) {
-        return prev.map((i) =>
-          i.serial === product.serial ? { ...i, payload: amount } : i
+      const getProducts = () => {
+        const oldData = stocks.find(
+          (product_) => product_.serial == product.serial
         );
-      } else {
-        return [
-          ...prev,
-          {
-            id: product.id,
-            serial: product.serial,
-            label: product.label,
-            stock: product.stock,
-            payload: amount,
-          },
-        ];
+  
+        if (oldData) {
+          return prev.map((i) =>
+            i.serial === product.serial ? { ...i, payload: amount } : i
+          );
+        } else {
+          return [
+            ...prev,
+            {
+              id: product.id,
+              serial: product.serial,
+              label: product.label,
+              stock: product.stock,
+              payload: amount,
+            },
+          ];
+        }
       }
+
+      return getProducts().filter(product => product.payload != 0)
     });
   };
 
