@@ -3,6 +3,7 @@ import React from "react";
 import * as ff from "@/libs/formatter";
 import {
   DataGrid,
+  GridActionsCellItem,
   GridColDef,
   GridToolbar,
   gridClasses,
@@ -10,9 +11,21 @@ import {
 import { Paper } from "@mui/material";
 import thTHGrid from "@/components/locale/datatable";
 import { useStock } from "@/hooks/use-stock";
+import { StockItem } from "@/atoms/stock";
+import { DeleteTwoTone } from "@mui/icons-material";
+import { Product } from "@prisma/client";
 
 const StockDatatable = () => {
   const { stocks, addProduct} = useStock();
+
+  const menu = {
+    delete: React.useCallback(
+      (stock: StockItem) => () => {
+        addProduct(stock as unknown as Product, 0)
+      },
+      [addProduct]
+    ),
+  };
 
   const columns = (): GridColDef[] => {
     return [
@@ -41,6 +54,20 @@ const StockDatatable = () => {
         editable: true,
         headerName: "ยอดรวม",
         renderCell: ({row}) => `${ff.number(row.stock+row.payload)} รายการ`,
+      },
+      {
+        field: "actions",
+        type: "actions",
+        headerName: "เครื่องมือ",
+        flex: 1,
+        getActions: ({ row }: { row: StockItem }) => [
+          <GridActionsCellItem
+            key="delete"
+            icon={<DeleteTwoTone />}
+            onClick={menu.delete(row)}
+            label="ลบ"
+          />,
+        ],
       },
     ];
   };
