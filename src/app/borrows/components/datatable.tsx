@@ -29,6 +29,19 @@ interface BorrowUpdateProps {
   borrow: Borrows | null;
 }
 
+const formatCellColor = (status : Borrows['status']) => {
+  switch (status) {
+    case "PROGRESS": 
+      return "warning"
+    case "SUCCESS":
+      return "success"
+    case "CANCEL":
+      return "secondary"
+    default:
+      return "secondary"
+  }
+}
+
 const BorrowUpdateDialog = ({ open, onClose, borrow }: BorrowUpdateProps) => {
   const productLeft = borrow ? borrow.amount - borrow.count : 0;
   const borrowId = borrow ? borrow.id : 0;
@@ -167,6 +180,7 @@ const BorrowDatatable = () => {
         headerName: "สถานะ",
         flex: 3,
         editable: true,
+        renderCell: ({value}) => ff.borrowStatus(value)
       },
       {
         field: "actions",
@@ -204,6 +218,7 @@ const BorrowDatatable = () => {
         columns={columns()}
         fetch={GetBorrows}
         height={700}
+        getCellClassName={(params) => params.field == 'status' ? `text-color-${formatCellColor(params.value as Borrows["status"])}` : ""}
       />
 
       <Confirmation {...confirmation.props} />
