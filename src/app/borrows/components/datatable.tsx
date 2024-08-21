@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Datatable from "@/components/Datatable";
 import { CancelTwoTone, EditTwoTone } from "@mui/icons-material";
 import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
@@ -9,9 +9,94 @@ import { enqueueSnackbar } from "notistack";
 import { Confirmation, useConfirm } from "@/hooks/use-confirm";
 import { useQueryClient } from "@tanstack/react-query";
 import PatchBorrow from "@/actions/borrow/patch";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Stack,
+  TextField,
+} from "@mui/material";
+import UpdateBorrow from "@/actions/borrow/update";
+import { useDialog } from "@/hooks/use-dialog";
+import { useInterface } from "@/providers/InterfaceProvider";
+
+interface BorrowUpdateProps {
+  onClose: () => void;
+  open: boolean;
+  borrow: Borrows | null;
+}
+
+const BorrowUpdateDialog = ({ open, onClose, borrow }: BorrowUpdateProps) => {
+  const productLeft = borrow ? borrow.amount - borrow.count : 0;
+  const borrowId = borrow ? borrow.id : 0;
+  const [count, setCount] = React.useState<number>(productLeft);
+  const {setBackdrop} = useInterface();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (borrow) setCount(borrow?.amount-borrow?.count)
+  }, [borrow])
+
+  const onSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setBackdrop(true);
+    try {
+      const resp = await UpdateBorrow(borrowId, count);
+      if (!resp.success) throw Error(resp.message);
+      onClose();
+      enqueueSnackbar("ยกเลิกรายการเบิกสำเร็จแล้ว!", { variant: "success" });
+      await queryClient.refetchQueries({
+        queryKey: ["borrows"],
+        type: "active",
+      });
+    } catch (error) {
+      enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง");
+    } finally {
+      setBackdrop(false);
+    }
+  };
+
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      PaperProps={{
+        component: "form",
+        onSubmit: onSubmit,
+      }}
+    >
+      <DialogTitle>อัพเดทรายการเบิก</DialogTitle>
+      <DialogContent>
+        <Stack sx={{ mt: 2 }}>
+          <TextField
+            type="number"
+            label="จำนวนที่ขายได้"
+            value={count}
+            onChange={(e) => setCount(Number(e.target.value))}
+            fullWidth
+            InputProps={{ inputProps: { min: 1, max: productLeft } }}
+            required
+          />
+        </Stack>
+      </DialogContent>
+      <DialogActions>
+        <Button type="button" onClick={onClose}>
+          ปิด
+        </Button>
+        <Button type="submit">บันทึก</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 const BorrowDatatable = () => {
   const queryClient = useQueryClient();
+  const updateDialog = useDialog();
+  const {isBackdrop} = useInterface();
+  const [borrow, setBorrow] = React.useState<Borrows | null>(null);
 
   const confirmation = useConfirm({
     title: "แจ้งเตือน",
@@ -33,11 +118,20 @@ const BorrowDatatable = () => {
   });
 
   const menu = {
-    edit: React.useCallback(() => () => {}, []),
-    cancel: React.useCallback((row : Borrows) => () => {
-      confirmation.with(row.id);
-      confirmation.handleOpen();
-    }, [confirmation]),
+    edit: React.useCallback(
+      (row: Borrows) => () => {
+        setBorrow(row);
+        updateDialog.handleOpen();
+      },
+      [setBorrow, updateDialog]
+    ),
+    cancel: React.useCallback(
+      (row: Borrows) => () => {
+        confirmation.with(row.id);
+        confirmation.handleOpen();
+      },
+      [confirmation]
+    ),
   };
 
   const columns = (): GridColDef[] => {
@@ -69,20 +163,24 @@ const BorrowDatatable = () => {
         headerName: "เครื่องมือ",
         flex: 1,
         getActions: ({ row }: { row: Borrows }) => [
-          <GridActionsCellItem
-            key="edit"
-            icon={<EditTwoTone />}
-            onClick={menu.edit()}
-            label="อัพเดท"
-            showInMenu
-          />,
-          <GridActionsCellItem
-            key="cancel"
-            icon={<CancelTwoTone />}
-            onClick={menu.cancel(row)}
-            label="ยกเลิก"
-            showInMenu
-          />,
+          ...(row.status == "PROGRESS"
+            ? [
+                <GridActionsCellItem
+                  key="edit"
+                  icon={<EditTwoTone />}
+                  onClick={menu.edit(row)}
+                  label="อัพเดท"
+                  showInMenu
+                />,
+                <GridActionsCellItem
+                  key="cancel"
+                  icon={<CancelTwoTone />}
+                  onClick={menu.cancel(row)}
+                  label="ยกเลิก"
+                  showInMenu
+                />,
+              ]
+            : []),
         ],
       },
     ];
@@ -97,7 +195,12 @@ const BorrowDatatable = () => {
         height={700}
       />
 
-      <Confirmation {...confirmation.props}/>
+      <Confirmation {...confirmation.props} />
+      <BorrowUpdateDialog
+        open={updateDialog.open && !isBackdrop}
+        onClose={updateDialog.handleClose}
+        borrow={borrow}
+      />
     </>
   );
 };
