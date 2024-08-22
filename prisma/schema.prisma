@@ -68,7 +68,7 @@ model Order {
   method Method @default(CASH)
   type OrderType @default(CASHOUT)
   note String 
-  text String
+  text String @db.Text
   store_id Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt 
