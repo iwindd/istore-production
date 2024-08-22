@@ -64,16 +64,6 @@ const Selector = (props: SelectorProps) => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter" && inputValue) {
       event.preventDefault();
-      setBackdrop(true);
-      fetch({ input: inputValue }, (results?: readonly SearchProduct[]) => {
-        if (results && results.length > 0) {
-          const selectedProduct = results[0]; // Assuming the first match is the desired one
-          setOptions([selectedProduct]);
-          setValue(selectedProduct);
-          props.onSubmit(selectedProduct);
-        }
-        setBackdrop(false);
-      });
     }
   };
 
