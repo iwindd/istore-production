@@ -11,6 +11,7 @@ import { UserPopover } from "../user-popover";
 import { MenuTwoTone } from "@mui/icons-material";
 import { MobileNav } from "../sidenav";
 import { Session } from "next-auth";
+import { Typography } from "@mui/material";
 
 export function MainNav({
   session,
@@ -53,7 +54,18 @@ export function MainNav({
               <MenuTwoTone />
             </IconButton>
           </Stack>
-          <Stack sx={{ alignItems: "center" }} direction="row" spacing={2}>
+          <Stack 
+            direction="row" 
+            spacing={2}
+            onClick={userPopover.handleOpen}
+            alignItems={"center"}
+            ref={userPopover.anchorRef}
+            sx={{ cursor: "pointer" }}
+          >
+            <Stack>
+              <Typography align="right" variant="subtitle2">{session?.user.name}</Typography>
+              <Typography align="right" variant="caption">{session?.user.email}</Typography>
+            </Stack>
             <Avatar
               onClick={userPopover.handleOpen}
               ref={userPopover.anchorRef}
