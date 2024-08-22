@@ -5,6 +5,8 @@ import { Sales } from "./charts/sales";
 import { getServerSession } from "@/libs/session";
 import getOrders from "@/actions/dashboard/getOrders";
 import dayjs from "@/libs/dayjs";
+import { TotalStat } from "./stats/Stat";
+import { AttachMoney, BackHand, Receipt, ShoppingBasket } from "@mui/icons-material";
 
 const Dashboard = async () => {
   const session = await getServerSession();
@@ -45,6 +47,10 @@ const Dashboard = async () => {
 
   return (
     <Grid container spacing={3}>
+      <Grid lg={3} sm={6} xs={12}><TotalStat label="ออเดอร์" color="primary" icon={<Receipt/>} value={`0 รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat label="กำไร" color="success" icon={<AttachMoney/>} value={`0 รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat label="การเบิก" color="warning" icon={<BackHand/>} value={`0 รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat label="การซื้อ" color="info" icon={<ShoppingBasket/>} value={`0 รายการ`} /></Grid>
       <Grid lg={8} xs={12}>
         <Sales
           chartSeries={[
