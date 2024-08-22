@@ -7,12 +7,16 @@ import getOrders from "@/actions/dashboard/getOrders";
 import dayjs from "@/libs/dayjs";
 import { TotalStat } from "./stats/Stat";
 import { AttachMoney, BackHand, Receipt, ShoppingBasket } from "@mui/icons-material";
+import { money, number } from "@/libs/formatter";
+import getBorrows from "@/actions/dashboard/getBorrows";
 
 const Dashboard = async () => {
   const session = await getServerSession();
   if (!session) return;
   const storeId = Number(session.user.store);
   const orders = await getOrders(storeId);
+  const borrows = await getBorrows(storeId);
+  const totalProfit = orders.reduce((total, item) => total + item.profit, 0);
 
   // traffic
   const cashoutOrders = orders.filter((order) => order.type == "CASHOUT");
@@ -47,10 +51,10 @@ const Dashboard = async () => {
 
   return (
     <Grid container spacing={3}>
-      <Grid lg={3} sm={6} xs={12}><TotalStat label="ออเดอร์" color="primary" icon={<Receipt/>} value={`0 รายการ`} /></Grid>
-      <Grid lg={3} sm={6} xs={12}><TotalStat label="กำไร" color="success" icon={<AttachMoney/>} value={`0 รายการ`} /></Grid>
-      <Grid lg={3} sm={6} xs={12}><TotalStat label="การเบิก" color="warning" icon={<BackHand/>} value={`0 รายการ`} /></Grid>
-      <Grid lg={3} sm={6} xs={12}><TotalStat label="การซื้อ" color="info" icon={<ShoppingBasket/>} value={`0 รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat label="ออเดอร์" color="primary" icon={<Receipt/>} value={`${number(orders.length)} รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat label="กำไร" color="success" icon={<AttachMoney/>} value={`${money(totalProfit)}`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat label="การเบิก" color="warning" icon={<BackHand/>} value={`${number(borrows.filter(b => b.status == "PROGRESS").length)} รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat label="การซื้อ" color="info" icon={<ShoppingBasket/>} value={`${number(orders.filter(b => b.type == "PURCHASE").length)} รายการ`} /></Grid>
       <Grid lg={8} xs={12}>
         <Sales
           chartSeries={[
