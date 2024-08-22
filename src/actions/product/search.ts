@@ -17,6 +17,9 @@ const SearchProducts = async (
     const session = await getServerSession();
     const products = await db.product.findMany({
       take: 5,
+      orderBy: {
+        sold: "desc"
+      },
       where: {
         OR: [
           { label: { contains: input } },
