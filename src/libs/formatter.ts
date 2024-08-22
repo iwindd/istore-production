@@ -8,7 +8,7 @@ export const money = (val: number) => {
     return new Intl.NumberFormat("th-TH", {
       style: "currency",
       currency: "THB",
-    }).format(!val || val < 0 ? 0 : val);
+    }).format(val);
   } catch (error) {
     return 0;
   }
