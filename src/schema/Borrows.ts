@@ -9,11 +9,11 @@ export const BorrowsSchema = z
       label: z.string(),
     }),
     note: z.string(),
-    count: z.number(),
+    count: z.number().min(1),
   })
-  .refine((data) => data.count <= (data.product?.stock || 0), {
-    message: "จำนวนการเบิกไม่ถูกต้อง",
+  .refine((data) => data.count <= (data.product?.stock || 0), val => ({
+    message: `จำนวนการเบิกไม่ถูกต้อง (สต๊อก : ${val.product.stock})`,
     path: ["count"],
-  });
+  }));
 
 export type BorrowsValues = z.infer<typeof BorrowsSchema>;
