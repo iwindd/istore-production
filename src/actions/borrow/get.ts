@@ -19,6 +19,13 @@ const GetBorrows = async (
         where: {
           store_id: Number(session?.user.store),
         },
+        include: {
+          product: {
+            select: {
+              label: true
+            }
+          }
+        }
       }),
       db.borrows.count({
         where: {

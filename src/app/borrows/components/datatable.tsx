@@ -159,10 +159,34 @@ const BorrowDatatable = () => {
         renderCell: ({value}) => ff.date(value)
       },
       {
+        field: "product",
+        sortable: true,
+        headerName: "สินค้า",
+        flex: 3,
+        editable: false,
+        renderCell: ({row}) => row.product.label
+      },
+      {
+        field: "note",
+        sortable: true,
+        headerName: "หมายเหตุ",
+        flex: 3,
+        editable: false,
+        renderCell: ({value}) => ff.text(value)
+      },
+      {
+        field: "status",
+        sortable: false,
+        headerName: "สถานะ",
+        flex: 2,
+        editable: false,
+        renderCell: ({value}) => ff.borrowStatus(value)
+      },
+      {
         field: "amount",
         sortable: true,
         headerName: "จำนวนที่เบิก",
-        flex: 3,
+        flex: 2,
         editable: false,
         renderCell: ({row} : {row : Borrows}) => `${ff.number(row.amount)} รายการ`
       },
@@ -170,17 +194,9 @@ const BorrowDatatable = () => {
         field: "count",
         sortable: true,
         headerName: "จำนวนที่ขายได้",
-        flex: 3,
+        flex: 2,
         editable: false,
         renderCell: ({row} : {row : Borrows}) => `${ff.number(row.count)} รายการ`
-      },
-      {
-        field: "status",
-        sortable: false,
-        headerName: "สถานะ",
-        flex: 3,
-        editable: false,
-        renderCell: ({value}) => ff.borrowStatus(value)
       },
       {
         field: "actions",
