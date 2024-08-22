@@ -8,7 +8,7 @@ import {
 } from "@mui/icons-material";
 import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import GridLinkAction from "@/components/GridLinkAction";
-import { Category } from "@prisma/client";
+import { Category as OriginalCategory } from "@prisma/client";
 import { Path } from "@/config/Path";
 import GetCategories from "@/actions/category/get";
 import { CategoryFormDialog } from "./add-controller";
@@ -18,6 +18,12 @@ import { useSnackbar } from "notistack";
 import { useQueryClient } from "@tanstack/react-query";
 import DeleteCategory from "@/actions/category/delete";
 import { date, number } from "@/libs/formatter";
+
+interface Category extends OriginalCategory{
+  _count: {
+    product: number
+  }
+}
 
 const CategoryDatatable = () => {
   const editDialog = useDialog();
@@ -41,7 +47,9 @@ const CategoryDatatable = () => {
           type: "active",
         });
       } catch (error) {
-        enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง");
+        enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง", {
+          variant: "error",
+        });
       }
     },
   });
@@ -56,6 +64,12 @@ const CategoryDatatable = () => {
     ),
     delete: React.useCallback(
       (category: Category) => () => {
+        if (category._count.product > 0) {
+          return enqueueSnackbar(
+            "ไม่สามารถลบได้เนื่องจากมีสินค้าที่กำลังใช้งานประเภทสินค้านี้อยู่!",
+            { variant: "error" }
+          );
+        }
         confirmation.with(category.id);
         confirmation.handleOpen();
       },
