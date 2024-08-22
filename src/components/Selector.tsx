@@ -1,5 +1,5 @@
 "use client";
-import { Autocomplete, Box, Grid, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Grid, TextField, TextFieldProps, Typography } from "@mui/material";
 import React from "react";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
@@ -9,6 +9,7 @@ import { useInterface } from "@/providers/InterfaceProvider";
 
 interface SelectorProps {
   onSubmit(Product: SearchProduct | null): void;
+  fieldProps?: TextFieldProps 
 }
 
 const Selector = (props: SelectorProps) => {
@@ -94,6 +95,7 @@ const Selector = (props: SelectorProps) => {
       renderInput={(params) => (
         <TextField
           {...params}
+          {...props.fieldProps}
           label="กรุณาเลือกสินค้า"
           fullWidth
           onKeyDown={handleKeyDown} // Handle key press events here
