@@ -151,9 +151,8 @@ export function ProductFormDialog({
   const submitProduct: SubmitHandler<ProductValues> = async (
     payload: ProductValues
   ) => {
-    setLoading(true);
     try {
-      const resp = await (!product ? CreateProduct(payload) : UpdateProduct(payload, product.id));
+      const resp = await (!product?.id ? CreateProduct(payload) : UpdateProduct(payload, product.id));
       if (!resp.success) throw Error(resp.message);
       reset();
       await queryClient.refetchQueries({
