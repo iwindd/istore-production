@@ -70,7 +70,13 @@ const AddForm = () => {
       <Divider />
       <CardContent>
         <Stack spacing={1}>
-          <Selector onSubmit={onSelect} />
+          <Selector 
+            onSubmit={onSelect} 
+            fieldProps={{
+              error: errors["product"] !== undefined,
+              helperText: errors["product"]?.message,
+            }}
+          />
           <TextField
             label="จำนวน"
             error={errors["count"] !== undefined}
