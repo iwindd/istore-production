@@ -15,7 +15,7 @@ const GetHistories = async (
       db.order.findMany({
         skip: table.pagination.page * table.pagination.pageSize,
         take: table.pagination.pageSize,
-        orderBy: order(table.sort),
+        orderBy: order(table.sort.length > 0 ? table.sort : [ { field: "created_at", sort: "desc"}]),
         where: {
           ...filter(table.filter, ['text', 'note']),
           store_id: Number(session?.user.store),
