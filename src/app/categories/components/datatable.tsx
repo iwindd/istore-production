@@ -82,8 +82,8 @@ const CategoryDatatable = () => {
       },
       {
         field: "_count",
-        sortable: true,
-        headerName: "ประเภทสินค้า",
+        sortable: false,
+        headerName: "จำนวนสินค้า",
         flex: 3,
         editable: false,
         renderCell: ({value}) => `${number(value.product)} รายการ`
