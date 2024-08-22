@@ -15,7 +15,7 @@ const Selector = (props: SelectorProps) => {
   const [value, setValue] = React.useState<SearchProduct | null>(null);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState<readonly SearchProduct[]>([]);
-  const { setBackdrop, isBackdrop } = useInterface();
+  const { isBackdrop } = useInterface();
 
   const fetch = React.useMemo(
     () =>
