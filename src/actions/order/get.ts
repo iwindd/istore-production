@@ -2,7 +2,7 @@
 import { TableFetch } from "@/components/Datatable";
 import { ActionError, ActionResponse } from "@/libs/action";
 import db from "@/libs/db";
-import { order } from "@/libs/formatter";
+import { filter, order } from "@/libs/formatter";
 import { getServerSession } from "@/libs/session";
 import { Order } from "@prisma/client";
 
@@ -17,6 +17,7 @@ const GetHistories = async (
         take: table.pagination.pageSize,
         orderBy: order(table.sort),
         where: {
+          ...filter(table.filter, ['text', 'note']),
           store_id: Number(session?.user.store),
         },
       }),
