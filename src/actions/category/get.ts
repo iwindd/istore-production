@@ -20,6 +20,13 @@ const GetCategories = async (
           ...filter(table.filter, ['label']),
           store_id: Number(session?.user.store),
         },
+        include: {
+          _count: {
+            select: {
+              product: true,
+            }
+          }
+        }
       }),
       db.category.count({
         where: {

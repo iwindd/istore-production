@@ -17,6 +17,7 @@ import { Confirmation, useConfirm } from "@/hooks/use-confirm";
 import { useSnackbar } from "notistack";
 import { useQueryClient } from "@tanstack/react-query";
 import DeleteCategory from "@/actions/category/delete";
+import { number } from "@/libs/formatter";
 
 const CategoryDatatable = () => {
   const editDialog = useDialog();
@@ -70,6 +71,14 @@ const CategoryDatatable = () => {
         headerName: "ประเภทสินค้า",
         flex: 3,
         editable: false,
+      },
+      {
+        field: "_count",
+        sortable: true,
+        headerName: "ประเภทสินค้า",
+        flex: 3,
+        editable: false,
+        renderCell: ({value}) => `${number(value.product)} รายการ`
       },
       {
         field: "actions",
