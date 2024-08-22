@@ -12,6 +12,7 @@ import { MenuTwoTone } from "@mui/icons-material";
 import { MobileNav } from "../sidenav";
 import { Session } from "next-auth";
 import { Typography } from "@mui/material";
+import { usePathname } from "next/navigation";
 
 export function MainNav({
   session,
@@ -21,6 +22,8 @@ export function MainNav({
   const [openNav, setOpenNav] = React.useState<boolean>(false);
 
   const userPopover = usePopover<HTMLDivElement>();
+  const pathname = usePathname();
+  React.useEffect(() => (setOpenNav(false)), [pathname]);
 
   return (
     <React.Fragment>
