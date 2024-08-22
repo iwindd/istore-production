@@ -2,7 +2,7 @@
 import { TableFetch } from "@/components/Datatable";
 import { ActionError, ActionResponse } from "@/libs/action";
 import db from "@/libs/db";
-import { order } from "@/libs/formatter";
+import { filter, order } from "@/libs/formatter";
 import { getServerSession } from "@/libs/session";
 import { Product } from "@prisma/client";
 
@@ -24,6 +24,7 @@ const GetProducts = async (
         },
         orderBy: order(table.sort.length > 0 ? table.sort : [ { field: "updated_at", sort: "desc"}]),
         where: {
+          ...filter(table.filter, ["serial", "label", "keywords"]),
           store_id: Number(session?.user.store),
         },
       }),
