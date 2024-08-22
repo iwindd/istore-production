@@ -5,6 +5,7 @@ import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import { debounce } from "@mui/material/utils";
 import SearchProducts, { SearchProduct } from "@/actions/product/search";
+import { useInterface } from "@/providers/InterfaceProvider";
 
 interface SelectorProps {
   onSubmit(Product: SearchProduct | null): void;
@@ -14,6 +15,7 @@ const Selector = (props: SelectorProps) => {
   const [value, setValue] = React.useState<SearchProduct | null>(null);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState<readonly SearchProduct[]>([]);
+  const { setBackdrop, isBackdrop } = useInterface();
 
   const fetch = React.useMemo(
     () =>
@@ -22,10 +24,13 @@ const Selector = (props: SelectorProps) => {
           request: { input: string },
           callback: (results?: readonly SearchProduct[]) => void
         ) => {
-          SearchProducts(request.input).then((resp) => {
-            if (!resp || !resp.data || !resp.success) throw Error("no-data");
-            callback(resp.data);
-          });
+          SearchProducts(request.input)
+            .then((resp) => {
+              callback(resp.data);
+            })
+            .catch(() => {
+              callback();
+            });
         },
         400
       ),
@@ -56,6 +61,22 @@ const Selector = (props: SelectorProps) => {
     };
   }, [value, inputValue, fetch]);
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" && inputValue) {
+      event.preventDefault();
+      setBackdrop(true);
+      fetch({ input: inputValue }, (results?: readonly SearchProduct[]) => {
+        if (results && results.length > 0) {
+          const selectedProduct = results[0]; // Assuming the first match is the desired one
+          setOptions([selectedProduct]);
+          setValue(selectedProduct);
+          props.onSubmit(selectedProduct);
+        }
+        setBackdrop(false);
+      });
+    }
+  };
+
   return (
     <Autocomplete
       id="product-selector"
@@ -69,7 +90,10 @@ const Selector = (props: SelectorProps) => {
       filterSelectedOptions
       value={value}
       noOptionsText="ไม่พบสินค้า"
+      readOnly={isBackdrop}
       onChange={(_: any, newValue: SearchProduct | null) => {
+        console.log("submit");
+
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
         props.onSubmit(newValue);
@@ -78,7 +102,12 @@ const Selector = (props: SelectorProps) => {
         setInputValue(newInputValue);
       }}
       renderInput={(params) => (
-        <TextField {...params} label="กรุณาเลือกสินค้า" fullWidth />
+        <TextField
+          {...params}
+          label="กรุณาเลือกสินค้า"
+          fullWidth
+          onKeyDown={handleKeyDown} // Handle key press events here
+        />
       )}
       renderOption={(props, option) => {
         const { key, ...optionProps } = props;
