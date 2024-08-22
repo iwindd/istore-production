@@ -37,6 +37,7 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
   const { cart, total, clear } = useCart();
   const { setBackdrop, isBackdrop } = useInterface();
   const [receipt, setReceipt] = React.useState<boolean>(false);
+  const [moneyLeft, setMoneyLeft] = React.useState<number>();
 
   const {
     register,
@@ -109,13 +110,12 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
               ),
               endAdornment: (
                 <InputAdornment position="end">
-                  {money((watch("money") || 0) - total())}฿
+                  {money((moneyLeft || 0) - total())}฿
                 </InputAdornment>
               ),
             }}
-            error={!!errors["money"]?.message}
-            helperText={errors["money"]?.message}
-            {...register("money", { valueAsNumber: true })}
+            value={moneyLeft}
+            onChange={(e) => setMoneyLeft(+e.target.value)}
           />
           <TextField
             label="หมายเหตุ"
