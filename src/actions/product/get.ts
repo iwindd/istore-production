@@ -22,7 +22,7 @@ const GetProducts = async (
             }
           }
         },
-        orderBy: order(table.sort),
+        orderBy: order(table.sort.length > 0 ? table.sort : [ { field: "updated_at", sort: "desc"}]),
         where: {
           store_id: Number(session?.user.store),
         },
@@ -40,6 +40,8 @@ const GetProducts = async (
       total: products[1],
     };
   } catch (error) {
+    console.log('catch', error);
+    
     return ActionError(error) as ActionResponse<Product[]>;
   }
 };
