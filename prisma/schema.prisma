@@ -38,7 +38,9 @@ model Category {
   store_id Int
   store Store @relation(fields: [store_id], references: [id])
   product Product[]
-
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt 
+  
   @@unique([label, store_id])
 }
 
