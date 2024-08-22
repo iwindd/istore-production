@@ -1,14 +1,12 @@
+"use client"
 import { Article } from "@mui/icons-material";
 import {
   Avatar,
   Breadcrumbs,
   Button,
   Card,
-  CardContent,
   CardHeader,
-  Paper,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
 import React from "react";
 
 const Report = () => {
