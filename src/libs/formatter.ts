@@ -109,7 +109,6 @@ export const filter = (
             ...rows.map((name: string) => ({
               [`${name}`]: {
                 contains: filter?.quickFilterValues?.[0],
-                mode: "insensitive",
               },
             })),
             ...(include ? include(text) : []),
