@@ -1,5 +1,6 @@
 export enum ImportType {
   FromMinStock,
+  FromStockId
 }
 
 export interface Import {
@@ -17,7 +18,12 @@ export interface ImportFromMinStockPayload{
   value?: number
 }
 
-export type ImportPayload = ImportFromMinStockPayload
+export interface ImportFromStockId{
+  type: ImportType.FromStockId,
+  id: number,
+}
+
+export type ImportPayload = ImportFromMinStockPayload | ImportFromStockId
 
 export interface ImportControllerProps{
   payload: ImportPayload | null;

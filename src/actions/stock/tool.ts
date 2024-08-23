@@ -1,6 +1,7 @@
 "use server";
 import {
   ImportFromMinStockPayload,
+  ImportFromStockId,
   ImportPayload,
   ImportType,
 } from "@/app/stocks/import";
@@ -34,6 +35,32 @@ const ImportMinStock = async (
   return data.map((p) => ({ ...p, payload: 0 })) as StockItem[];
 };
 
+const ImportStockId = async (
+  payload: ImportFromStockId,
+  session: Session
+): Promise<StockItem[]> => {
+  const validated = await db.stock.count({where: {id: payload.id, store_id: Number(session.user.store)}});
+  if (!validated) throw Error("not_found_stock");
+  const data = await db.stockItem.findMany({
+    where: {
+      stock_id: payload.id,
+    },
+    select: {
+      changed_by: true,
+      product: {
+        select: {
+          id: true,
+          serial: true,
+          label: true,
+          stock: true,
+        }
+      }
+    },
+  });
+
+  return data.map((p) => ({ payload: p.changed_by, ...p.product })) as StockItem[];
+};
+
 const ImportToolAction = async (
   payload: ImportPayload
 ): Promise<ActionResponse<StockItem[]>> => {
@@ -44,6 +71,8 @@ const ImportToolAction = async (
 
     if (payload.type == ImportType.FromMinStock)
       resp = await ImportMinStock(payload, session);
+    if (payload.type == ImportType.FromStockId)
+      resp = await ImportStockId(payload, session)
 
     return { success: true, data: resp };
   } catch (error) {

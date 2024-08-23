@@ -14,6 +14,9 @@ import { Confirmation, useConfirm } from "@/hooks/use-confirm";
 import { enqueueSnackbar } from "notistack";
 import { useQueryClient } from "@tanstack/react-query";
 import CancelStock from "@/actions/stock/cancel";
+import { useStock } from "@/hooks/use-stock";
+import ImportToolAction from "@/actions/stock/tool";
+import { ImportFromStockId, ImportType } from "../import";
 
 const formatCellColor = (status: Stock["state"]) => {
   switch (status) {
@@ -29,6 +32,7 @@ const formatCellColor = (status: Stock["state"]) => {
 };
 
 const HistoryDatatable = () => {
+  const { setStocks } = useStock();
   const queryClient = useQueryClient();
   const cancelConfirmation = useConfirm({
     title: "แจ้งเตือน",
@@ -38,24 +42,57 @@ const HistoryDatatable = () => {
         const resp = await CancelStock(id);
 
         if (!resp.success) throw Error(resp.message);
-        enqueueSnackbar(`ยกเลิกรายการสต๊อกหมายเลข #${ff.number(id)} แล้ว!`, { variant: "success" });
+        enqueueSnackbar(`ยกเลิกรายการสต๊อกหมายเลข #${ff.number(id)} แล้ว!`, {
+          variant: "success",
+        });
         await queryClient.refetchQueries({
           queryKey: ["stocks_histories"],
           type: "active",
         });
       } catch (error) {
-        enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง", {variant: "error"});
+        enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง", {
+          variant: "error",
+        });
+      }
+    },
+  });
+
+  const copyConfirmation = useConfirm({
+    title: "แจ้งเตือน",
+    text: "คุณต้องการสร้างรายการนี้อีกครั้งหรือไม่?",
+    onConfirm: async (id: number) => {
+      try {
+        const payload: ImportFromStockId = {
+          type: ImportType.FromStockId,
+          id: id,
+        };
+        const resp = await ImportToolAction(payload);
+        if (!resp.success) throw Error(resp.message);
+        setStocks(resp.data);
+        enqueueSnackbar(`สร้างรายการสต๊อกหมายเลข #${ff.number(id)} แล้ว!`, {
+          variant: "success",
+        });
+      } catch (error) {
+        enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง", {
+          variant: "error",
+        });
       }
     },
   });
 
   const menu = {
     import: React.useCallback((row: Stock) => () => {}, []),
-    cancel: React.useCallback((row: Stock) => () => {
-      cancelConfirmation.with(row.id);
-      cancelConfirmation.handleOpen();
-    }, [cancelConfirmation]),
-    copy: React.useCallback((row: Stock) => () => {}, []),
+    cancel: React.useCallback(
+      (row: Stock) => () => {
+        cancelConfirmation.with(row.id);
+        cancelConfirmation.handleOpen();
+      },
+      [cancelConfirmation]
+    ),
+    copy: React.useCallback((row: Stock) => () => {
+      copyConfirmation.with(row.id);
+      copyConfirmation.handleOpen();
+    }, [copyConfirmation]),
   };
 
   const columns = (): GridColDef[] => {
@@ -152,6 +189,7 @@ const HistoryDatatable = () => {
       />
 
       <Confirmation {...cancelConfirmation.props} />
+      <Confirmation {...copyConfirmation.props} />
     </>
   );
 };
