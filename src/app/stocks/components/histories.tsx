@@ -10,6 +10,10 @@ import { Stock } from "@prisma/client";
 import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Datatable from "@/components/Datatable";
 import GetStocks from "@/actions/stock/get";
+import { Confirmation, useConfirm } from "@/hooks/use-confirm";
+import { enqueueSnackbar } from "notistack";
+import { useQueryClient } from "@tanstack/react-query";
+import CancelStock from "@/actions/stock/cancel";
 
 const formatCellColor = (status: Stock["state"]) => {
   switch (status) {
@@ -25,9 +29,32 @@ const formatCellColor = (status: Stock["state"]) => {
 };
 
 const HistoryDatatable = () => {
+  const queryClient = useQueryClient();
+  const cancelConfirmation = useConfirm({
+    title: "แจ้งเตือน",
+    text: "คุณต้องการที่จะยกเลิกรายการสต๊อกหรือไม่?",
+    onConfirm: async (id: number) => {
+      try {
+        const resp = await CancelStock(id);
+
+        if (!resp.success) throw Error(resp.message);
+        enqueueSnackbar(`ยกเลิกรายการสต๊อกหมายเลข #${ff.number(id)} แล้ว!`, { variant: "success" });
+        await queryClient.refetchQueries({
+          queryKey: ["stocks_histories"],
+          type: "active",
+        });
+      } catch (error) {
+        enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง", {variant: "error"});
+      }
+    },
+  });
+
   const menu = {
     import: React.useCallback((row: Stock) => () => {}, []),
-    cancel: React.useCallback((row: Stock) => () => {}, []),
+    cancel: React.useCallback((row: Stock) => () => {
+      cancelConfirmation.with(row.id);
+      cancelConfirmation.handleOpen();
+    }, [cancelConfirmation]),
     copy: React.useCallback((row: Stock) => () => {}, []),
   };
 
@@ -123,6 +150,8 @@ const HistoryDatatable = () => {
             : ""
         }
       />
+
+      <Confirmation {...cancelConfirmation.props} />
     </>
   );
 };
