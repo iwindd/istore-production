@@ -1,7 +1,7 @@
 import { SortDirection } from "@mui/material";
 import { GridFilterModel, GridSortModel } from "@mui/x-data-grid";
 import dayjs from "@/libs/dayjs";
-import { Borrows } from "@prisma/client";
+import { Borrows, Stock } from "@prisma/client";
 
 export const money = (val: number) => {
   try {
@@ -164,6 +164,19 @@ export const borrowStatus = (status: Borrows['status']): string => {
       return "กำลังดำเนินการ"
     case "SUCCESS":
       return "สิ้นสุดแล้ว"
+    case "CANCEL":
+      return "ยกเลิกแล้ว"
+    default:
+      return "ไม่ทราบ"
+  }
+}
+
+export const stockState = (status: Stock['state']): string => {
+  switch (status) {
+    case "PROGRESS": 
+      return "กำลังรอ"
+    case "SUCCESS":
+      return "สำเร็จ"
     case "CANCEL":
       return "ยกเลิกแล้ว"
     default:

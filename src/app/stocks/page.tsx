@@ -2,6 +2,7 @@ import {Stack, Typography } from "@mui/material";
 import AddController from "./components/add-controller";
 import StockDatatable from "./components/datatable";
 import ToolController from "./components/tool-controller";
+import HistoryDatatable from "./components/histories";
 
 const Stocks = () => {
   return (
@@ -21,6 +22,7 @@ const Stocks = () => {
         </>
       </Stack>
       <StockDatatable />
+      <HistoryDatatable />
     </Stack>
   );
 };
