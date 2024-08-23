@@ -32,7 +32,7 @@ const formatCellColor = (status: Stock["state"]) => {
 };
 
 const HistoryDatatable = () => {
-  const { setStocks } = useStock();
+  const { setStocks, setTarget } = useStock();
   const queryClient = useQueryClient();
   const cancelConfirmation = useConfirm({
     title: "แจ้งเตือน",
@@ -80,8 +80,35 @@ const HistoryDatatable = () => {
     },
   });
 
+  const importConfirmation = useConfirm({
+    title: "แจ้งเตือน",
+    text: "คุณต้องการนำเข้ารายการนี้หรือไม่?",
+    onConfirm: async (id: number) => {
+      try {
+        const payload: ImportFromStockId = {
+          type: ImportType.FromStockId,
+          id: id,
+        };
+        const resp = await ImportToolAction(payload);
+        if (!resp.success) throw Error(resp.message);
+        setTarget(payload.id);
+        setStocks(resp.data);
+        enqueueSnackbar(`นำเข้ารายการสต๊อกหมายเลข #${ff.number(id)} แล้ว!`, {
+          variant: "success",
+        });
+      } catch (error) {
+        enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง", {
+          variant: "error",
+        });
+      }
+    },
+  });
+
   const menu = {
-    import: React.useCallback((row: Stock) => () => {}, []),
+    import: React.useCallback((row: Stock) => () => {
+      importConfirmation.with(row.id);
+      importConfirmation.handleOpen();
+    }, [importConfirmation]),
     cancel: React.useCallback(
       (row: Stock) => () => {
         cancelConfirmation.with(row.id);
@@ -190,6 +217,7 @@ const HistoryDatatable = () => {
 
       <Confirmation {...cancelConfirmation.props} />
       <Confirmation {...copyConfirmation.props} />
+      <Confirmation {...importConfirmation.props} />
     </>
   );
 };

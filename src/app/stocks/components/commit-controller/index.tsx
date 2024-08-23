@@ -19,6 +19,8 @@ import { SaveTwoTone } from "@mui/icons-material";
 import { useInterface } from "@/providers/InterfaceProvider";
 import { useStock } from "@/hooks/use-stock";
 import { enqueueSnackbar } from "notistack";
+import { number } from "@/libs/formatter";
+import GetStock from "@/actions/stock/find";
 
 interface CommitDialogProps {
   onClose: () => void;
@@ -32,7 +34,7 @@ const CommitDialog = ({
   const [type, setType] = React.useState<0 | 1>(0);
   const [note, setNote] = React.useState<string>("");
   const { isBackdrop, setBackdrop } = useInterface();
-  const { commit } = useStock();
+  const { commit, target, setStocks, setTarget } = useStock();
 
   const handleChange = (event: SelectChangeEvent) => {
     setType(+event.target.value >= 1 ? 1 : 0);
@@ -41,7 +43,7 @@ const CommitDialog = ({
   const onSubmit = async () => {
     setBackdrop(true);
     try {
-      const state = await commit(type == 1, note);
+      const state = await commit(target ? true : type == 1, note);
       if (!state) throw Error("error");
       enqueueSnackbar("บันทึกรายการสต๊อกสำเร็จแล้ว!!", {
         variant: "success",
@@ -51,10 +53,30 @@ const CommitDialog = ({
         variant: "error",
       });
     } finally {
-      onClose()
+      onClose();
       setBackdrop(false);
     }
   };
+
+  const onClear = () => {
+    setStocks([]);
+    setTarget(null);
+    onClose();
+  };
+
+  useEffect(() => {
+    if (target) {
+      setType(1);
+      try {
+        GetStock(target).then((resp) => {
+          if (resp.success && resp.data) return setNote(resp.data.note);
+          onClear();
+        });
+      } catch (error) {
+        onClear();
+      }
+    }
+  }, [target, setType, onClear]);
 
   return (
     <Dialog
@@ -64,7 +86,9 @@ const CommitDialog = ({
       fullWidth
       disableRestoreFocus
     >
-      <DialogTitle>จัดการสต๊อก</DialogTitle>
+      <DialogTitle>
+        จัดการสต๊อก{target && `หมายเลข #${number(target)}`}
+      </DialogTitle>
       <DialogContent>
         <Stack sx={{ mt: 2 }} spacing={1}>
           <Stack flexDirection={"column"} spacing={2}>
@@ -75,6 +99,7 @@ const CommitDialog = ({
                 value={String(type)}
                 label="รูปแบบ"
                 onChange={handleChange}
+                disabled={target != null}
               >
                 <MenuItem value={0}>บันทึก</MenuItem>
                 <MenuItem value={1}>จัดการทันที</MenuItem>
@@ -111,7 +136,12 @@ const CommitController = () => {
 
   return (
     <>
-      <Button color="inherit" endIcon={<SaveTwoTone />} onClick={onOpen} sx={{ml: 'auto'}}>
+      <Button
+        color="inherit"
+        endIcon={<SaveTwoTone />}
+        onClick={onOpen}
+        sx={{ ml: "auto" }}
+      >
         จัดการสต๊อก
       </Button>
 

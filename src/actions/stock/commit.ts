@@ -46,6 +46,7 @@ const validateProducts = async (payload: StockItem[], storeId: number) => {
 
 const Commit = async (
   payload: StockItem[],
+  target: number | null,
   instant?: boolean,
   note?: string
 ): Promise<ActionResponse<StockItem[]>> => {
@@ -53,14 +54,21 @@ const Commit = async (
     const session = await getServerSession();
     if (!session) throw Error("no_found_session");
 
-    const { items } = await db.stock.create({
-      data: {
+    const { items } = await db.stock.upsert({
+      where: {
+        id: target || -1
+      },
+      create: {
         note: note || "",
         state: instant ? "SUCCESS" : "PROGRESS",
         store_id: Number(session.user.store),
         items: {
           create: await validateProducts(payload, Number(session.user.store)),
         },
+      },
+      update: {
+        note: note || "",
+        state: "SUCCESS",
       },
       select: {
         items: {
@@ -72,7 +80,7 @@ const Commit = async (
       },
     });
 
-    if (instant) UpdateStock(items);
+    if (instant || target != null) UpdateStock(items);
 
     return { success: true, data: payload };
   } catch (error) {
