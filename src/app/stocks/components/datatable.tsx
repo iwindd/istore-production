@@ -8,20 +8,49 @@ import {
   GridToolbar,
   gridClasses,
 } from "@mui/x-data-grid";
-import { Paper } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Collapse,
+  Divider,
+  IconButton,
+  IconButtonProps,
+  Paper,
+  styled,
+} from "@mui/material";
 import thTHGrid from "@/components/locale/datatable";
 import { useStock } from "@/hooks/use-stock";
 import { StockItem } from "@/atoms/stock";
-import { DeleteTwoTone } from "@mui/icons-material";
+import { DeleteTwoTone, ExpandMoreTwoTone } from "@mui/icons-material";
 import { Product } from "@prisma/client";
+import CommitController from "./commit-controller";
+
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 
 const StockDatatable = () => {
-  const { stocks, addProduct} = useStock();
+  const { stocks, addProduct } = useStock();
+  const [expanded, setExpanded] = React.useState(false);
 
   const menu = {
     delete: React.useCallback(
       (stock: StockItem) => () => {
-        addProduct(stock as unknown as Product, 0)
+        addProduct(stock as unknown as Product, 0);
       },
       [addProduct]
     ),
@@ -36,7 +65,7 @@ const StockDatatable = () => {
         flex: 1,
         sortable: true,
         headerName: "คงเหลือ",
-        renderCell: (data: any) => `${ ff.number(data.value)} รายการ`,
+        renderCell: (data: any) => `${ff.number(data.value)} รายการ`,
       },
       {
         field: "payload",
@@ -45,7 +74,9 @@ const StockDatatable = () => {
         editable: true,
         headerName: "เปลี่ยนแปลง",
         renderCell: (data: any) =>
-          `${data.value > 0 ? "+" : "-"} ${ff.absNumber(data.value) as string} รายการ`,
+          `${data.value > 0 ? "+" : "-"} ${
+            ff.absNumber(data.value) as string
+          } รายการ`,
       },
       {
         field: "all",
@@ -53,7 +84,7 @@ const StockDatatable = () => {
         sortable: true,
         editable: true,
         headerName: "ยอดรวม",
-        renderCell: ({row}) => `${ff.number(row.stock+row.payload)} รายการ`,
+        renderCell: ({ row }) => `${ff.number(row.stock + row.payload)} รายการ`,
       },
       {
         field: "actions",
@@ -73,92 +104,131 @@ const StockDatatable = () => {
   };
 
   const onUpdate = async (newData: any, oldData: any) => {
-    let newAll = Number(newData.all)
-    let oldAll =  Number(oldData.all);
+    let newAll = Number(newData.all);
+    let oldAll = Number(oldData.all);
     newData.payload = Number(newData.payload);
     oldData.payload = Number(oldData.payload);
 
-    if (isNaN(newData.payload)) newData.payload = 0
-    if (isNaN(oldData.payload)) oldData.payload = 0
-    if (isNaN(newAll)) newAll = 0
-    if (isNaN(oldAll)) oldAll = 0
+    if (isNaN(newData.payload)) newData.payload = 0;
+    if (isNaN(oldData.payload)) oldData.payload = 0;
+    if (isNaN(newAll)) newAll = 0;
+    if (isNaN(oldAll)) oldAll = 0;
 
     if (newAll != oldAll) {
-      newData.payload = (newData.payload) + (newAll - oldAll)
+      newData.payload = newData.payload + (newAll - oldAll);
 
       if (newData.payload == 0) return oldData;
       addProduct(oldData, newData.payload);
 
-      return newData
+      return newData;
     }
 
-    if (newData.payload != oldData.payload){
+    if (newData.payload != oldData.payload) {
       if (newData.payload == 0) return oldData;
-      addProduct(oldData, newData.payload)
+      addProduct(oldData, newData.payload);
 
-      return newData
+      return newData;
     }
 
-    return newData
+    return newData;
   };
 
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  React.useEffect(() => {
+    if (stocks.length > 0 && !expanded) setExpanded(true);
+    if (stocks.length <= 0 && expanded) setExpanded(false);
+  }, [stocks])
+
   return (
-    <Paper sx={{ height: 700 }}>
-      <DataGrid
-        localeText={thTHGrid}
-        columns={columns()}
-        rows={stocks}
-        processRowUpdate={onUpdate}
-        slots={{
-          toolbar: GridToolbar,
-        }}
-        slotProps={{
-          toolbar: {
-            showQuickFilter: true,
-            csvOptions: {
-              utf8WithBom: true,
-            },
-            printOptions: {
-              disableToolbarButton: true,
-            },
-          },
-        }}
-        sx={{
-          "& .MuiDataGrid-row:last-child": {
-            "& .MuiDataGrid-cell": {
-              borderBottomWidth: 0,
-            },
-          },
-          "& .MuiDataGrid-colCell": {
-            backgroundColor: "var(--mui-palette-background-level1)",
-            color: "var(--mui-palette-text-secondary)",
-            lineHeight: 1,
-          },
-          "& .MuiDataGrid-checkboxInput": {
-            padding: "0 0 0 24px",
-          },
-          [`& .${gridClasses.columnHeader}`]: {
-            backgroundColor: "var(--mui-palette-background-level1)",
-            color: "var(--mui-palette-text-secondary)",
-          },
-          [`& .text-color-primary`]: {
-            color: "var(--mui-palette-primary-main)",
-          },
-          [`& .text-color-secondary`]: {
-            color: "var(--mui-palette-secondary-dark)",
-          },
-          [`& .text-color-info`]: { color: "var(--mui-palette-info-main)" },
-          [`& .text-color-warning`]: {
-            color: "var(--mui-palette-warning-main)",
-          },
-          [`& .text-color-success`]: {
-            color: "var(--mui-palette-success-main)",
-          },
-          [`& .text-color-error`]: { color: "var(--mui-palette-error-main)" },
-        }}
-        getCellClassName={(params) => params.field == 'payload' ? `text-color-${params.value > 0 ? "success":"error"}` : ""}
+    <Card>
+      <CardHeader
+        title="รายการสต๊อก"
+        sx={{padding: "24px 24px 16px" }}
+        action={
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMoreTwoTone />
+          </ExpandMore>
+        }
       />
-    </Paper>
+      <Collapse in={expanded} timeout={'auto'} unmountOnExit>
+        <Divider />
+        <CardContent sx={{ height: 500, px: 0, py: 0 }}>
+          <DataGrid
+            localeText={thTHGrid}
+            columns={columns()}
+            rows={stocks}
+            processRowUpdate={onUpdate}
+            slots={{
+              toolbar: GridToolbar,
+            }}
+            slotProps={{
+              toolbar: {
+                showQuickFilter: true,
+                csvOptions: {
+                  utf8WithBom: true,
+                },
+                printOptions: {
+                  disableToolbarButton: true,
+                },
+              },
+            }}
+            sx={{
+              border: 0,
+              "& .MuiDataGrid-row:last-child": {
+                "& .MuiDataGrid-cell": {
+                  borderBottomWidth: 0,
+                },
+              },
+              "& .MuiDataGrid-colCell": {
+                backgroundColor: "var(--mui-palette-background-level1)",
+                color: "var(--mui-palette-text-secondary)",
+                lineHeight: 1,
+              },
+              "& .MuiDataGrid-checkboxInput": {
+                padding: "0 0 0 24px",
+              },
+              [`& .${gridClasses.columnHeader}`]: {
+                backgroundColor: "var(--mui-palette-background-level1)",
+                color: "var(--mui-palette-text-secondary)",
+              },
+              [`& .text-color-primary`]: {
+                color: "var(--mui-palette-primary-main)",
+              },
+              [`& .text-color-secondary`]: {
+                color: "var(--mui-palette-secondary-dark)",
+              },
+              [`& .text-color-info`]: { color: "var(--mui-palette-info-main)" },
+              [`& .text-color-warning`]: {
+                color: "var(--mui-palette-warning-main)",
+              },
+              [`& .text-color-success`]: {
+                color: "var(--mui-palette-success-main)",
+              },
+              [`& .text-color-error`]: {
+                color: "var(--mui-palette-error-main)",
+              },
+            }}
+            getCellClassName={(params) =>
+              params.field == "payload"
+                ? `text-color-${params.value > 0 ? "success" : "error"}`
+                : ""
+            }
+          />
+        </CardContent>
+        <Divider />
+        <CardActions>
+          <CommitController />
+        </CardActions>
+      </Collapse>
+    </Card>
   );
 };
 

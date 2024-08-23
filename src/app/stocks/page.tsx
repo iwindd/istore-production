@@ -1,8 +1,7 @@
-import {Paper, Stack, Typography } from "@mui/material";
+import {Stack, Typography } from "@mui/material";
 import AddController from "./components/add-controller";
 import StockDatatable from "./components/datatable";
 import ToolController from "./components/tool-controller";
-import CommitController from "./components/commit-controller";
 
 const Stocks = () => {
   return (
@@ -22,11 +21,6 @@ const Stocks = () => {
         </>
       </Stack>
       <StockDatatable />
-      <Paper sx={{ py: 1 }}>
-        <Stack direction={"row"} justifyContent={"end"}>
-          <CommitController />
-        </Stack>
-      </Paper>
     </Stack>
   );
 };
