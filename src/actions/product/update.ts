@@ -20,7 +20,7 @@ const UpdateProduct = async (
         label: validated.label,
         price: validated.price,
         cost: validated.cost,
-        stock: validated.stock,
+        stock_min: validated.stock_min,
         category_id: validated.category_id,
         keywords: validated.keywords
       },

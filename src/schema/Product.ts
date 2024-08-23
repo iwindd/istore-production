@@ -7,7 +7,7 @@ export const ProductSchema = z
     label: z.string().min(3).max(60),
     price: z.number(),
     cost: z.number(),
-    stock: z.number(),
+    stock_min: z.number(),
     keywords: z.string(),
     category_id: z.number(),
   })

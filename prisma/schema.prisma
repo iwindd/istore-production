@@ -51,6 +51,7 @@ model Product {
   price Int @default(0)
   cost Int @default(0)
   stock Int @default(0)
+  stock_min Int @default(10)
   sold Int @default(0)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt 

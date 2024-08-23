@@ -174,7 +174,7 @@ export function ProductFormDialog({
     setValue("serial", product?.serial || "");
     setValue("label", product?.label || "");
     setValue("price", product?.price || 0);
-    setValue("stock", product?.stock || 0);
+    setValue("stock_min", product?.stock || 0);
     setValue("cost", product?.cost || 0);
     setValue("keywords", product?.keywords || "");
     setValue("category_id", product?.category_id || 0);
@@ -257,10 +257,10 @@ export function ProductFormDialog({
             <Grid xs={6}>
               <TextField
                 fullWidth
-                label="สินค้าในสต๊อก"
-                error={errors["stock"] !== undefined}
-                helperText={errors["stock"]?.message}
-                {...register("stock", { valueAsNumber: true })}
+                label="สต๊อกขั้นต่ำ"
+                error={errors["stock_min"] !== undefined}
+                helperText={errors["stock_min"]?.message}
+                {...register("stock_min", { valueAsNumber: true })}
               />
             </Grid>
             <Grid xs={12}>
