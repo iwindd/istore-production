@@ -1,12 +1,13 @@
 import CommitAction from "@/actions/stock/commit";
 import { StockItem, StockState } from "@/atoms/stock";
 import { Product } from "@prisma/client";
-import { useRecoilState } from "recoil";
+import { SetterOrUpdater, useRecoilState } from "recoil";
 
 interface StockHook {
   stocks: StockItem[];
   addProduct(product: Product, amount: number): void;
   commit(): Promise<boolean>;
+  setStocks: SetterOrUpdater<StockItem[]>
 }
 
 export function useStock(): StockHook {
@@ -53,5 +54,5 @@ export function useStock(): StockHook {
     }
   };
 
-  return { stocks, addProduct, commit };
+  return { stocks, addProduct, commit, setStocks };
 }

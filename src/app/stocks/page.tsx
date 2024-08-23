@@ -7,6 +7,7 @@ import { Confirmation, useConfirm } from "@/hooks/use-confirm";
 import { enqueueSnackbar } from "notistack";
 import { useInterface } from "@/providers/InterfaceProvider";
 import StockDatatable from "./components/datatable";
+import ToolController from "./components/tool-controller";
 
 const Stocks = () => {
   const { stocks, commit } = useStock();
@@ -43,6 +44,7 @@ const Stocks = () => {
           ></Stack>
         </Stack>
         <>
+          <ToolController />
           <AddController />
         </>
       </Stack>
