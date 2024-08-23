@@ -64,19 +64,26 @@ const CommitDialog = ({
     onClose();
   };
 
-  useEffect(() => {
+  const fetchData = React.useCallback(() => {
     if (target) {
       setType(1);
-      try {
-        GetStock(target).then((resp) => {
-          if (resp.success && resp.data) return setNote(resp.data.note);
+      GetStock(target)
+        .then((resp) => {
+          if (resp.success && resp.data) {
+            setNote(resp.data.note);
+          } else {
+            onClear();
+          }
+        })
+        .catch((error) => {
           onClear();
         });
-      } catch (error) {
-        onClear();
-      }
     }
-  }, [target, setType, onClear]);
+  }, [target]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return (
     <Dialog
