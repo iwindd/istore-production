@@ -30,6 +30,7 @@ model Store {
   product Product[]
   orders Order[]
   borrows Borrows[]
+  stocks Stock[]
 }
 
 model Category {
@@ -62,6 +63,7 @@ model Product {
   category Category @relation(fields: [category_id], references: [id])
   keywords    String   @default("")
   borrows Borrows[]
+  stocked StockItem[]
 
   @@unique([serial, store_id])
 }
@@ -107,6 +109,27 @@ model OrderProduct {
   overstock Boolean @default(false)
   order_id Int
   order Order @relation(fields: [order_id], references: [id])
+}
+
+model Stock{
+  id Int @id @default(autoincrement())
+  note String
+  state BorrowState
+  action_at DateTime @default(now())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt 
+  items StockItem[]
+  store_id Int
+  store Store @relation(fields: [store_id], references: [id])
+}
+
+model StockItem{
+  id Int @id @default(autoincrement())
+  changed_by Int 
+  stock_id Int 
+  stock Stock @relation(fields: [stock_id], references: [id])
+  product_id Int
+  product Product @relation(fields: [product_id], references: [id])
 }
 
 enum Method {

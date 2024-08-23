@@ -4,24 +4,75 @@ import { ActionError, ActionResponse } from "@/libs/action";
 import { getServerSession } from "@/libs/session";
 import db from "@/libs/db";
 
+interface StockItemMinimal {
+  changed_by: number;
+  product_id: number;
+}
+
+const UpdateStock = async (payload: StockItemMinimal[]) => {
+  return await db.$transaction(
+    payload.map((product) => {
+      return db.product.update({
+        where: {
+          id: product.product_id,
+        },
+        data: { stock: { increment: product.changed_by } },
+      });
+    })
+  );
+};
+
+const validateProducts = async (payload: StockItem[], storeId: number) => {
+  const rawProducts = await db.product.findMany({
+    where: {
+      store_id: storeId,
+      id: { in: payload.map((p) => p.id) },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  const validated = rawProducts.map((product) => {
+    const data = payload.find((p) => p.id == product.id) as StockItem;
+    return {
+      changed_by: data.payload,
+      product_id: product.id,
+    };
+  }) as StockItemMinimal[];
+
+  return validated;
+};
+
 const Commit = async (
-  payload: StockItem[]
+  payload: StockItem[],
+  instant?: boolean,
+  note?: string
 ): Promise<ActionResponse<StockItem[]>> => {
   try {
     const session = await getServerSession();
     if (!session) throw Error("no_found_session");
 
-    await db.$transaction(
-      payload.map((product) => {
-        return db.product.update({
-          where: {
-            id: product.id,
-            store_id: Number(session.user.store),
+    const { items } = await db.stock.create({
+      data: {
+        note: note || "",
+        state: instant ? "SUCCESS" : "PROGRESS",
+        store_id: Number(session.user.store),
+        items: {
+          create: await validateProducts(payload, Number(session.user.store)),
+        },
+      },
+      select: {
+        items: {
+          select: {
+            product_id: true,
+            changed_by: true,
           },
-          data: { stock: { increment: product.payload } },
-        });
-      })
-    );
+        },
+      },
+    });
+
+    if (instant) UpdateStock(items);
 
     return { success: true, data: payload };
   } catch (error) {

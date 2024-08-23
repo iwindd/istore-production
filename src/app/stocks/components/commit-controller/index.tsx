@@ -1,0 +1,123 @@
+"use client";
+import React from "react";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  TextField,
+} from "@mui/material";
+import { useDialog } from "@/hooks/use-dialog";
+import { SaveTwoTone } from "@mui/icons-material";
+import { useInterface } from "@/providers/InterfaceProvider";
+import { useStock } from "@/hooks/use-stock";
+import { enqueueSnackbar } from "notistack";
+
+interface CommitDialogProps {
+  onClose: () => void;
+  open: boolean;
+}
+
+const CommitDialog = ({
+  open,
+  onClose,
+}: CommitDialogProps): React.JSX.Element => {
+  const [type, setType] = React.useState<0 | 1>(0);
+  const [note, setNote] = React.useState<string>("");
+  const { isBackdrop, setBackdrop } = useInterface();
+  const { commit } = useStock();
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setType(+event.target.value >= 1 ? 1 : 0);
+  };
+
+  const onSubmit = async () => {
+    setBackdrop(true);
+    try {
+      const state = await commit(type == 1, note);
+      if (!state) throw Error("error");
+      enqueueSnackbar("บันทึกรายการสต๊อกสำเร็จแล้ว!!", {
+        variant: "success",
+      });
+    } catch (error) {
+      enqueueSnackbar("ไม่สามารถทำรายการได้ กรุณาลองอีกครั้งภายหลัง!", {
+        variant: "error",
+      });
+    } finally {
+      onClose()
+      setBackdrop(false);
+    }
+  };
+
+  return (
+    <Dialog
+      open={open && !isBackdrop}
+      maxWidth="xs"
+      onClose={onClose}
+      fullWidth
+      disableRestoreFocus
+    >
+      <DialogTitle>จัดการสต๊อก</DialogTitle>
+      <DialogContent>
+        <Stack sx={{ mt: 2 }} spacing={1}>
+          <Stack flexDirection={"column"} spacing={2}>
+            <FormControl>
+              <InputLabel id="selector-label">รูปแบบ</InputLabel>
+              <Select
+                labelId="selector-label"
+                value={String(type)}
+                label="รูปแบบ"
+                onChange={handleChange}
+              >
+                <MenuItem value={0}>บันทึก</MenuItem>
+                <MenuItem value={1}>จัดการทันที</MenuItem>
+              </Select>
+            </FormControl>
+          </Stack>
+          <TextField
+            label="หมายเหตุ"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+          />
+        </Stack>
+      </DialogContent>
+      <DialogActions>
+        <Stack sx={{ width: "100%" }} direction={"row"} justifyContent={"end"}>
+          <Button onClick={onClose}>ปิด</Button>
+          <Button onClick={onSubmit}>ยืนยัน</Button>
+        </Stack>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+const CommitController = () => {
+  const dialogInfo = useDialog();
+
+  const onOpen = () => {
+    dialogInfo.handleOpen();
+  };
+
+  const onClose = () => {
+    dialogInfo.handleClose();
+  };
+
+  return (
+    <>
+      <Button color="inherit" endIcon={<SaveTwoTone />} onClick={onOpen}>
+        จัดการสต๊อก
+      </Button>
+
+      <CommitDialog open={dialogInfo.open} onClose={onClose} />
+    </>
+  );
+};
+
+export default CommitController;
