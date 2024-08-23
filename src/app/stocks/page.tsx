@@ -3,6 +3,11 @@ import AddController from "./components/add-controller";
 import StockDatatable from "./components/datatable";
 import ToolController from "./components/tool-controller";
 import HistoryDatatable from "./components/histories";
+import dynamic from "next/dynamic";
+
+const StockDatatable = dynamic(() => import("./components/datatable"), {
+  ssr: false,
+});
 
 const Stocks = () => {
   return (
