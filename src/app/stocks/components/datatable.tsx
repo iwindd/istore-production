@@ -23,7 +23,7 @@ import {
 } from "@mui/material";
 import thTHGrid from "@/components/locale/datatable";
 import { useStock } from "@/hooks/use-stock";
-import { StockItem } from "@/atoms/stock";
+import { StockItem } from "@/atoms/stock-target";
 import { DeleteTwoTone, ExpandMoreTwoTone } from "@mui/icons-material";
 import { Product } from "@prisma/client";
 import CommitController from "./commit-controller";
@@ -138,8 +138,8 @@ const StockDatatable = () => {
   };
 
   React.useEffect(() => {
-    if (stocks.length > 0 && !expanded) setExpanded(true);
-    if (stocks.length <= 0 && expanded) setExpanded(false);
+    if (stocks && stocks.length > 0 && !expanded) setExpanded(true);
+    if (stocks && stocks.length <= 0 && expanded) setExpanded(false);
   }, [stocks])
 
   return (
