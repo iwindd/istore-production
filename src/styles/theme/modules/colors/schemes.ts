@@ -34,18 +34,18 @@ export const colorSchemes = {
         contrastText: "var(--mui-palette-common-black)",
       },
       info: {
-        ...shakespeare,
-        light: shakespeare[300],
-        main: shakespeare[400],
-        dark: shakespeare[500],
-        contrastText: "var(--mui-palette-common-black)",
-      },
-      neutral: { ...nevada },
-      primary: {
         ...neonBlue,
         light: neonBlue[300],
         main: neonBlue[400],
         dark: neonBlue[500],
+        contrastText: "var(--mui-palette-common-black)",
+      },
+      neutral: { ...nevada },
+      primary: {
+        ...shakespeare,
+        light: shakespeare[300],
+        main: shakespeare[400],
+        dark: shakespeare[500],
         contrastText: "var(--mui-palette-common-black)",
       },
       secondary: {
@@ -100,18 +100,18 @@ export const colorSchemes = {
         contrastText: "var(--mui-palette-common-white)",
       },
       info: {
-        ...shakespeare,
-        light: shakespeare[400],
-        main: shakespeare[500],
-        dark: shakespeare[600],
-        contrastText: "var(--mui-palette-common-white)",
-      },
-      neutral: { ...stormGrey },
-      primary: {
         ...neonBlue,
         light: neonBlue[400],
         main: neonBlue[500],
         dark: neonBlue[600],
+        contrastText: "var(--mui-palette-common-white)",
+      },
+      neutral: { ...stormGrey },
+      primary: {
+        ...shakespeare,
+        light: shakespeare[400],
+        main: shakespeare[500],
+        dark: shakespeare[600],
         contrastText: "var(--mui-palette-common-white)",
       },
       secondary: {
