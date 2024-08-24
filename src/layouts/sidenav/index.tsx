@@ -9,13 +9,12 @@ import Paths, { Path } from "@/config/Path";
 import { NavItemConfig } from "../type";
 import { isNavItemActive } from "../utils";
 import icons from "@/config/Icons";
+import { BorderColor, BorderRight } from "@mui/icons-material";
 
 const sx = {
-  "--SideNav-background": "var(--mui-palette-neutral-950)",
   "--SideNav-color": "var(--mui-palette-common-white)",
-  '--MobileNav-background': 'var(--mui-palette-neutral-950)',
   '--MobileNav-color': 'var(--mui-palette-common-white)',
-  "--NavItem-color": "var(--mui-palette-neutral-300)",
+  "--NavItem-color": "var(--mui-palette-text-primary)",
   "--NavItem-hover-background": "rgba(255, 255, 255, 0.04)",
   "--NavItem-active-background": "var(--mui-palette-primary-main)",
   "--NavItem-active-color": "var(--mui-palette-primary-contrastText)",
@@ -31,6 +30,7 @@ const sx = {
   left: 0,
   maxWidth: "100%",
   position: "fixed",
+  borderRight: "1px solid var(--mui-palette-divider)",
   scrollbarWidth: "none",
   top: 0,
   width: "var(--SideNav-width)",
@@ -174,13 +174,13 @@ function NavItem({
           : { role: "button" })}
         sx={{
           alignItems: "center",
-          borderRadius: 1,
+          borderRadius: 0.3,
           color: "var(--NavItem-color)",
           cursor: "pointer",
           display: "flex",
           flex: "0 0 auto",
           gap: 1,
-          p: "6px 16px",
+          p: "6px 3px",
           position: "relative",
           textDecoration: "none",
           whiteSpace: "nowrap",
@@ -202,6 +202,9 @@ function NavItem({
             display: "flex",
             justifyContent: "center",
             flex: "0 0 auto",
+            opacity: active ? 1 : 0.4,
+            mr: 0.5,
+            ml: 0.5
           }}
         >
           {Icon ? <Icon /> : null}
