@@ -7,5 +7,5 @@ export const MuiCardHeader = {
     titleTypographyProps: { variant: "h6" },
     subheaderTypographyProps: { variant: "body2" },
   },
-  styleOverrides: { root: { padding: "32px 24px 16px" } },
+  styleOverrides: { root: { padding: "16px 24px 16px" } },
 } satisfies Components<Theme>["MuiCardHeader"];

@@ -163,7 +163,6 @@ const StockDatatable = () => {
         <CardHeader
           title="รายการสต๊อก"
           subheader={target && `หมายเลขสต๊อก #${ff.number(target || 0)}`}
-          sx={{ padding: "24px 24px 16px" }}
           action={
             <ExpandMore
               expand={expanded}

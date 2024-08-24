@@ -4,7 +4,7 @@ import type { Theme } from "../types";
 
 export const MuiButton = {
   styleOverrides: {
-    root: { borderRadius: "12px", textTransform: "none" },
+    root: { borderRadius: "5px", textTransform: "none" },
     sizeSmall: { padding: "6px 16px" },
     sizeMedium: { padding: "8px 20px" },
     sizeLarge: { padding: "11px 24px" },

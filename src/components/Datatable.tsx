@@ -151,6 +151,7 @@ const Datatable = (props: DatatableProps) => {
           },
         }}
         sx={{
+          borderRadius: '5px',
           "& .MuiDataGrid-row:last-child": {
             "& .MuiDataGrid-cell": {
               borderBottomWidth: 0,
