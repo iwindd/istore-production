@@ -42,7 +42,8 @@ const Borrows = async () => {
           <AddForm />
         </Grid>
         <Grid xs={6}>
-          <Stack sx={{ height: "100%" }} justifyContent={"space-between"}>
+          <Stack sx={{ height: "100%" }} spacing={1}>
+            <Typography variant="caption" sx={{mb: 'auto'}}>* การเบิกคือการหยิบยืมสินค้าเพื่อไปขายข้างนอกร้านค้าโดยจะทำการซิงค์ข้อมูลกับสต๊อก</Typography>
             <TasksProgress
               label="กำลังดำเนินการ"
               value={data.progress}
