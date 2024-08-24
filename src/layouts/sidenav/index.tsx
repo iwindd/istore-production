@@ -13,6 +13,7 @@ import { BorderColor, BorderRight } from "@mui/icons-material";
 
 const sx = {
   "--SideNav-color": "var(--mui-palette-common-white)",
+  "--SideNav-background": "var(--mui-palette-background-paper)",
   '--MobileNav-color': 'var(--mui-palette-common-white)',
   "--NavItem-color": "var(--mui-palette-text-primary)",
   "--NavItem-hover-background": "rgba(255, 255, 255, 0.04)",
