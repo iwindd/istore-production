@@ -20,7 +20,7 @@ const History = async ({ params }: { params: { id: string } }) => {
   const data = history.data;
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={1}>
       <Grid lg={12} md={12} xs={12}>
         <Stack direction="row" spacing={3} alignItems={"center"}>
           <Stack spacing={1} sx={{ flex: "1 1 auto" }}>

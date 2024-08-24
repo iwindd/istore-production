@@ -3,7 +3,7 @@ import HistoryDatatable from "./components/datatable"
 
 const HistoryPage = async () => {
   return (
-    <Stack spacing={3}>
+    <Stack spacing={1}>
       <Stack direction="row" spacing={3}>
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
           <Typography variant="h4">ประวัติการซื้อขายสินค้า</Typography>

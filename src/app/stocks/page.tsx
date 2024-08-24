@@ -10,7 +10,7 @@ const StockDatatable = dynamic(() => import("./components/datatable"), {
 
 const Stocks = () => {
   return (
-    <Stack spacing={3}>
+    <Stack spacing={1}>
       <Stack direction="row" alignItems={"center"} spacing={3}>
         <Stack spacing={1} sx={{ flex: "1 1 auto" }}>
           <Typography variant="h4">สต๊อก</Typography>

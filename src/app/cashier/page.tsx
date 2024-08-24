@@ -25,7 +25,7 @@ const CashierPage = () => {
 
   return (
     <>
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid xs={12}>
           <Cashier />
         </Grid>

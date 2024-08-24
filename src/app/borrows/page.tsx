@@ -26,7 +26,7 @@ const Borrows = async () => {
   }
 
   return (
-    <Stack spacing={3}>
+    <Stack spacing={1}>
       <Stack direction="row" spacing={3}>
         <Stack spacing={1} sx={{ flex: "1 1 auto" }}>
           <Typography variant="h4">การเบิก</Typography>
@@ -37,7 +37,7 @@ const Borrows = async () => {
           ></Stack>
         </Stack>
       </Stack>
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid xs={6}>
           <AddForm />
         </Grid>
