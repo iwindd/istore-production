@@ -25,8 +25,10 @@ import React from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import RouterLink from "next/link";
+import { useInterface } from "@/providers/InterfaceProvider";
 
 const SignIn = () => {
+  const { setBackdrop } = useInterface();
   const {
     register,
     handleSubmit,
@@ -44,6 +46,7 @@ const SignIn = () => {
     payload: SignInValues
   ) => {
     if (session) return router.push("/");
+    setBackdrop(true);
     try {
       const resp = await signIn("credentials", {
         ...payload,
@@ -66,6 +69,8 @@ const SignIn = () => {
         },
         { shouldFocus: true }
       );
+    } finally {
+      setBackdrop(false);
     }
   };
 
@@ -135,7 +140,11 @@ const SignIn = () => {
                 control={<Checkbox defaultChecked />}
                 label="จดจำฉันไว้"
               />
-              <Link color={"error"} component={RouterLink} href={"/auth/signup"}>
+              <Link
+                color={"error"}
+                component={RouterLink}
+                href={"/auth/signup"}
+              >
                 ลืมรหัสผ่าน
               </Link>
             </Stack>

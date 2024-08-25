@@ -25,8 +25,10 @@ import Signup from "@/actions/user/signup";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import RouterLink from "next/link";
+import { useInterface } from "@/providers/InterfaceProvider";
 
 const SignIn = () => {
+  const { setBackdrop } = useInterface();
   const {
     register,
     handleSubmit,
@@ -43,6 +45,7 @@ const SignIn = () => {
     payload: SignUpValues
   ) => {
     try {
+      setBackdrop(true);
       const resp = await Signup(payload);
       if (!resp.success) throw Error("signUpError");
       const resp2 = await signIn("credentials", {
@@ -62,6 +65,8 @@ const SignIn = () => {
         },
         { shouldFocus: true }
       );
+    } finally {
+      setBackdrop(false);
     }
   };
 
