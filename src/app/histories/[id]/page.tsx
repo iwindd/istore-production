@@ -1,5 +1,5 @@
 "use server";
-import { Stack, Typography } from "@mui/material";
+import { Paper, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -11,14 +11,18 @@ import { CostCard } from "./components/card/CostCard";
 import { ProfitCard } from "./components/card/ProfitCard";
 import GetHistory from "@/actions/order/find";
 import ReceiptController from "./components/receipt-controller";
+import { getServerSession } from "@/libs/session";
 
 const History = async ({ params }: { params: { id: string } }) => {
   const history = await GetHistory(Number(params.id));
+  const session = await getServerSession();
 
-  if (!history.success) throw new Error("ERROR");
+  if (!history.success || !session) throw new Error("ERROR");
   if (!history.data) return notFound();
 
   const data = history.data;
+  const address = session.user.address;
+  const addressText = session.user.address ? `${address?.province} ${address?.area} ${address?.district} ${address?.address} ${address?.postalcode}` : "ไม่ทราบที่อยู่";
 
   return (
     <Grid container spacing={1}>
@@ -28,7 +32,7 @@ const History = async ({ params }: { params: { id: string } }) => {
             <Typography variant="h4">ประวัติการทำรายการ</Typography>
           </Stack>
           <>
-            <ReceiptController />
+            <ReceiptController items={data.products} name={session.user.name} address={addressText} left={ff.date(data.created_at)} right={`No.${data.id}`}  />
           </>
         </Stack>
       </Grid>

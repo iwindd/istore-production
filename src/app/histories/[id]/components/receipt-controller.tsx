@@ -1,5 +1,5 @@
 "use client";
-import Receipt from "@/app/report/receipt";
+import Receipt, { ReceiptProps } from "@/app/report/receipt";
 import { number } from "@/libs/formatter";
 import { ReceiptTwoTone } from "@mui/icons-material";
 import {
@@ -9,16 +9,19 @@ import {
   LinearProgress,
   Typography,
 } from "@mui/material";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { OrderProduct } from "@prisma/client";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { useParams } from "next/navigation";
 import React from "react";
 
-const ReceiptController = () => {
+interface ReceiptControllerProps extends ReceiptProps{}
+
+const ReceiptController = (props: ReceiptControllerProps) => {
   const { id } = useParams<{ id: string }>();
 
   return (
     <PDFDownloadLink
-      document={<Receipt />}
+      document={<Receipt {...props} />}
       fileName={`ใบเสร็จบิลที่ #${number(+id)}`}
     >
       {({ loading }) =>
