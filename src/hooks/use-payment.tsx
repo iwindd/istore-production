@@ -137,6 +137,7 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
               <MenuItem value={"bank"}>ธนาคาร</MenuItem>
             </Select>
           </FormControl>
+        {/*      TODO:: Instant Download
           <FormGroup>
             <FormControlLabel
               control={
@@ -148,6 +149,7 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
               label="ฉันต้องการใบเสร็จ"
             />
           </FormGroup>
+           */}
         </Stack>
       </DialogContent>
       <DialogActions>
