@@ -10,6 +10,7 @@ import { PriceCard } from "./components/card/PriceCard";
 import { CostCard } from "./components/card/CostCard";
 import { ProfitCard } from "./components/card/ProfitCard";
 import GetHistory from "@/actions/order/find";
+import ReceiptController from "./components/receipt-controller";
 
 const History = async ({ params }: { params: { id: string } }) => {
   const history = await GetHistory(Number(params.id));
@@ -26,6 +27,9 @@ const History = async ({ params }: { params: { id: string } }) => {
           <Stack spacing={1} sx={{ flex: "1 1 auto" }}>
             <Typography variant="h4">ประวัติการทำรายการ</Typography>
           </Stack>
+          <>
+            <ReceiptController />
+          </>
         </Stack>
       </Grid>
       <Grid lg={3} sm={6} xs={12}>
