@@ -25,14 +25,11 @@ const CashierPage = () => {
 
   return (
     <>
-      <Grid container spacing={1}>
+      <Grid container spacing={1} direction={"row-reverse"}>
         <Grid xs={12}>
           <Cashier />
         </Grid>
-        <Grid xs={9}>
-          <CartContainer />
-        </Grid>
-        <Grid>
+        <Grid xs={12} lg={3}>
           <Stack spacing={1} direction={"row"}>
             <Button
               variant="contained"
@@ -52,6 +49,9 @@ const CashierPage = () => {
             </Button>
           </Stack>
           <Confirmation {...confirmation.props} />
+        </Grid>
+        <Grid xs={12} lg={9}>
+          <CartContainer />
         </Grid>
       </Grid>
 
