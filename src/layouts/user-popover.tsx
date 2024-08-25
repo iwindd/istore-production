@@ -62,6 +62,12 @@ export function UserPopover({
         disablePadding
         sx={{ p: "8px", "& .MuiMenuItem-root": { borderRadius: 1 } }}
       >
+        <MenuItem component={Link} href={Path("account").href}>
+          <ListItemIcon>
+            <Settings />
+          </ListItemIcon>
+          บัญชีของฉัน
+        </MenuItem>
         <MenuItem onClick={onSignout}>
           <ListItemIcon>
             <LogoutTwoTone />
