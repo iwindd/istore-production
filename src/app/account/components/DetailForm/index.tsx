@@ -21,6 +21,7 @@ import { useSession } from "next-auth/react";
 import { enqueueSnackbar } from "notistack";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import PasswordController from "./components/Password-Controller";
 
 const DetailForm = () => {
   const { setBackdrop } = useInterface();
@@ -70,10 +71,14 @@ const DetailForm = () => {
 
   return (
     <>
-      <Card component={"form"} onSubmit={handleSubmit(onSubmit)}>
+      <Card>
         <CardHeader title="ข้อมูลผู้ใช้"></CardHeader>
         <Divider />
-        <CardContent>
+        <CardContent
+          id="edit-profile-form"
+          component={"form"}
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Stack spacing={1}>
             <TextField
               InputProps={{
@@ -100,13 +105,6 @@ const DetailForm = () => {
               placeholder="อีเมล"
               {...register("email")}
             />
-            <Typography
-              variant="caption"
-              color="primary"
-              sx={{ cursor: "pointer" }}
-            >
-              เปลี่ยนรหัสผ่าน ?
-            </Typography>
           </Stack>
         </CardContent>
         <Divider />
@@ -116,6 +114,7 @@ const DetailForm = () => {
             color="inherit"
             variant="text"
             sx={{ ml: "auto" }}
+            form="edit-profile-form"
           >
             บันทึก
           </Button>
