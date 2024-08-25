@@ -10,9 +10,13 @@ import {
 import {
   Avatar,
   Button,
+  Checkbox,
   Container,
+  Divider,
+  FormControlLabel,
   InputAdornment,
   Link,
+  Paper,
   Stack,
   TextField,
   Typography,
@@ -20,7 +24,7 @@ import {
 import React from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import RouterLink from 'next/link';
+import RouterLink from "next/link";
 
 const SignIn = () => {
   const {
@@ -33,7 +37,7 @@ const SignIn = () => {
     resolver: zodResolver(SignInSchema),
   });
 
-  const {data: session} = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
 
   const onSubmit: SubmitHandler<SignInValues> = async (
@@ -43,85 +47,121 @@ const SignIn = () => {
     try {
       const resp = await signIn("credentials", {
         ...payload,
-        redirect: false
-      })
+        redirect: false,
+      });
 
       if (resp && resp.ok) {
         router.push("/");
         router.refresh();
-      }else{
+      } else {
         throw Error("no_response");
       }
     } catch (error) {
       resetField("password");
-      setError("email", {
-        type: "string",
-        message: "ไม่พบผู้ใช้งาน"
-      }, {shouldFocus: true})
+      setError(
+        "email",
+        {
+          type: "string",
+          message: "ไม่พบผู้ใช้งาน",
+        },
+        { shouldFocus: true }
+      );
     }
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      <Stack
-        mt={8}
-        direction={"column"}
-        alignItems={"center"}
-        spacing={1}
-        boxShadow={"lg"}
-        p={6}
-        component={"form"}
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Stack alignItems={"center"} spacing={2}>
-          <Avatar>
-            <LoginTwoTone />
-          </Avatar>
-          <Typography variant="h5">เข้าสู่ระบบ</Typography>
-        </Stack>
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <PeopleTwoTone />
-              </InputAdornment>
-            ),
-          }}
-          fullWidth
-          placeholder="อีเมล"
-          error={!!errors["email"]?.message}
-          helperText={errors["email"]?.message}
-          {...register("email")}
-        />
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <NumbersTwoTone />
-              </InputAdornment>
-            ),
-          }}
-          type="password"
-          fullWidth
-          placeholder="รหัสผ่าน"
-          error={!!errors["password"]?.message}
-          helperText={errors["password"]?.message}
-          {...register("password")}
-        />
-        <Stack justifyContent={"center"} alignItems={"center"} spacing={1}>
-          <Button
-            type="submit"
-            variant="contained"
-            startIcon={<LoginTwoTone />}
-            disabled={isSubmitting}
+      <Paper>
+        <Stack
+          mt={8}
+          direction={"column"}
+          spacing={1}
+          boxShadow={"lg"}
+          component={"form"}
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <Stack
+            alignItems={"center"}
+            spacing={2}
+            direction={"row"}
+            px={3}
+            pt={2}
+            pb={1}
           >
-            เข้าสู่ระบบ
-          </Button>
-          <Link component={RouterLink} href={'/auth/signup'}>
-            ฉันไม่มีบัญชี?
-          </Link>
+            <Avatar>
+              <LoginTwoTone />
+            </Avatar>
+            <Typography variant="h5">เข้าสู่ระบบ</Typography>
+          </Stack>
+          <Divider />
+          <Stack px={3} pt={1} spacing={1}>
+            <TextField
+              autoFocus
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <PeopleTwoTone />
+                  </InputAdornment>
+                ),
+              }}
+              fullWidth
+              placeholder="อีเมล"
+              error={!!errors["email"]?.message}
+              helperText={errors["email"]?.message}
+              {...register("email")}
+            />
+            <TextField
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <NumbersTwoTone />
+                  </InputAdornment>
+                ),
+              }}
+              type="password"
+              fullWidth
+              placeholder="รหัสผ่าน"
+              error={!!errors["password"]?.message}
+              helperText={errors["password"]?.message}
+              {...register("password")}
+            />
+            <Stack
+              sx={{ width: "100%" }}
+              direction={"row"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+            >
+              <FormControlLabel
+                control={<Checkbox defaultChecked />}
+                label="จดจำฉันไว้"
+              />
+              <Link color={"error"} component={RouterLink} href={"/auth/signup"}>
+                ลืมรหัสผ่าน
+              </Link>
+            </Stack>
+          </Stack>
+          <Stack
+            justifyContent={"center"}
+            alignItems={"center"}
+            spacing={1.5}
+            px={3}
+            pb={2}
+          >
+            <Button
+              type="submit"
+              variant="contained"
+              startIcon={<LoginTwoTone />}
+              disabled={isSubmitting}
+              fullWidth
+            >
+              เข้าสู่ระบบ
+            </Button>
+            <Link component={RouterLink} href={"/auth/signup"}>
+              ฉันไม่มีบัญชี?
+            </Link>
+          </Stack>
         </Stack>
-      </Stack>
+      </Paper>
     </Container>
   );
 };
