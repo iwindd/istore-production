@@ -130,6 +130,7 @@ const SignIn = () => {
               helperText={errors["password"]?.message}
               {...register("password")}
             />
+            {/* TODO:: Remember me, reset password        
             <Stack
               sx={{ width: "100%" }}
               direction={"row"}
@@ -147,7 +148,8 @@ const SignIn = () => {
               >
                 ลืมรหัสผ่าน
               </Link>
-            </Stack>
+            </Stack> 
+            */}
           </Stack>
           <Stack
             justifyContent={"center"}
@@ -155,6 +157,7 @@ const SignIn = () => {
             spacing={1.5}
             px={3}
             pb={2}
+            mt={2}
           >
             <Button
               type="submit"
