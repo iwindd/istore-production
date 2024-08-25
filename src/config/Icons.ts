@@ -10,6 +10,7 @@ import {
   Badge,
   Person,
   Business,
+  Settings,
 } from "@mui/icons-material";
 import { ElementType } from "react";
 
@@ -25,5 +26,6 @@ export default {
   category: Category,
   cashier: ShoppingCart,
   borrows: BackHand,
-  purchase: ReceiptLong
+  purchase: ReceiptLong,
+  account: Settings
 } as Record<string, ElementType>;

@@ -23,6 +23,7 @@ const Paths = {
   'histories.history': { key: 'histories.history', title: 'รายละเอียดการขายสินค้า', href: "/histories/:hid", icon: 'history', disableNav: true },
   'signin': { key: 'signin', title: 'เข้าสู่ระบบ', href: "/auth/signin", icon: 'signin', disableBreadcrumb: true, disableNav: true },
   'signup': { key: 'signup', title: 'ลงทะเบียน', href: "/auth/signup", icon: 'signup', disableBreadcrumb: true, disableNav: true },
+  'account': { key: 'account', title: 'บัญชี', href: "/account", icon: 'account'},
 } satisfies Record<string, Path>
 
 export const Path = (name: keyof typeof Paths) => Paths[name];
