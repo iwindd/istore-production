@@ -1,9 +1,19 @@
 import { Stack, Typography } from "@mui/material";
 import React from "react";
-import DetailForm from "./components/DetailForm";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import AddressForm from "./components/AddressForm";
-import LineForm from "./components/LineForm";
+import dynamic from "next/dynamic";
+
+const DetailForm = dynamic(() => import("./components/DetailForm"), {
+  ssr: false,
+});
+
+const AddressForm = dynamic(() => import("./components/AddressForm"), {
+  ssr: false,
+});
+
+const LineForm = dynamic(() => import("./components/LineForm"), {
+  ssr: false,
+});
 
 const Account = () => {
   return (
