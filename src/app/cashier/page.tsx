@@ -3,9 +3,9 @@ import React from "react";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import Cashier from "./components/Cashier";
 import { Confirmation, useConfirm } from "@/hooks/use-confirm";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import dynamic from "next/dynamic";
-import { DeleteTwoTone } from "@mui/icons-material";
+import { DeleteTwoTone, PaymentTwoTone } from "@mui/icons-material";
 import { useCart } from "@/hooks/use-cart";
 import usePayment from "@/hooks/use-payment";
 
@@ -15,7 +15,7 @@ const CartContainer = dynamic(() => import("./components/Cart"), {
 
 const CashierPage = () => {
   const { clear } = useCart();
-  const { Dialog } = usePayment();
+  const { Dialog, toggle } = usePayment();
 
   const confirmation = useConfirm({
     title: "แจ้งเตือน",
@@ -33,14 +33,24 @@ const CashierPage = () => {
           <CartContainer />
         </Grid>
         <Grid>
-          <Button
-            variant="contained"
-            color="warning"
-            startIcon={<DeleteTwoTone />}
-            onClick={confirmation.handleOpen}
-          >
-            ล้างตะกร้า
-          </Button>
+          <Stack spacing={1} direction={"row"}>
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<PaymentTwoTone />}
+              onClick={toggle}
+            >
+              เช็คบิล
+            </Button>
+            <Button
+              variant="contained"
+              color="warning"
+              startIcon={<DeleteTwoTone />}
+              onClick={confirmation.handleOpen}
+            >
+              ล้างตะกร้า
+            </Button>
+          </Stack>
           <Confirmation {...confirmation.props} />
         </Grid>
       </Grid>
