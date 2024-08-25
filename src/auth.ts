@@ -1,6 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import AuthConfig from "./config/AuthConfig";
 import db from "./libs/db";
+import bcrypt from "bcrypt";
 
 export const authOptions = {
   pages: {
@@ -45,12 +46,17 @@ export const authOptions = {
           const user = await db.user.findFirst({
             where: {
               email: credentials.email,
-              password: credentials.password,
             },
             include: {
               stores: true,
             },
           });
+
+          if (
+            !user ||
+            !(await bcrypt.compare(credentials.password, user.password))
+          )
+            throw new Error("not_found_user");
 
           const store = user?.stores[0];
 

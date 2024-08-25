@@ -1,6 +1,7 @@
 "use server";
 import { ActionError, ActionResponse } from "@/libs/action";
 import { SignUpSchema, SignUpValues } from "@/schema/Signup";
+import bcrypt from "bcrypt";
 import db from "@/libs/db";
 
 const Signup = async (
@@ -12,7 +13,7 @@ const Signup = async (
       data: {
         name: validated.name,
         email: validated.email,
-        password: validated.password,
+        password: await bcrypt.hash(validated.password, 15),
         stores: {
           create: [{ name: validated.name }],
         },
