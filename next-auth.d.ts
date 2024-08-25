@@ -1,5 +1,13 @@
 import NextAuth from "next-auth"
 
+interface StoreAddress{
+  address?: string,
+  district?: string,
+  area?: string,
+  province?: string,
+  postalcode?: string
+}
+
 declare module "next-auth" {
   interface Session {
     user: {
@@ -7,7 +15,8 @@ declare module "next-auth" {
       store: number,
       name: string,
       email: string,
-      line_token: string
+      line_token: string,
+      address: StoreAddress | null
     }
   }
 }

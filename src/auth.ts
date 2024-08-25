@@ -2,6 +2,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import AuthConfig from "./config/AuthConfig";
 import db from "./libs/db";
 import bcrypt from "bcrypt";
+import { StoreAddress } from "../next-auth";
+import { AddressValues, FormatAddress } from "./schema/Address";
 
 export const authOptions = {
   pages: {
@@ -23,7 +25,8 @@ export const authOptions = {
           store: token.id,
           name: token.name,
           email: token.email,
-          line_token: token.line_token
+          line_token: token.line_token,
+          address: token.address
         },
         ...user,
       };
@@ -68,7 +71,8 @@ export const authOptions = {
             store: store.id,
             name: user.name,
             email: user.email,
-            line_token: store.line_token
+            line_token: store.line_token,
+            address: FormatAddress(store as AddressValues)
           };
         } catch (error) {
           return null;

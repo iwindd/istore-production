@@ -32,6 +32,11 @@ model Store {
   borrows Borrows[]
   stocks Stock[]
   line_token String?
+  address String?
+  district String?  
+  area String?
+  province String?
+  postalcode String?
 }
 
 model Category {
