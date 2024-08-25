@@ -23,6 +23,7 @@ export const authOptions = {
           store: token.id,
           name: token.name,
           email: token.email,
+          line_token: token.line_token
         },
         ...user,
       };
@@ -67,6 +68,7 @@ export const authOptions = {
             store: store.id,
             name: user.name,
             email: user.email,
+            line_token: store.line_token
           };
         } catch (error) {
           return null;

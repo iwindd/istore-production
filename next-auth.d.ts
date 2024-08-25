@@ -6,7 +6,8 @@ declare module "next-auth" {
       id: string
       store: number,
       name: string,
-      email: string
+      email: string,
+      line_token: string
     }
   }
 }

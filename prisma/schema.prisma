@@ -31,6 +31,7 @@ model Store {
   orders Order[]
   borrows Borrows[]
   stocks Stock[]
+  line_token String?
 }
 
 model Category {
