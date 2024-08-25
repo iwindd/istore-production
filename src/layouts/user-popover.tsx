@@ -8,10 +8,12 @@ import MenuList from "@mui/material/MenuList";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 
-import { LogoutTwoTone, PeopleTwoTone } from "@mui/icons-material";
+import { LogoutTwoTone, PeopleTwoTone, Settings } from "@mui/icons-material";
 import { signOut, useSession } from "next-auth/react";
 import { useSnackbar } from "notistack";
 import { useInterface } from "@/providers/InterfaceProvider";
+import Link from "next/link";
+import { Path } from "@/config/Path";
 
 export interface UserPopoverProps {
   anchorEl: Element | null;
