@@ -63,7 +63,7 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
   ) => {
     setBackdrop(true);
     try {
-      const resp = await Cashout({...payload, cart: cart});
+      const resp = await Cashout({ ...payload, cart: cart });
       if (!resp.success) throw Error(resp.message);
 
       onClose();
@@ -163,7 +163,7 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
 interface PaymentHook {
   IsOpen: boolean;
   Dialog: React.ReactNode;
-  toggle(): void
+  toggle(): void;
 }
 
 const usePayment = (): PaymentHook => {
@@ -177,16 +177,18 @@ const usePayment = (): PaymentHook => {
   const toggle = () => {
     if (total() <= 0) {
       if (isOpen) setIsOpen(false);
-      enqueueSnackbar("ไม่สามารถคิดเงินได้เนื่องจากไม่พบสินค้าในตะกร้าสินค้า", {variant: "error"})
+      enqueueSnackbar("ไม่สามารถคิดเงินได้เนื่องจากไม่พบสินค้าในตะกร้าสินค้า", {
+        variant: "error",
+      });
       return;
     }
 
     setIsOpen(!isOpen);
   };
 
-  const onKeydown = (key: KeyboardEvent) => {
+  const onKeydown = React.useCallback((key: KeyboardEvent) => {
     if (Keys.includes(key.code)) toggle();
-  };
+  }, [toggle, total]);
 
   useEffect(() => {
     const handleKeydown = (event: Event) =>
@@ -202,7 +204,7 @@ const usePayment = (): PaymentHook => {
   return {
     IsOpen: isOpen,
     Dialog: <PaymentDialog open={isOpen} onClose={onClose} />,
-    toggle: toggle
+    toggle: toggle,
   };
 };
 
