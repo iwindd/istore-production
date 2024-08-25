@@ -72,7 +72,14 @@ const DetailForm = () => {
   return (
     <>
       <Card>
-        <CardHeader title="ข้อมูลผู้ใช้"></CardHeader>
+        <CardHeader
+          title="ข้อมูลผู้ใช้"
+          action={
+            <>
+              <PasswordController />
+            </>
+          }
+        ></CardHeader>
         <Divider />
         <CardContent
           id="edit-profile-form"
