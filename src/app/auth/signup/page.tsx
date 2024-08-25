@@ -11,8 +11,10 @@ import {
   Avatar,
   Button,
   Container,
+  Divider,
   InputAdornment,
   Link,
+  Paper,
   Stack,
   TextField,
   Typography,
@@ -22,7 +24,7 @@ import { SignUpSchema, SignUpValues } from "@/schema/Signup";
 import Signup from "@/actions/user/signup";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import RouterLink from 'next/link';
+import RouterLink from "next/link";
 
 const SignIn = () => {
   const {
@@ -65,93 +67,113 @@ const SignIn = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Stack
-        mt={8}
-        direction={"column"}
-        alignItems={"center"}
-        spacing={1}
-        boxShadow={"lg"}
-        p={6}
-        component={"form"}
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Stack alignItems={"center"} spacing={2}>
-          <Avatar>
-            <LoginTwoTone />
-          </Avatar>
-          <Typography variant="h5">ลงทะเบียน</Typography>
-        </Stack>
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <PeopleTwoTone />
-              </InputAdornment>
-            ),
-          }}
-          fullWidth
-          placeholder="ชื่อ"
-          error={!!errors["name"]?.message}
-          helperText={errors["name"]?.message}
-          {...register("name")}
-        />
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EmailTwoTone />
-              </InputAdornment>
-            ),
-          }}
-          fullWidth
-          placeholder="อีเมล"
-          error={!!errors["email"]?.message}
-          helperText={errors["email"]?.message}
-          {...register("email")}
-        />
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <NumbersTwoTone />
-              </InputAdornment>
-            ),
-          }}
-          type="password"
-          fullWidth
-          placeholder="รหัสผ่าน"
-          error={!!errors["password"]?.message}
-          helperText={errors["password"]?.message}
-          {...register("password")}
-        />
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <NumbersTwoTone />
-              </InputAdornment>
-            ),
-          }}
-          type="password"
-          fullWidth
-          placeholder="ยืนยันรหัสผ่าน"
-          error={!!errors["password_confirmation"]?.message}
-          helperText={errors["password_confirmation"]?.message}
-          {...register("password_confirmation")}
-        />
-        <Stack justifyContent={"center"} alignItems={"center"} spacing={1}>
-          <Button
-            type="submit"
-            variant="contained"
-            startIcon={<LoginTwoTone />}
+      <Paper>
+        <Stack
+          mt={8}
+          direction={"column"}
+          spacing={1}
+          boxShadow={"lg"}
+          component={"form"}
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <Stack
+            alignItems={"center"}
+            spacing={2}
+            direction={"row"}
+            px={3}
+            pt={2}
+            pb={1}
           >
-            ลงทะเบียน
-          </Button>
-          <Link component={RouterLink} href={'/auth/signin'}>
-            ฉันมีบัญชีอยู่แล้ว?
-          </Link>
+            <Avatar>
+              <LoginTwoTone />
+            </Avatar>
+            <Typography variant="h5">ลงทะเบียน</Typography>
+          </Stack>
+          <Divider />
+          <Stack px={3} pt={1} spacing={1}>
+            <TextField
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <PeopleTwoTone />
+                  </InputAdornment>
+                ),
+              }}
+              fullWidth
+              placeholder="ชื่อ"
+              error={!!errors["name"]?.message}
+              helperText={errors["name"]?.message}
+              autoFocus
+              {...register("name")}
+            />
+            <TextField
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <EmailTwoTone />
+                  </InputAdornment>
+                ),
+              }}
+              fullWidth
+              placeholder="อีเมล"
+              error={!!errors["email"]?.message}
+              helperText={errors["email"]?.message}
+              {...register("email")}
+            />
+            <TextField
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <NumbersTwoTone />
+                  </InputAdornment>
+                ),
+              }}
+              type="password"
+              fullWidth
+              placeholder="รหัสผ่าน"
+              error={!!errors["password"]?.message}
+              helperText={errors["password"]?.message}
+              {...register("password")}
+            />
+            <TextField
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <NumbersTwoTone />
+                  </InputAdornment>
+                ),
+              }}
+              type="password"
+              fullWidth
+              placeholder="ยืนยันรหัสผ่าน"
+              error={!!errors["password_confirmation"]?.message}
+              helperText={errors["password_confirmation"]?.message}
+              {...register("password_confirmation")}
+            />
+          </Stack>
+
+          <Stack
+            justifyContent={"center"}
+            alignItems={"center"}
+            spacing={1.5}
+            px={3}
+            pb={2}
+            mt={2}
+          >
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              startIcon={<LoginTwoTone />}
+            >
+              ลงทะเบียน
+            </Button>
+            <Link component={RouterLink} href={"/auth/signin"}>
+              ฉันมีบัญชีอยู่แล้ว?
+            </Link>
+          </Stack>
         </Stack>
-      </Stack>
+      </Paper>
     </Container>
   );
 };
