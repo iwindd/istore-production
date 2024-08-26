@@ -3,10 +3,11 @@ import React from "react";
 import * as ff from "@/libs/formatter";
 import {
   CancelTwoTone,
+  DownloadTwoTone,
   RecyclingTwoTone,
   UploadTwoTone,
 } from "@mui/icons-material";
-import { Stock } from "@prisma/client";
+import { Stock, StockItem } from "@prisma/client";
 import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Datatable from "@/components/Datatable";
 import GetStocks from "@/actions/stock/get";
@@ -17,6 +18,9 @@ import CancelStock from "@/actions/stock/cancel";
 import { useStock } from "@/hooks/use-stock";
 import ImportToolAction from "@/actions/stock/tool";
 import { ImportFromStockId, ImportType } from "../import";
+import { useInterface } from "@/providers/InterfaceProvider";
+import GetStock from "@/actions/stock/find";
+import { useExport } from "@/hooks/use-export";
 
 const formatCellColor = (status: Stock["state"]) => {
   switch (status) {
@@ -32,8 +36,18 @@ const formatCellColor = (status: Stock["state"]) => {
 };
 
 const HistoryDatatable = () => {
+  const { setBackdrop } = useInterface();
   const { setStocks, setTarget } = useStock();
   const queryClient = useQueryClient();
+  const {setItems, Export, ExportHandler} = useExport([
+    { label: "รหัสสินค้า", key: "serial" },
+    { label: "ชื่อสินค้า", key: "label" },
+    { label: "ราคา", key: "price" },
+    { label: "ต้นทุน", key: "cost" },
+    { label: "จำนวน", key: "changed_by" },
+    { label: "อื่นๆ", key: "keywords" }
+  ]);
+
   const cancelConfirmation = useConfirm({
     title: "แจ้งเตือน",
     text: "คุณต้องการที่จะยกเลิกรายการสต๊อกหรือไม่?",
@@ -104,6 +118,29 @@ const HistoryDatatable = () => {
     },
   });
 
+  const onExport = async (stockId : number) => {
+    try {
+      setBackdrop(true)
+      const resp = await GetStock(stockId, true);
+      if (!resp.success || !resp.data || !resp.data.items) throw new Error(resp.message);
+      setItems(resp.data.items.map((item) => ({
+        serial: item.product.serial,
+        label: item.product.label,
+        price: item.product.price,
+        cost: item.product.cost,
+        changed_by: item.changed_by,
+        keywords: item.product.keywords
+      })))
+      Export();
+    } catch (error) {
+      enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง", {
+        variant: "error",
+      });
+    } finally{
+      setBackdrop(false);
+    }
+  }
+
   const menu = {
     import: React.useCallback((row: Stock) => () => {
       importConfirmation.with(row.id);
@@ -120,6 +157,9 @@ const HistoryDatatable = () => {
       copyConfirmation.with(row.id);
       copyConfirmation.handleOpen();
     }, [copyConfirmation]),
+    export: React.useCallback((row: Stock) => () => {
+      onExport(row.id)
+    }, [onExport]),
   };
 
   const columns = (): GridColDef[] => {
@@ -196,6 +236,13 @@ const HistoryDatatable = () => {
                   showInMenu
                 />,
               ]),
+          <GridActionsCellItem
+            key="export"
+            icon={<DownloadTwoTone />}
+            onClick={menu.export(row)}
+            label="Export"
+            showInMenu
+          />
         ],
       },
     ];
@@ -215,6 +262,7 @@ const HistoryDatatable = () => {
         }
       />
 
+      {ExportHandler}
       <Confirmation {...cancelConfirmation.props} />
       <Confirmation {...copyConfirmation.props} />
       <Confirmation {...importConfirmation.props} />
