@@ -170,7 +170,7 @@ interface PaymentHook {
 
 const usePayment = (): PaymentHook => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const { total } = useCart();
+  const { total, clear } = useCart();
 
   const onClose = () => {
     setIsOpen(false);
@@ -188,9 +188,13 @@ const usePayment = (): PaymentHook => {
     setIsOpen(!isOpen);
   };
 
+  const clearCart = () => clear()
+
   const onKeydown = React.useCallback((key: KeyboardEvent) => {
-    if (Keys.includes(key.code)) toggle();
-  }, [toggle, total]);
+    if (Keys.includes(key.code)) return toggle();
+    if (key.code == "Delete") return clearCart()
+    
+  }, [toggle, total, clearCart]);
 
   useEffect(() => {
     const handleKeydown = (event: Event) =>
