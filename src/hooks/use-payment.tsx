@@ -170,7 +170,8 @@ interface PaymentHook {
 
 const usePayment = (): PaymentHook => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const { total, clear } = useCart();
+  const { total, clear, cart } = useCart();
+  const {setBackdrop} = useInterface();
 
   const onClose = () => {
     setIsOpen(false);
@@ -190,11 +191,45 @@ const usePayment = (): PaymentHook => {
 
   const clearCart = () => clear()
 
+  const onCashout = async (method: "cash" | "bank") => {
+    setBackdrop(true);
+    try {
+      const resp = await Cashout({ 
+        method: method,
+        note: "",
+        cart: cart,
+      });
+      if (!resp.success) throw Error(resp.message);
+
+      onClose();
+      clear();
+      enqueueSnackbar("ทำรายการคิดเงินสำเร็จแล้ว!", {
+        variant: "success",
+      });
+    } catch (error) {
+      onClose();
+      enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง", {
+        variant: "error",
+      });
+    } finally {
+      setBackdrop(false);
+    }
+  } 
+
   const onKeydown = React.useCallback((key: KeyboardEvent) => {
-    if (Keys.includes(key.code)) return toggle();
-    if (key.code == "Delete") return clearCart()
-    
-  }, [toggle, total, clearCart]);
+    const action = () => {
+      if (Keys.includes(key.code)) return toggle();
+      if (key.code == "Delete") return clearCart();
+      if (key.code == "Numpad1") return onCashout("cash");
+      if (key.code == "Numpad2") return onCashout("bank"); 
+      return null
+    }
+
+    const state = action();
+
+    if (state) key.preventDefault();
+
+  }, [toggle, total, clearCart, onCashout]);
 
   useEffect(() => {
     const handleKeydown = (event: Event) =>
