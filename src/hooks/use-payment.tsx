@@ -26,7 +26,7 @@ import { money } from "@/libs/formatter";
 import { enqueueSnackbar } from "notistack";
 import Cashout from "@/actions/cashier/cashout";
 import { useInterface } from "@/providers/InterfaceProvider";
-const Keys = ["Space"];
+const Keys = ["Space", "valAltLeft", "valNumpadEnter"];
 
 interface PaymentDialogProps {
   open: boolean;
@@ -219,16 +219,14 @@ const usePayment = (): PaymentHook => {
   const onKeydown = React.useCallback((key: KeyboardEvent) => {
     const action = () => {
       if (Keys.includes(key.code)) return toggle();
-      if (key.code == "Delete") return clearCart();
+      if (key.code == "Delete" || key.code == "valNumpadDecimal0") return clearCart();
       if (key.code == "Numpad1") return onCashout("cash");
       if (key.code == "Numpad2") return onCashout("bank"); 
       return null
     }
 
     const state = action();
-
     if (state) key.preventDefault();
-
   }, [toggle, total, clearCart, onCashout]);
 
   useEffect(() => {
