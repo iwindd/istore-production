@@ -112,7 +112,8 @@ model OrderProduct {
   price Int
   cost Int
   count Int
-  overstock Boolean @default(false)
+  overstock Int @default(0)
+  overstock_at DateTime?
   order_id Int
   order Order @relation(fields: [order_id], references: [id])
 }

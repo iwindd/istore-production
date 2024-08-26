@@ -20,6 +20,7 @@ const Paths = {
   'stock': { key: 'stock', title: 'จัดการสต๊อก', href: "/stocks", icon: 'stock' },
   'categories': { key: 'categories', title: 'ประเภทสินค้า', href: "/categories", icon: 'category' },
   'histories': { key: 'histories', title: 'ประวัติการขายสินค้า', href: "/histories", icon: 'history', matcher: { type: 'startsWith', href: "/histories"} },
+  'overstocks': { key: 'overstocks', title: 'สินค้าค้าง', href: "/overstocks", icon: 'overstocks'},
   'histories.history': { key: 'histories.history', title: 'รายละเอียดการขายสินค้า', href: "/histories/:hid", icon: 'history', disableNav: true },
   'signin': { key: 'signin', title: 'เข้าสู่ระบบ', href: "/auth/signin", icon: 'signin', disableBreadcrumb: true, disableNav: true },
   'signup': { key: 'signup', title: 'ลงทะเบียน', href: "/auth/signup", icon: 'signup', disableBreadcrumb: true, disableNav: true },

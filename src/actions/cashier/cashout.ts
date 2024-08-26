@@ -31,7 +31,7 @@ const validateProducts = async (session: Session, cart: CartItem[]) => {
       cost: product.cost,
       count: count,
       category: product.category.label,
-      overstock: count > product.stock,
+      overstock: count - product.stock,
     };
   }) as {
     id: number;
@@ -41,7 +41,7 @@ const validateProducts = async (session: Session, cart: CartItem[]) => {
     cost: number;
     count: number;
     category: string;
-    overstock: boolean;
+    overstock: number;
   }[];
 
   return validated;

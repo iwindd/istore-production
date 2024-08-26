@@ -11,6 +11,7 @@ import {
   Person,
   Business,
   Settings,
+  RotateRight,
 } from "@mui/icons-material";
 import { ElementType } from "react";
 
@@ -27,5 +28,6 @@ export default {
   cashier: ShoppingCart,
   borrows: BackHand,
   purchase: ReceiptLong,
-  account: Settings
+  account: Settings,
+  overstocks: RotateRight
 } as Record<string, ElementType>;
