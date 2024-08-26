@@ -5,6 +5,7 @@ import { Add, AddTwoTone, DeleteTwoTone, Remove, RemoveTwoTone } from '@mui/icon
 import { CartItem, CartState } from '@/atoms/cart'
 import { useRecoilState } from 'recoil';
 import { Confirmation, useConfirm } from '@/hooks/use-confirm';
+import { number } from '@/libs/formatter';
 
 export const Item = (props: CartItem) => {
   const [grow, setGrow] = React.useState<boolean>(false);
@@ -60,8 +61,8 @@ export const Item = (props: CartItem) => {
     >
       <TableCell >{props.serial}</TableCell>
       <TableCell >{props.label}</TableCell>
-      <TableCell >{(props.price).toLocaleString()}</TableCell>
-      <TableCell >{(props.price * props.count).toLocaleString()}</TableCell>
+      <TableCell >{number(props.price * props.count)}{props.count > 1 && ` (${number(props.price)})`}</TableCell>
+      <TableCell >{number(props.stock)}</TableCell>
       <TableCell >
         <IconButton onClick={() => countController(-1)}><RemoveTwoTone/></IconButton>
         <Input disableUnderline sx={{width: '3em'}} inputProps={{min: 0, style: { textAlign: 'center' }}}  type='number' value={props.count} onChange={onChange}/>

@@ -16,7 +16,7 @@ const Cart = () => {
             <TableCell variant="head">รหัสสินค้า</TableCell>
             <TableCell variant="head">ชื่อสินค้า</TableCell>
             <TableCell variant="head">ราคา</TableCell>
-            <TableCell variant="head">ราคา(รวม)</TableCell>
+            <TableCell variant="head">สต๊อก</TableCell>
             <TableCell variant="head">จำนวน</TableCell>
             <TableCell variant="head">เครื่องมือ</TableCell>
           </TableRow>
