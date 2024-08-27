@@ -39,6 +39,7 @@
     "react-hook-form": "^7.47.0",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
+    "sharp": "^0.33.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
