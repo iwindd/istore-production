@@ -148,10 +148,6 @@ const StockDatatable = () => {
     return newData;
   };
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
   React.useEffect(() => {
     if (stocks && stocks.length > 0 && !expanded) setExpanded(true);
     if (stocks && stocks.length <= 0 && expanded) setExpanded(false);
@@ -163,16 +159,6 @@ const StockDatatable = () => {
         <CardHeader
           title="รายการสต๊อก"
           subheader={target && `หมายเลขสต๊อก #${ff.number(target || 0)}`}
-          action={
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-            >
-              <ExpandMoreTwoTone />
-            </ExpandMore>
-          }
         />
         <Collapse in={expanded} timeout={"auto"} unmountOnExit>
           <Divider />
