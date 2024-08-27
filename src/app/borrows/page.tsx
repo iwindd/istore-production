@@ -1,3 +1,4 @@
+"use server";
 import { Stack, Typography } from "@mui/material";
 import AddForm from "./components/AddForm";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
@@ -11,18 +12,18 @@ const Borrows = async () => {
 
   try {
     const resp = await GetBorrowStats();
-    if (!resp.success) throw Error(resp.message);
-    const stats = resp.data;
-    const all = stats.length;
-
-    data.progress =
-      (stats.filter((i) => i.status == "PROGRESS").length / all) * 100;
-    data.success =
-      (stats.filter((i) => i.status == "SUCCESS").length / all) * 100;
-    data.cancel =
-      (stats.filter((i) => i.status == "CANCEL").length / all) * 100;
+    if (resp.success) {
+      const stats = resp.data;
+      const all = stats.length;
+  
+      data.progress =
+        (stats.filter((i) => i.status == "PROGRESS").length / all) * 100;
+      data.success =
+        (stats.filter((i) => i.status == "SUCCESS").length / all) * 100;
+      data.cancel =
+        (stats.filter((i) => i.status == "CANCEL").length / all) * 100;
+    };
   } catch (error) {
-    console.error("ERROR :", error);
   }
 
   return (
