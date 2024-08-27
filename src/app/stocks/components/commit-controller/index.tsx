@@ -58,11 +58,11 @@ const CommitDialog = ({
     }
   };
 
-  const onClear = () => {
+  const onClear = React.useCallback(() => {
     setStocks([]);
     setTarget(null);
     onClose();
-  };
+  }, [setStocks, setTarget, onClose]);
 
   const fetchData = React.useCallback(() => {
     if (target) {
@@ -79,7 +79,7 @@ const CommitDialog = ({
           onClear();
         });
     }
-  }, [target]);
+  }, [target, onClear]);
 
   useEffect(() => {
     fetchData();

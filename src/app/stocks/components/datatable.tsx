@@ -155,7 +155,7 @@ const StockDatatable = () => {
   React.useEffect(() => {
     if (stocks && stocks.length > 0 && !expanded) setExpanded(true);
     if (stocks && stocks.length <= 0 && expanded) setExpanded(false);
-  }, [stocks]);
+  }, [stocks, expanded, setExpanded]);
 
   return (
     <>

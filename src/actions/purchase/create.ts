@@ -30,7 +30,7 @@ const CreatePurchase = async (
               price: 0,
               cost: payload.cost,
               count: payload.count,
-              overstock: false,
+              overstock: 0,
             }
           ]
         }

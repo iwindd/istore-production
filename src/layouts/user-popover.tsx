@@ -43,7 +43,7 @@ export function UserPopover({
         variant: "error",
       });
     }
-  }, [router, enqueueSnackbar, setBackdrop, onClose]);
+  }, [router, enqueueSnackbar, onClose]);
 
   return (
     <Popover

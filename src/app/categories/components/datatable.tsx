@@ -73,7 +73,7 @@ const CategoryDatatable = () => {
         confirmation.with(category.id);
         confirmation.handleOpen();
       },
-      [confirmation]
+      [confirmation, enqueueSnackbar]
     ),
   };
 

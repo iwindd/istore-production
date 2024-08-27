@@ -64,7 +64,7 @@ const UpdateBorrow = async (
                   price: product.price,
                   cost: product.cost,
                   count: data.count,
-                  overstock: false
+                  overstock: 0
                 }
               ]
             }

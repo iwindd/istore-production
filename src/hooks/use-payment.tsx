@@ -56,7 +56,7 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
 
   useEffect(() => {
     setValue("cart", cart);
-  }, [cart]);
+  }, [cart, setValue]);
 
   const onSubmit: SubmitHandler<PaymentValues> = async (
     payload: PaymentValues
@@ -173,11 +173,11 @@ const usePayment = (): PaymentHook => {
   const { total, clear, cart } = useCart();
   const {setBackdrop} = useInterface();
 
-  const onClose = () => {
+  const onClose = React.useCallback(() => {
     setIsOpen(false);
-  };
+  }, [setIsOpen]);
 
-  const toggle = () => {
+  const toggle = React.useCallback(() => {
     if (total() <= 0) {
       if (isOpen) setIsOpen(false);
       enqueueSnackbar("ไม่สามารถคิดเงินได้เนื่องจากไม่พบสินค้าในตะกร้าสินค้า", {
@@ -187,11 +187,11 @@ const usePayment = (): PaymentHook => {
     }
 
     setIsOpen(!isOpen);
-  };
+  }, [total, isOpen, setIsOpen]);
 
-  const clearCart = () => clear()
+  const clearCart = React.useCallback(() => clear(), [clear])
 
-  const onCashout = async (method: "cash" | "bank") => {
+  const onCashout = React.useCallback(async (method: "cash" | "bank") => {
     setBackdrop(true);
     try {
       const resp = await Cashout({ 
@@ -214,7 +214,7 @@ const usePayment = (): PaymentHook => {
     } finally {
       setBackdrop(false);
     }
-  } 
+  }, [setBackdrop, onClose, clear, cart])
 
   const onKeydown = React.useCallback((key: KeyboardEvent) => {
     const action = () => {
@@ -227,7 +227,7 @@ const usePayment = (): PaymentHook => {
 
     const state = action();
     if (state) key.preventDefault();
-  }, [toggle, total, clearCart, onCashout]);
+  }, [toggle, clearCart, onCashout]);
 
   useEffect(() => {
     const handleKeydown = (event: Event) =>

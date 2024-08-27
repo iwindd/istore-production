@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pathToRegexp } from "path-to-regexp";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- We need to accept literally any values in type assertion
 export type CustomMiddleware<T = any> = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- We need to accept any request type
   request: any,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- We need to accept any additional props for external packages
   ...args: any
 ) => T | Promise<T>;
 
@@ -125,7 +122,6 @@ async function executeGlobalMiddleware(
       );
       if (result.cookies) {
         result.cookies.getAll().forEach((cookie) => {
-          // eslint-disable-next-line @typescript-eslint/no-base-to-string -- need to append cookies to headers
           request.headers.append("set-cookie", cookie.toString());
         });
       }

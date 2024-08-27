@@ -139,7 +139,7 @@ const Receipt = ({ name, address, left, right, items }: ReceiptProps) => {
         </View>
         <Divider />
         {items.map((item) => (
-          <View style={styles.itemRow}>
+          <View key={item.id} style={styles.itemRow}>
             <View style={styles.row2}>
               <Text style={styles.item}>{item.label}</Text>
             </View>

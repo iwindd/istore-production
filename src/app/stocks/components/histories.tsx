@@ -118,7 +118,7 @@ const HistoryDatatable = () => {
     },
   });
 
-  const onExport = async (stockId : number) => {
+  const onExport = React.useCallback(async (stockId : number) => {
     try {
       setBackdrop(true)
       const resp = await GetStock(stockId, true);
@@ -139,7 +139,7 @@ const HistoryDatatable = () => {
     } finally{
       setBackdrop(false);
     }
-  }
+  }, [setBackdrop, setItems, Export])
 
   const menu = {
     import: React.useCallback((row: Stock) => () => {
