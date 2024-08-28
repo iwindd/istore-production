@@ -20,7 +20,7 @@ const Scanner = (props: ScannerProps) => {
       setSerial("");
       const resp = await GetProduct(_serial);
 
-      if (!resp || !resp.data) return;
+      if (!resp || !resp.data) throw Error(resp.message);
 
       props.onSubmit(resp.data);
       if (ref.current) ref.current.focus();
