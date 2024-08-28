@@ -15,6 +15,7 @@ import { Path } from "@/config/Path";
 import getProducts from "@/actions/dashboard/getProducts";
 import getStocks from "@/actions/dashboard/getStocks";
 import getOverstocks from "@/actions/dashboard/getOverstock";
+import { RecentOrderTable } from "./table/RecentOrders";
 
 const Dashboard = async () => {
   const [startDate, endDate] = await getRange()
@@ -70,6 +71,9 @@ const Dashboard = async () => {
           labels={["เงินสด", "ธนาคาร"]}
           sx={{ height: "100%" }}
         />
+      </Grid>
+      <Grid lg={8} xs={12}>
+        <RecentOrderTable orders={orders} />
       </Grid>
     </Grid>
   );

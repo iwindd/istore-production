@@ -6,6 +6,9 @@ import { getFilterRange } from "./range";
 const getOrders = async (store: number): Promise<Order[]> => {
   try {
     return await db.order.findMany({
+      orderBy: {
+        id: "desc"
+      },
       where: {
         store_id: store,
         ...await getFilterRange()
