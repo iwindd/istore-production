@@ -16,6 +16,7 @@ import getProducts from "@/actions/dashboard/getProducts";
 import getStocks from "@/actions/dashboard/getStocks";
 import getOverstocks from "@/actions/dashboard/getOverstock";
 import { RecentOrderTable } from "./table/RecentOrders";
+import BestSellerProducts, { OrderProduct } from "./table/BestSellerProducts";
 
 const Dashboard = async () => {
   const [startDate, endDate] = await getRange()
@@ -45,6 +46,23 @@ const Dashboard = async () => {
   //data
   const weekSolds = [0, 0, 0, 0, 0, 0, 0];
   orders.map((order) => weekSolds[dayjs(order.created_at).day()]++);
+  const bestSellers : OrderProduct[] = [];
+  orders.map(({products}) => {
+    products.map((item) => {
+      const index = bestSellers.findIndex(_item => _item.serial == item.serial);
+      if (index != -1){
+        bestSellers[index].orders += item.count
+      }else{
+        bestSellers.push({
+          id: item.id,
+          serial: item.serial,
+          label: item.label,
+          orders: item.count
+        })
+      }
+    })
+  })
+  bestSellers.sort((a, b) => b.orders - a.orders);
 
   return (
     <Grid container spacing={1}>
@@ -74,6 +92,9 @@ const Dashboard = async () => {
       </Grid>
       <Grid lg={8} xs={12}>
         <RecentOrderTable orders={orders} />
+      </Grid>
+      <Grid lg={4} md={6} xs={12}>
+        <BestSellerProducts products={bestSellers.slice(0, 7)}/>
       </Grid>
     </Grid>
   );

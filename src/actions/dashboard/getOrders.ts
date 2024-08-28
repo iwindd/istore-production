@@ -1,9 +1,8 @@
 "use server";
-import { Order } from "@prisma/client";
 import db from "@/libs/db";
 import { getFilterRange } from "./range";
 
-const getOrders = async (store: number): Promise<Order[]> => {
+const getOrders = async (store: number) => {
   try {
     return await db.order.findMany({
       orderBy: {
@@ -13,6 +12,18 @@ const getOrders = async (store: number): Promise<Order[]> => {
         store_id: store,
         ...await getFilterRange()
       },
+      include: {
+        products: {
+          select: {
+            id: true,
+            serial: true,
+            label: true,
+            count: true,
+            overstock: true,
+            overstock_at: true,
+          }
+        }
+      }
     });
   } catch (error) {
     return [];
