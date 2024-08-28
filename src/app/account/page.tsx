@@ -32,7 +32,7 @@ const Account = () => {
         <Grid xs={12} lg={6}>
           <Stack spacing={1}>
             <DetailForm />
-            <LineForm />
+           {/*  <LineForm /> :: TODO:: Make notification */} 
           </Stack>
         </Grid>
         <Grid xs={12} lg={6}>
