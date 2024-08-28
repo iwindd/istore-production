@@ -27,6 +27,7 @@ const SearchProducts = async (
           { keywords: { contains: input } },
         ],
         store_id: Number(session?.user.store),
+        deleted: null
       },
       select: {
         id: true,

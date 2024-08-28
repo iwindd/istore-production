@@ -8,7 +8,8 @@ const getProducts = async (store: number): Promise<Product[]> => {
     return await db.product.findMany({
       where: {
         store_id: store,
-        ...await getFilterRange()
+        ...await getFilterRange(),
+        deleted: null
       },
     });
   } catch (error) {

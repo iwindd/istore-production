@@ -23,6 +23,7 @@ const ImportMinStock = async (
           ? db.product.fields.stock_min
           : payload.value,
       },
+      deleted: null
     },
     select: {
       id: true,
@@ -44,6 +45,9 @@ const ImportStockId = async (
   const data = await db.stockItem.findMany({
     where: {
       stock_id: payload.id,
+      product: {
+        deleted: null
+      }
     },
     select: {
       changed_by: true,

@@ -14,6 +14,7 @@ const CreateBorrow = async (
       where: {
         id: payload.product.id,
         store_id: Number(session?.user.store),
+        deleted: null
       },
     });
     const validated = BorrowsSchema.parse(payload); // revalidate
@@ -32,6 +33,7 @@ const CreateBorrow = async (
     await db.product.update({
       where: {
         id: payload.product.id,
+        deleted: null
       },
       data: {
         stock: {

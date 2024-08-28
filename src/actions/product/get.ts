@@ -26,11 +26,13 @@ const GetProducts = async (
         where: {
           ...filter(table.filter, ["serial", "label", "keywords"]),
           store_id: Number(session?.user.store),
+          deleted: null
         },
       }),
       db.product.count({
         where: {
           store_id: Number(session?.user.store),
+          deleted: null
         },
       }),
     ]);

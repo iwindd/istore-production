@@ -11,6 +11,7 @@ const validateProducts = async (session: Session, cart: CartItem[]) => {
     where: {
       store_id: Number(session?.user.store),
       id: { in: cart.map((p) => p.id) },
+      deleted: null
     },
     include: {
       category: {

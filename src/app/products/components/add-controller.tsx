@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -71,7 +72,7 @@ function SearchDialog({
     setLoading(true);
 
     try {
-      const resp = await GetProduct(payload.serial);
+      const resp = await GetProduct(payload.serial, true);
       if (!resp.success) throw Error("not_found");
       onSubmit(resp?.data || ({ serial: payload.serial } as Product));
     } catch (error) {
@@ -174,7 +175,7 @@ export function ProductFormDialog({
     setValue("serial", product?.serial || "");
     setValue("label", product?.label || "");
     setValue("price", product?.price || 0);
-    setValue("stock_min", product?.stock || 0);
+    setValue("stock_min", product?.stock_min || 0);
     setValue("cost", product?.cost || 0);
     setValue("keywords", product?.keywords || "");
     setValue("category_id", product?.category_id || 0);
@@ -190,10 +191,10 @@ export function ProductFormDialog({
         onSubmit: handleSubmit(submitProduct),
       }}
     >
-      <DialogTitle>{product ? "แก้ไขสินค้า" : "เพิ่มสินค้า"}</DialogTitle>
+      <DialogTitle>{product?.label ? "แก้ไขสินค้า" : "เพิ่มสินค้า"}</DialogTitle>
       <DialogContent>
-        <Stack sx={{ mt: 2 }}>
-          <Grid container spacing={2}>
+        <Stack sx={{ mt: 2 }} spacing={1}>
+          <Grid container spacing={1}>
             <Grid xs={6}>
               <TextField
                 fullWidth
@@ -273,11 +274,16 @@ export function ProductFormDialog({
               />
             </Grid>
           </Grid>
+          {
+            product?.id && product?.deleted != null && (
+              <Alert color="error">สินค้านี้ถูกลบไปแล้ว! หากคุณบันทึกสินค้านี้จะถูกกู้คืน {product.label} </Alert>
+            )
+          }
         </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>ยกเลิก</Button>
-        <Button type="submit">ตกลง</Button>
+        <Button type="submit">{product && product?.deleted ? "กู้คืนและบันทึก": "บันทึก"}</Button>
       </DialogActions>
     </Dialog>
   );

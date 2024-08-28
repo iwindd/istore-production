@@ -22,7 +22,8 @@ const UpdateProduct = async (
         cost: validated.cost,
         stock_min: validated.stock_min,
         category_id: validated.category_id,
-        keywords: validated.keywords
+        keywords: validated.keywords,
+        deleted: null
       },
     });
 

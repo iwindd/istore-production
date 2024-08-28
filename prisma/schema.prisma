@@ -71,6 +71,7 @@ model Product {
   keywords    String   @default("")
   borrows Borrows[]
   stocked StockItem[]
+  deleted DateTime?
 
   @@unique([serial, store_id])
 }

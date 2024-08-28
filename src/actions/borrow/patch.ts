@@ -22,7 +22,7 @@ const PatchBorrow = async (
 
     await db.product.update({
       where: {
-        id: data.product_id
+        id: data.product_id,
       },
       data: {
         stock: {

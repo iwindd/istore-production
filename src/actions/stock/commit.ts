@@ -15,6 +15,7 @@ const UpdateStock = async (payload: StockItemMinimal[]) => {
       return db.product.update({
         where: {
           id: product.product_id,
+          deleted: null
         },
         data: { stock: { increment: product.changed_by } },
       });
@@ -27,6 +28,7 @@ const validateProducts = async (payload: StockItem[], storeId: number) => {
     where: {
       store_id: storeId,
       id: { in: payload.map((p) => p.id) },
+      deleted: null
     },
     select: {
       id: true,
