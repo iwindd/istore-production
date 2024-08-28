@@ -3,7 +3,7 @@ import { AnalyticsTwoTone } from "@mui/icons-material";
 import { Button, Card, CardHeader, Stack, Tooltip } from "@mui/material";
 import { DateField, DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import React from "react";
+import React, { useEffect } from "react";
 import { useInterface } from "@/providers/InterfaceProvider";
 import { enqueueSnackbar } from "notistack";
 import { RangeChange } from "@/actions/dashboard/range";
@@ -15,6 +15,11 @@ const Range = ({ savedStart, savedEnd }: {
 }) => {
   const [start, setStart] = React.useState<Dayjs | null>(savedStart ? dayjs(savedStart) : null);
   const [end, setEnd] = React.useState<Dayjs | null>(savedEnd ? dayjs(savedStart) : null);
+
+  useEffect(() => {
+    if (savedStart ) setStart(dayjs(savedStart));
+    if (savedEnd ) setEnd(dayjs(savedEnd));
+  }, [savedStart, savedEnd, setStart, setEnd])
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
