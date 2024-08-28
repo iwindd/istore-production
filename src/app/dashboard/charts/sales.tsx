@@ -19,7 +19,7 @@ export function Sales({ chartSeries, sx }: SalesProps): React.JSX.Element {
 
   return (
     <Card sx={sx}>
-      <CardHeader title="สถิติการขายรายสัปดาห์"/>
+      <CardHeader title="สถิติการขายแต่ละวัน"/>
       <CardContent>
         <Chart height={350} options={chartOptions} series={chartSeries} type="bar" width="100%" />
       </CardContent>

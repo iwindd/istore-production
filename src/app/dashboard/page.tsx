@@ -35,35 +35,20 @@ const Dashboard = async () => {
   ];
 
   //data
-  const thisWeek = orders.filter((i) =>
-    dayjs(i.created_at).isBetween(
-      dayjs().startOf("week"),
-      dayjs().endOf("week")
-    )
-  );
-  const lastWeek = orders.filter((i) =>
-    dayjs(i.created_at).isBetween(
-      dayjs().subtract(1, "week").startOf("week"),
-      dayjs().subtract(1, "week").endOf("week")
-    )
-  );
-  const countThisWeek = [0, 0, 0, 0, 0, 0, 0];
-  const countLastWeek = [0, 0, 0, 0, 0, 0, 0];
-  thisWeek.map((order) => countThisWeek[dayjs(order.created_at).day()]++);
-  lastWeek.map((order) => countLastWeek[dayjs(order.created_at).day()]++);
+  const weekSolds = [0, 0, 0, 0, 0, 0, 0];
+  orders.map((order) => weekSolds[dayjs(order.created_at).day()]++);
 
   return (
     <Grid container spacing={1}>
       <Grid xs={12}><Range savedStart={startDate ? startDate.format() : null} savedEnd={endDate ? endDate.format() : null} /></Grid>
       <Grid lg={3} sm={6} xs={12}><TotalStat label="ออเดอร์" color="primary" icon={<Receipt/>} value={`${number(orders.length)} รายการ`} /></Grid>
-      <Grid lg={3} sm={6} xs={12}><TotalStat label="กำไร" color="success" icon={<AttachMoney/>} value={`${money(totalProfit)}`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat label="เงินในระบบ" color="success" icon={<AttachMoney/>} value={`${money(totalProfit)}`} /></Grid>
       <Grid lg={3} sm={6} xs={12}><TotalStat label="การเบิก" color="warning" icon={<BackHand/>} value={`${number(borrows.length)} รายการ`} /></Grid>
       <Grid lg={3} sm={6} xs={12}><TotalStat label="การซื้อ" color="info" icon={<ShoppingBasket/>} value={`${number(orders.filter(b => b.type == "PURCHASE").length)} รายการ`} /></Grid>
       <Grid lg={8} xs={12}>
         <Sales
           chartSeries={[
-            { name: "อาทิตย์นี้", data: countThisWeek },
-            { name: "อาทิตย์ที่แล้ว", data: countLastWeek },
+            { name: "ยอดขาย", data: weekSolds },
           ]}
           sx={{ height: "100%" }}
         />
