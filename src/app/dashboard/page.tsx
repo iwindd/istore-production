@@ -11,6 +11,7 @@ import { money, number, order } from "@/libs/formatter";
 import getBorrows from "@/actions/dashboard/getBorrows";
 import Range from "./range";
 import { getRange } from "@/actions/dashboard/range";
+import { Path } from "@/config/Path";
 
 const Dashboard = async () => {
   const [startDate, endDate] = await getRange()
@@ -41,10 +42,10 @@ const Dashboard = async () => {
   return (
     <Grid container spacing={1}>
       <Grid xs={12}><Range savedStart={startDate ? startDate.format() : null} savedEnd={endDate ? endDate.format() : null} /></Grid>
-      <Grid lg={3} sm={6} xs={12}><TotalStat label="ออเดอร์" color="primary" icon={<Receipt/>} value={`${number(orders.length)} รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat href={Path("histories").href} label="ออเดอร์" color="primary" icon={<Receipt/>} value={`${number(orders.length)} รายการ`} /></Grid>
       <Grid lg={3} sm={6} xs={12}><TotalStat label="เงินในระบบ" color="success" icon={<AttachMoney/>} value={`${money(totalProfit)}`} /></Grid>
-      <Grid lg={3} sm={6} xs={12}><TotalStat label="การเบิก" color="warning" icon={<BackHand/>} value={`${number(borrows.length)} รายการ`} /></Grid>
-      <Grid lg={3} sm={6} xs={12}><TotalStat label="การซื้อ" color="info" icon={<ShoppingBasket/>} value={`${number(orders.filter(b => b.type == "PURCHASE").length)} รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat href={Path("borrows").href} label="การเบิก" color="warning" icon={<BackHand/>} value={`${number(borrows.length)} รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat href={Path("purchase").href} label="การซื้อ" color="info" icon={<ShoppingBasket/>} value={`${number(orders.filter(b => b.type == "PURCHASE").length)} รายการ`} /></Grid>
       <Grid lg={8} xs={12}>
         <Sales
           chartSeries={[
