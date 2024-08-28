@@ -14,6 +14,9 @@ import { useSnackbar } from "notistack";
 import { useInterface } from "@/providers/InterfaceProvider";
 import Link from "next/link";
 import { Path } from "@/config/Path";
+import { useRecoilState } from "recoil";
+import { CartState } from "@/atoms/cart";
+import { StockState } from "@/atoms/stock";
 
 export interface UserPopoverProps {
   anchorEl: Element | null;
@@ -30,12 +33,15 @@ export function UserPopover({
   const { data, update } = useSession();
   const { enqueueSnackbar } = useSnackbar();
   const { setBackdrop } = useInterface();
+  const [, setCart] = useRecoilState(CartState);
+  const [, setStocks] = useRecoilState(StockState);
 
   const onSignout = React.useCallback(async (): Promise<void> => {
     onClose();
     try {
       await signOut({ callbackUrl: "/", redirect: true });
-
+      setCart([]);
+      setStocks([]);
       router.refresh();
       enqueueSnackbar("ออกจากระบบสำเร็จ", { variant: "success" });
     } catch (err) {
