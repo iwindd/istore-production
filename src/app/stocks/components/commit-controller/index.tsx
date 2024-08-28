@@ -21,6 +21,7 @@ import { useStock } from "@/hooks/use-stock";
 import { enqueueSnackbar } from "notistack";
 import { number } from "@/libs/formatter";
 import GetStock from "@/actions/stock/find";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface CommitDialogProps {
   onClose: () => void;
@@ -35,6 +36,7 @@ const CommitDialog = ({
   const [note, setNote] = React.useState<string>("");
   const { isBackdrop, setBackdrop } = useInterface();
   const { commit, target, setStocks, setTarget } = useStock();
+  const queryClient = useQueryClient();
 
   const handleChange = (event: SelectChangeEvent) => {
     setType(+event.target.value >= 1 ? 1 : 0);
@@ -45,6 +47,10 @@ const CommitDialog = ({
     try {
       const state = await commit(target ? true : type == 1, note);
       if (!state) throw Error("error");
+      await queryClient.refetchQueries({
+        queryKey: ["stocks_histories"],
+        type: "active",
+      });
       enqueueSnackbar("บันทึกรายการสต๊อกสำเร็จแล้ว!!", {
         variant: "success",
       });
