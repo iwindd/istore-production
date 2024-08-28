@@ -1,11 +1,11 @@
 "use server";
-import { Borrows } from "@prisma/client";
+import { Product } from "@prisma/client";
 import db from "@/libs/db";
 import { getFilterRange } from "./range";
 
-const getBorrows = async (store: number): Promise<Borrows[]> => {
+const getProducts = async (store: number): Promise<Product[]> => {
   try {
-    return await db.borrows.findMany({
+    return await db.product.findMany({
       where: {
         store_id: store,
         ...await getFilterRange()
@@ -16,4 +16,4 @@ const getBorrows = async (store: number): Promise<Borrows[]> => {
   }
 };
 
-export default getBorrows;
+export default getProducts;

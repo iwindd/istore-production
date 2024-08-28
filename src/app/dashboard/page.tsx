@@ -6,16 +6,26 @@ import { getServerSession } from "@/libs/session";
 import getOrders from "@/actions/dashboard/getOrders";
 import dayjs from "@/libs/dayjs";
 import { TotalStat } from "./stats/Stat";
-import { AttachMoney, BackHand, Receipt, ShoppingBasket } from "@mui/icons-material";
-import { money, number } from "@/libs/formatter";
+import { AllInbox, AttachMoney, BackHand, Category, Receipt, RotateRight, ShoppingBasket, Warning, Work } from "@mui/icons-material";
+import { money, number, order } from "@/libs/formatter";
 import getBorrows from "@/actions/dashboard/getBorrows";
+import Range from "./range";
+import { getRange } from "@/actions/dashboard/range";
+import { Path } from "@/config/Path";
+import getProducts from "@/actions/dashboard/getProducts";
+import getStocks from "@/actions/dashboard/getStocks";
+import { RecentOrderTable } from "./table/RecentOrders";
+import BestSellerProducts, { OrderProduct } from "./table/BestSellerProducts";
 
 const Dashboard = async () => {
+  const [startDate, endDate] = await getRange()
   const session = await getServerSession();
   if (!session) return;
   const storeId = Number(session.user.store);
-  const orders = await getOrders(storeId);
+  const orders = await getOrders(storeId);  
   const borrows = await getBorrows(storeId);
+  const products = await getProducts(storeId);
+  const stocks = await getStocks(storeId);
   const totalProfit = orders.reduce((total, item) => total + item.profit, 0);
 
   // traffic
@@ -32,34 +42,43 @@ const Dashboard = async () => {
   ];
 
   //data
-  const thisWeek = orders.filter((i) =>
-    dayjs(i.created_at).isBetween(
-      dayjs().startOf("week"),
-      dayjs().endOf("week")
-    )
-  );
-  const lastWeek = orders.filter((i) =>
-    dayjs(i.created_at).isBetween(
-      dayjs().subtract(1, "week").startOf("week"),
-      dayjs().subtract(1, "week").endOf("week")
-    )
-  );
-  const countThisWeek = [0, 0, 0, 0, 0, 0, 0];
-  const countLastWeek = [0, 0, 0, 0, 0, 0, 0];
-  thisWeek.map((order) => countThisWeek[dayjs(order.created_at).day()]++);
-  lastWeek.map((order) => countLastWeek[dayjs(order.created_at).day()]++);
+  const weekSolds = [0, 0, 0, 0, 0, 0, 0];
+  orders.map((order) => weekSolds[dayjs(order.created_at).day()]++);
+  let overstocks = 0;
+  const bestSellers : OrderProduct[] = [];
+  orders.map(({products}) => {
+    products.map((item) => {
+      const index = bestSellers.findIndex(_item => _item.serial == item.serial);
+      if (!item.overstock_at && item.overstock > 0) overstocks += item.overstock;
+      if (index != -1){
+        bestSellers[index].orders += item.count
+      }else{
+        bestSellers.push({
+          id: item.id,
+          serial: item.serial,
+          label: item.label,
+          orders: item.count
+        })
+      }
+    })
+  })
+  bestSellers.sort((a, b) => b.orders - a.orders);
 
   return (
     <Grid container spacing={1}>
-      <Grid lg={3} sm={6} xs={12}><TotalStat label="ออเดอร์" color="primary" icon={<Receipt/>} value={`${number(orders.length)} รายการ`} /></Grid>
-      <Grid lg={3} sm={6} xs={12}><TotalStat label="กำไร" color="success" icon={<AttachMoney/>} value={`${money(totalProfit)}`} /></Grid>
-      <Grid lg={3} sm={6} xs={12}><TotalStat label="การเบิก" color="warning" icon={<BackHand/>} value={`${number(borrows.filter(b => b.status == "PROGRESS").length)} รายการ`} /></Grid>
-      <Grid lg={3} sm={6} xs={12}><TotalStat label="การซื้อ" color="info" icon={<ShoppingBasket/>} value={`${number(orders.filter(b => b.type == "PURCHASE").length)} รายการ`} /></Grid>
+      <Grid xs={12}><Range savedStart={startDate ? startDate.format() : null} savedEnd={endDate ? endDate.format() : null} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat href={Path("histories").href} label="ออเดอร์" color="primary" icon={<Receipt/>} value={`${number(orders.length)} รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat label="เงินในระบบ" color="success" icon={<AttachMoney/>} value={`${money(totalProfit)}`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat href={Path("borrows").href} label="การเบิก" color="warning" icon={<BackHand/>} value={`${number(borrows.length)} รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat href={Path("purchase").href} label="การซื้อ" color="info" icon={<ShoppingBasket/>} value={`${number(orders.filter(b => b.type == "PURCHASE").length)} รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat href={Path("overstocks").href} label="สินค้าค้าง" color="error" icon={<RotateRight/>} value={`${number(overstocks)} รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat href={Path("products").href} label="สินค้าใกล้จะหมด" color="warning" icon={<Warning/>} value={`${number(products.filter(p => p.stock <= p.stock_min).length)} รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat href={Path("stock").href} label="จัดการสต๊อก" color="info" icon={<AllInbox/>} value={`${number(stocks.length)} รายการ`} /></Grid>
+      <Grid lg={3} sm={6} xs={12}><TotalStat href={Path("products").href} label="สินค้าทั้งหมด" color="primary" icon={<Work/>} value={`${number(products.length)} รายการ`} /></Grid>
       <Grid lg={8} xs={12}>
         <Sales
           chartSeries={[
-            { name: "อาทิตย์นี้", data: countThisWeek },
-            { name: "อาทิตย์ที่แล้ว", data: countLastWeek },
+            { name: "ยอดขาย", data: weekSolds },
           ]}
           sx={{ height: "100%" }}
         />
@@ -70,6 +89,12 @@ const Dashboard = async () => {
           labels={["เงินสด", "ธนาคาร"]}
           sx={{ height: "100%" }}
         />
+      </Grid>
+      <Grid lg={8} xs={12}>
+        <RecentOrderTable orders={orders} />
+      </Grid>
+      <Grid lg={4} md={6} xs={12}>
+        <BestSellerProducts products={bestSellers.slice(0, 7)}/>
       </Grid>
     </Grid>
   );
