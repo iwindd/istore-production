@@ -49,7 +49,7 @@ export function UserPopover({
         variant: "error",
       });
     }
-  }, [router, enqueueSnackbar, onClose]);
+  }, [router, enqueueSnackbar, onClose, setCart, setStocks]);
 
   return (
     <Popover
