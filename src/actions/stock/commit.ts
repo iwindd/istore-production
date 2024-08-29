@@ -107,7 +107,7 @@ const Commit = async (
       await CreateItems(data.items);
     }
     
-    if (instant || target != null) UpdateStock(data.items);
+    if (instant || target != null) await UpdateStock(data.items);
     
     return { success: true, data: payload };
   } catch (error) {
