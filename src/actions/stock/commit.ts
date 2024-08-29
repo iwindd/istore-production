@@ -110,6 +110,7 @@ const Commit = async (
     
     return { success: true, data: payload };
   } catch (error) {
+    console.error(error);
     return ActionError(error) as ActionResponse<StockItem[]>;
   }
 };
