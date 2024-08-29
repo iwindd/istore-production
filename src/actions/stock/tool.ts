@@ -31,6 +31,10 @@ const ImportMinStock = async (
       label: true,
       stock: true,
     },
+    take: 50,
+    orderBy: {
+      sold: "desc"
+    }
   });
 
   return data.map((p) => ({ ...p, payload: 0 })) as StockItem[];

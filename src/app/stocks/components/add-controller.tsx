@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -62,7 +63,7 @@ function StockFormDialog({
       </DialogTitle>
       <DialogContent>
         <Stack sx={{ mt: 2 }}>
-          <Stack flexDirection={"column"} spacing={2}>
+          <Stack flexDirection={"column"} spacing={1}>
             <Selector onSubmit={onSubmit} />
             <TextField
               type="number"
@@ -71,13 +72,18 @@ function StockFormDialog({
               fullWidth
               label="จำนวน"
             />
+            {
+              stocks.length >= 50 && (
+                <Alert color="error">การจัดการสต๊อกจำกัดสินค้าไว้ 50 รายการ</Alert>
+              )
+            }
           </Stack>
         </Stack>
       </DialogContent>
       <DialogActions>
         <Stack sx={{ width: "100%" }} direction={"row"} justifyContent={"end"}>
           <Button onClick={Close}>ปิด</Button>
-          <Button onClick={onConfirm}>บันทึก</Button>
+          <Button disabled={stocks.length >= 50} onClick={onConfirm}>บันทึก</Button>
         </Stack>
       </DialogActions>
     </Dialog>

@@ -71,6 +71,7 @@ const Commit = async (
   try {
     const session = await getServerSession();
     if (!session) throw Error("no_found_session");
+    payload = payload.slice(0, 50);
 
     const data = await db.stock.upsert({
       where: {

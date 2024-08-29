@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -37,7 +38,7 @@ const SelecterDialog = ({
   const [payload, setPayload] = React.useState<ImportPayload | null>(null);
   const [changedBy, setChangedBy] = React.useState<string>("10");
   const { isBackdrop, setBackdrop } = useInterface();
-  const { setStocks } = useStock();
+  const { stocks, setStocks } = useStock();
 
   const handleChange = (event: SelectChangeEvent) => {
     setType(+event.target.value);
@@ -52,9 +53,9 @@ const SelecterDialog = ({
     try {
       const resp = await ImportToolAction(payload);
       if (!resp.success) throw Error(resp.message);
-      
-      setStocks(resp.data.map((p) => ({...p, payload: +changedBy})));
-      enqueueSnackbar("เพิ่มสินค้าสำเร็จ!", {variant: "success"});
+
+      setStocks(resp.data.map((p) => ({ ...p, payload: +changedBy })));
+      enqueueSnackbar("เพิ่มสินค้าสำเร็จ!", { variant: "success" });
       onClose();
     } catch (error) {
       enqueueSnackbar("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้งภายหลัง", {
@@ -76,7 +77,7 @@ const SelecterDialog = ({
       <DialogTitle>เครื่องมือ</DialogTitle>
       <DialogContent>
         <Stack sx={{ mt: 2 }} spacing={1}>
-          <Stack flexDirection={"column"} spacing={2}>
+          <Stack flexDirection={"column"} spacing={1}>
             <FormControl>
               <InputLabel id="selector-label">ประเภทการนำเข้า</InputLabel>
               <Select
@@ -104,12 +105,15 @@ const SelecterDialog = ({
           {type == ImportType.FromMinStock && (
             <MinStockController payload={payload} setPayload={setPayload} />
           )}
+          {stocks.length >= 50 && (
+            <Alert color="error">การจัดการสต๊อกจำกัดสินค้าไว้ 50 รายการ</Alert>
+          )}
         </Stack>
       </DialogContent>
       <DialogActions>
         <Stack sx={{ width: "100%" }} direction={"row"} justifyContent={"end"}>
           <Button onClick={onClose}>ปิด</Button>
-          <Button onClick={onSubmit}>ยืนยัน</Button>
+          <Button disabled={stocks.length >= 50} onClick={onSubmit}>ยืนยัน</Button>
         </Stack>
       </DialogActions>
     </Dialog>
