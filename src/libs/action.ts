@@ -5,7 +5,8 @@ export interface ActionResponse<T>{
   data: T,
   total?: number
   errors?: Record<keyof T, ZodIssue>,
-  message?: string
+  message?: string,
+  error?: any
 }
 
 export const ActionError = (error: any) => {
