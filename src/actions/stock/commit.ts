@@ -10,7 +10,7 @@ interface StockItemMinimal {
   stock_id?: number
 }
 
-const UpdateStock = async (payload: StockItemMinimal[], batchSize = 10) => {
+const UpdateStock = async (payload: StockItemMinimal[], batchSize = 20) => {
   for (let i = 0; i < payload.length; i += batchSize) {
     const batch = payload.slice(i, i + batchSize);
     await db.$transaction(
