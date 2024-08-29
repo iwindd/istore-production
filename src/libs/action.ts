@@ -20,6 +20,7 @@ export const ActionError = (error: any) => {
     return {
       success: false,
       message: "An unexpected error occurred.",
+      error: error
     };
   }
 };
