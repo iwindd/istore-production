@@ -25,6 +25,8 @@ const UpdateStock = async (payload: StockItemMinimal[], batchSize = 20) => {
       })
     );
   }
+
+  console.log("[INFO] UPDATE STOCKS SUCCESS");
 };
 
 const CreateItems = async (payload: StockItemMinimal[], batchSize = 10) => {
@@ -107,7 +109,7 @@ const Commit = async (
       await CreateItems(data.items);
     }
     
-    if (instant || target != null) await UpdateStock(data.items);
+    if (instant || target != null) UpdateStock(data.items);
     
     return { success: true, data: payload };
   } catch (error) {
