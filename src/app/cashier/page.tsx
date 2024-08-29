@@ -51,7 +51,6 @@ const CashierPage = () => {
     } finally{
       setBackdrop(false)
     }
-    addProduct(selectProduct);
   }
 
   return (
