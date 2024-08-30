@@ -7,6 +7,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   FormControl,
   IconButton,
   InputLabel,
@@ -35,6 +36,7 @@ import GetProduct from "@/actions/product/find";
 import { randomEan } from "@/libs/ean";
 import CreateProduct from "@/actions/product/create";
 import UpdateProduct from "@/actions/product/update";
+import Selector from "@/components/Selector";
 
 interface AddDialogProps {
   onClose: () => void;
@@ -85,6 +87,10 @@ function SearchDialog({
     }
   };
 
+  const onSelector = (product: Product | null) => {
+    if (product && product.serial) searchSubmit({ serial: product.serial });
+  }
+
   const random = () => {
     const randomSerial = randomEan();
     setValue("serial", randomSerial);
@@ -100,10 +106,11 @@ function SearchDialog({
       }}
       maxWidth="xs"
       fullWidth
+      disableRestoreFocus
     >
       <DialogTitle>ค้นหาสินค้า</DialogTitle>
       <DialogContent>
-        <Stack sx={{ mt: 2 }}>
+        <Stack sx={{ mt: 2 }} spacing={1}>
           <Stack direction="row" spacing={1}>
             <TextField
               label="รหัสสินค้า"
@@ -121,6 +128,8 @@ function SearchDialog({
               </Button>
             </Tooltip>
           </Stack>
+          <Divider>หรือ</Divider>
+          <Selector onSubmit={onSelector} />
         </Stack>
       </DialogContent>
       <DialogActions>
@@ -286,7 +295,7 @@ export function ProductFormDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>ยกเลิก</Button>
-        <Button type="submit">{product && product?.deleted ? "กู้คืนและบันทึก": "บันทึก"}</Button>
+        <Button type="submit">{product && product?.deleted ? "กู้คืนและบันทึก" : "บันทึก"}</Button>
       </DialogActions>
     </Dialog>
   );
