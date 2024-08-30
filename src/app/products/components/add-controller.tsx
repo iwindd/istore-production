@@ -207,6 +207,7 @@ export function ProductFormDialog({
         component: "form",
         onSubmit: handleSubmit(submitProduct),
       }}
+      disableRestoreFocus
     >
       <DialogTitle>{product?.label ? "แก้ไขสินค้า" : "เพิ่มสินค้า"}</DialogTitle>
       <DialogContent>
@@ -225,6 +226,7 @@ export function ProductFormDialog({
             <Grid xs={12} sm={6} md={6}>
               <TextField
                 fullWidth
+                autoFocus
                 label="ชื่อสินค้า"
                 error={errors["label"] !== undefined}
                 helperText={errors["label"]?.message ?? ""}
