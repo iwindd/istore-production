@@ -216,6 +216,7 @@ export function ProductFormDialog({
             <Grid xs={12} sm={6} md={6}>
               <TextField
                 fullWidth
+                required
                 label="รหัสสินค้า"
                 {...register("serial")}
                 autoFocus
@@ -227,6 +228,7 @@ export function ProductFormDialog({
               <TextField
                 fullWidth
                 autoFocus
+                required
                 label="ชื่อสินค้า"
                 error={errors["label"] !== undefined}
                 helperText={errors["label"]?.message ?? ""}
@@ -235,7 +237,7 @@ export function ProductFormDialog({
             </Grid>
             <Grid xs={12} sm={6} md={6}>
               <FormControl fullWidth>
-                <InputLabel>
+                <InputLabel required>
                   {categories.length <= 0
                     ? "ไม่พบประเภทสินค้า"
                     : "ประเภทสินค้า"}
@@ -245,6 +247,7 @@ export function ProductFormDialog({
                     label="ประเภทสินค้า"
                     defaultValue={defaultCategory}
                     fullWidth
+                    required
                     {...register("category_id", { valueAsNumber: true })}
                   >
                     {categories.map((category: Category) => (
@@ -259,6 +262,7 @@ export function ProductFormDialog({
             <Grid xs={6}>
               <TextField
                 fullWidth
+                required
                 label="ราคา"
                 error={errors["price"] !== undefined}
                 helperText={errors["price"]?.message}
@@ -268,6 +272,7 @@ export function ProductFormDialog({
             <Grid xs={6}>
               <TextField
                 fullWidth
+                required
                 label="ราคาต้นทุน"
                 error={errors["cost"] !== undefined}
                 helperText={errors["cost"]?.message}
@@ -277,6 +282,7 @@ export function ProductFormDialog({
             <Grid xs={12} sm={6} md={6}>
               <TextField
                 fullWidth
+                required
                 label="สต๊อกขั้นต่ำ"
                 error={errors["stock_min"] !== undefined}
                 helperText={errors["stock_min"]?.message}
