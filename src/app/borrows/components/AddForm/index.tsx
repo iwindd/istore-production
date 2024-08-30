@@ -1,6 +1,7 @@
 "use client";
 import CreateBorrow from "@/actions/borrow/create";
 import { SearchProduct } from "@/actions/product/search";
+import NoteHelper from "@/components/NoteHelper";
 import Selector from "@/components/Selector";
 import { useInterface } from "@/providers/InterfaceProvider";
 import { BorrowsSchema, BorrowsValues } from "@/schema/Borrows";
@@ -79,6 +80,7 @@ const AddForm = () => {
           />
           <TextField
             label="จำนวน"
+            required
             error={errors["count"] !== undefined}
             helperText={errors["count"]?.message}
             {...register("count", { valueAsNumber: true })}
@@ -89,6 +91,7 @@ const AddForm = () => {
             helperText={errors["note"]?.message}
             {...register("note")}
           />
+          <NoteHelper/>
         </Stack>
       </CardContent>
       <Divider />

@@ -26,6 +26,7 @@ import { money } from "@/libs/formatter";
 import { enqueueSnackbar } from "notistack";
 import Cashout from "@/actions/cashier/cashout";
 import { useInterface } from "@/providers/InterfaceProvider";
+import NoteHelper from "@/components/NoteHelper";
 const Keys = ["Space", "valAltLeft", "valNumpadEnter"];
 
 interface PaymentDialogProps {
@@ -117,6 +118,19 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
             value={moneyLeft}
             onChange={(e) => setMoneyLeft(+e.target.value)}
           />
+          <FormControl fullWidth>
+            <InputLabel id="payment" required>ช่องทางการชำระเงิน</InputLabel>
+            <Select
+              labelId="payment"
+              label="ช่องทางการชำระเงิน"
+              required
+              value={watch("method")}
+              {...register("method")}
+            >
+              <MenuItem value={"cash"}>เงินสด</MenuItem>
+              <MenuItem value={"bank"}>ธนาคาร</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             label="หมายเหตุ"
             type="text"
@@ -125,19 +139,8 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
             helperText={errors["note"]?.message}
             {...register("note")}
           />
-          <FormControl fullWidth>
-            <InputLabel id="payment">ช่องทางการชำระเงิน</InputLabel>
-            <Select
-              labelId="payment"
-              label="ช่องทางการชำระเงิน"
-              value={watch("method")}
-              {...register("method")}
-            >
-              <MenuItem value={"cash"}>เงินสด</MenuItem>
-              <MenuItem value={"bank"}>ธนาคาร</MenuItem>
-            </Select>
-          </FormControl>
-        {/*      TODO:: Instant Download
+          <NoteHelper />
+          {/*      TODO:: Instant Download
           <FormGroup>
             <FormControlLabel
               control={
@@ -171,7 +174,7 @@ interface PaymentHook {
 const usePayment = (): PaymentHook => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const { total, clear, cart } = useCart();
-  const {setBackdrop} = useInterface();
+  const { setBackdrop } = useInterface();
 
   const onClose = React.useCallback(() => {
     setIsOpen(false);
@@ -194,7 +197,7 @@ const usePayment = (): PaymentHook => {
   const onCashout = React.useCallback(async (method: "cash" | "bank") => {
     setBackdrop(true);
     try {
-      const resp = await Cashout({ 
+      const resp = await Cashout({
         method: method,
         note: "",
         cart: cart,
@@ -221,7 +224,7 @@ const usePayment = (): PaymentHook => {
       if (Keys.includes(key.code)) return toggle();
       if (key.code == "Delete" || key.code == "valNumpadDecimal0") return clearCart();
       if (key.code == "Numpad1") return onCashout("cash");
-      if (key.code == "Numpad2") return onCashout("bank"); 
+      if (key.code == "Numpad2") return onCashout("bank");
       return null
     }
 

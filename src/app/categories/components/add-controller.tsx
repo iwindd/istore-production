@@ -88,6 +88,8 @@ export function CategoryFormDialog({
           <TextField
             label="ประเภทสินค้า"
             fullWidth
+            required
+            placeholder="Ex. น้ำดื่ม ขนม เสื้อผ้า เป็นต้น"
             {...register("label")}
             error={errors["label"] !== undefined}
             helperText={errors["label"]?.message}

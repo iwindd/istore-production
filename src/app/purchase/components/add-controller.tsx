@@ -18,6 +18,7 @@ import { useInterface } from "@/providers/InterfaceProvider";
 import { useDialog } from "@/hooks/use-dialog";
 import { PurchaseSchema, PurchaseValues } from "@/schema/Purchase";
 import CreatePurchase from "@/actions/purchase/create";
+import NoteHelper from "@/components/NoteHelper";
 
 interface AddDialogProps {
   onClose: () => void;
@@ -79,6 +80,7 @@ export function PurchaseFormDialog({
           <TextField
             label="ชื่อสินค้า"
             fullWidth
+            required
             {...register("label")}
             error={errors["label"] !== undefined}
             helperText={errors["label"]?.message}
@@ -87,6 +89,7 @@ export function PurchaseFormDialog({
             <TextField
               label="ราคา (ต่อหน่วย)"
               fullWidth
+              required
               {...register("cost", { valueAsNumber: true })}
               error={errors["cost"] !== undefined}
               helperText={errors["cost"]?.message}
@@ -94,6 +97,7 @@ export function PurchaseFormDialog({
             <TextField
               label="จำนวน"
               fullWidth
+              required
               {...register("count", { valueAsNumber: true })}
               error={errors["count"] !== undefined}
               helperText={errors["count"]?.message}
@@ -102,10 +106,12 @@ export function PurchaseFormDialog({
           <TextField
             label="หมายเหตุ"
             fullWidth
+
             {...register("note")}
             error={errors["note"] !== undefined}
             helperText={errors["note"]?.message}
           />
+          <NoteHelper/>
         </Stack>
       </DialogContent>
       <DialogActions>

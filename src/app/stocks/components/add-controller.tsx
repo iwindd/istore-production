@@ -62,11 +62,12 @@ function StockFormDialog({
       </DialogTitle>
       <DialogContent>
         <Stack sx={{ mt: 2 }}>
-          <Stack flexDirection={"column"} spacing={2}>
+          <Stack flexDirection={"column"} spacing={1}>
             <Selector onSubmit={onSubmit} />
             <TextField
               type="number"
               value={changedBy}
+              required
               onChange={(e) => setChangedBy(e.target.value)}
               fullWidth
               label="จำนวน"

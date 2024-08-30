@@ -38,6 +38,8 @@ const Scanner = (props: ScannerProps) => {
       <TextField
         autoFocus
         fullWidth
+        required 
+        placeholder="รหัสสินค้า EAN8 OR EAN13"
         ref={ref}
         label="รหัสสินค้า"
         value={serial}

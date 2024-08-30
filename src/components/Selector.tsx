@@ -98,6 +98,8 @@ const Selector = (props: SelectorProps) => {
           {...props.fieldProps}
           label="กรุณาเลือกสินค้า"
           fullWidth
+          required
+          placeholder="รหัสสินค้า, ชื่อสินค้า, คีย์เวิร์ด"
           onKeyDown={handleKeyDown} // Handle key press events here
         />
       )}
