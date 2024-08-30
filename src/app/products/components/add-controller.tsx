@@ -64,6 +64,7 @@ function SearchDialog({
     handleSubmit,
     formState: { errors },
     setValue,
+    reset
   } = useForm<ProductFindValues>({
     resolver: zodResolver(ProductFindSchema),
   });
@@ -86,6 +87,10 @@ function SearchDialog({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!open) reset();
+  }, [open, reset])
 
   const onSelector = (product: Product | null) => {
     if (product && product.serial) searchSubmit({ serial: product.serial });
