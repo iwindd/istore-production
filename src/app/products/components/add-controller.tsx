@@ -212,7 +212,7 @@ export function ProductFormDialog({
       <DialogContent>
         <Stack sx={{ mt: 2 }} spacing={1}>
           <Grid container spacing={1}>
-            <Grid xs={6}>
+            <Grid xs={12} sm={6} md={6}>
               <TextField
                 fullWidth
                 label="รหัสสินค้า"
@@ -222,7 +222,7 @@ export function ProductFormDialog({
                 hidden
               />
             </Grid>
-            <Grid xs={6}>
+            <Grid xs={12} sm={6} md={6}>
               <TextField
                 fullWidth
                 label="ชื่อสินค้า"
@@ -231,7 +231,7 @@ export function ProductFormDialog({
                 {...register("label")}
               />
             </Grid>
-            <Grid xs={6}>
+            <Grid xs={12} sm={6} md={6}>
               <FormControl fullWidth>
                 <InputLabel>
                   {categories.length <= 0
@@ -257,7 +257,7 @@ export function ProductFormDialog({
             <Grid xs={6}>
               <TextField
                 fullWidth
-                label="ราคาสินค้า"
+                label="ราคา"
                 error={errors["price"] !== undefined}
                 helperText={errors["price"]?.message}
                 {...register("price", { valueAsNumber: true })}
@@ -266,13 +266,13 @@ export function ProductFormDialog({
             <Grid xs={6}>
               <TextField
                 fullWidth
-                label="ราคาต้นทุนสินค้า"
+                label="ราคาต้นทุน"
                 error={errors["cost"] !== undefined}
                 helperText={errors["cost"]?.message}
                 {...register("cost", { valueAsNumber: true })}
               />
             </Grid>
-            <Grid xs={6}>
+            <Grid xs={12} sm={6} md={6}>
               <TextField
                 fullWidth
                 label="สต๊อกขั้นต่ำ"
