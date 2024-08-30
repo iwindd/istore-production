@@ -14,6 +14,7 @@ import {
   Select,
   Stack,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -103,7 +104,7 @@ function SearchDialog({
       <DialogTitle>ค้นหาสินค้า</DialogTitle>
       <DialogContent>
         <Stack sx={{ mt: 2 }}>
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={1}>
             <TextField
               label="รหัสสินค้า"
               {...register("serial")}
@@ -114,9 +115,11 @@ function SearchDialog({
               InputLabelProps={{ shrink: true }}
               fullWidth
             />
-            <IconButton disableRipple onClick={random}>
-              <Rotate90DegreesCcw />
-            </IconButton>
+            <Tooltip title="สุ่มรหัสสินค้า *สำหรับสินค้าที่ไม่มี barcode">
+              <Button color="primary" variant="contained" onClick={random}>
+                <Rotate90DegreesCcw />
+              </Button>
+            </Tooltip>
           </Stack>
         </Stack>
       </DialogContent>
