@@ -60,7 +60,7 @@ const UpdateBorrow = async (
                 {
                   serial: product.serial,
                   label: product.label,
-                  category: product.category.label,
+                  category: product.category?.label || "ไม่มีประเภท",
                   price: product.price,
                   cost: product.cost,
                   count: data.count,

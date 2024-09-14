@@ -1,14 +1,13 @@
 "use client";
 import React from "react";
 import { enqueueSnackbar } from "notistack";
-import { Product } from "@prisma/client";
 import Scanner from "@/components/Scanner";
-import { useCart } from "@/hooks/use-cart";
+import { CartProduct, useCart } from "@/hooks/use-cart";
 
 const Cashier = () => {
   const { addProduct } = useCart();
 
-  const onSubmit = (xItem: Product) => {
+  const onSubmit = (xItem: CartProduct) => {
     addProduct(xItem);
     enqueueSnackbar(`เพิ่มสินค้า <${xItem.label}> เข้าตะกร้าแล้ว!`, {
       variant: "success",

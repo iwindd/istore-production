@@ -2,17 +2,23 @@ import { CartItem, CartState } from "@/atoms/cart";
 import { Product } from "@prisma/client";
 import { useRecoilState } from "recoil";
 
+export interface CartProduct extends Product {
+  category: {
+    overstock : boolean
+  } | null
+} 
+
 interface CartHook {
   cart: CartItem[];
   clear(): void;
   total(): number;
-  addProduct(product: CartItem): void;
+  addProduct(product: CartProduct): void;
 }
 
 export function useCart(): CartHook {
   const [cart, setCart] = useRecoilState(CartState);
 
-  const addProduct = (product: CartItem) => {
+  const addProduct = (product: CartProduct) => {
     setCart((prev) => {
       const item = prev.find((i) => i.serial === product.serial);
 

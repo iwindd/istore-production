@@ -1,7 +1,7 @@
 "use client";
 import React from 'react'
-import { TableCell, TableRow, IconButton, Stack, Box, TextField, Input, debounce } from '@mui/material';
-import { Add, AddTwoTone, DeleteTwoTone, Remove, RemoveTwoTone } from '@mui/icons-material';
+import { TableCell, TableRow, IconButton, Input, debounce } from '@mui/material';
+import { Add, AddTwoTone, DeleteTwoTone, RemoveTwoTone } from '@mui/icons-material';
 import { CartItem, CartState } from '@/atoms/cart'
 import { useRecoilState } from 'recoil';
 import { Confirmation, useConfirm } from '@/hooks/use-confirm';
@@ -73,7 +73,7 @@ export const Item = (props: CartItem) => {
     onConfirm: async () => setCart(prev => prev.filter(i => i.serial != props.serial))
   });
 
-  const debouncedGrow =  React.useCallback(debounce(() => {
+  const debouncedGrow =  React.useCallback(() => debounce(() => {
     setGrow(false);
   }, 200), []);
 
@@ -85,7 +85,7 @@ export const Item = (props: CartItem) => {
 
     prevCountRef.current = props.count;
   }, [props.count, debouncedGrow]);
-  
+
   return (
     <TableRow
       sx={{ 

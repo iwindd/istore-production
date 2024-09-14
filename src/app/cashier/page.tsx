@@ -6,7 +6,7 @@ import { Confirmation, useConfirm } from "@/hooks/use-confirm";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { DeleteTwoTone, PaymentTwoTone } from "@mui/icons-material";
-import { useCart } from "@/hooks/use-cart";
+import { CartProduct, useCart } from "@/hooks/use-cart";
 import usePayment from "@/hooks/use-payment";
 import Selector from "@/components/Selector";
 import { Product } from "@prisma/client";
@@ -39,8 +39,8 @@ const CashierPage = () => {
     try {
       setBackdrop(true);
       const resp = await GetProduct(selectProduct.serial);
-      if (!resp.success) throw Error("not_found");
-      addProduct(resp.data as Product);
+      if (!resp.success && resp.data) throw Error("not_found");
+      addProduct(resp.data as CartProduct);
       enqueueSnackbar(`เพิ่มสินค้า <${resp.data?.label}> เข้าตะกร้าแล้ว!`, {
         variant: "success",
       });
