@@ -46,7 +46,7 @@ export function CategoryFormDialog({
     resolver: zodResolver(CategorySchema),
     defaultValues: { active: false },
   });
-  
+
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
@@ -84,6 +84,7 @@ export function CategoryFormDialog({
       open={open}
       onClose={onClose}
       fullWidth
+      maxWidth="xs"
       PaperProps={{
         component: "form",
         onSubmit: handleSubmit(onSubmit),
