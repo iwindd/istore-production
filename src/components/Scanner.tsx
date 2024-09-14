@@ -25,7 +25,7 @@ const Scanner = (props: ScannerProps) => {
       props.onSubmit(resp.data);
       if (ref.current) ref.current.focus();
     } catch (error) {
-      enqueueSnackbar("ไม่พบสินค้านี้ในระบบ", { variant: "error" });
+      enqueueSnackbar(typeof(error) == "string" ? error : "ไม่พบสินค้านี้ในระบบ", { variant: "error" });
     }
   };
 

@@ -45,9 +45,7 @@ const CashierPage = () => {
         variant: "success",
       });
     } catch (error) {
-      enqueueSnackbar(`ไม่พบสินค้า ${selectProduct.label} ในระบบ!`, {
-        variant: "error",
-      });
+      enqueueSnackbar(typeof(error) == "string" ? error : `ไม่พบสินค้า ${selectProduct.label} ในระบบ!`, { variant: "error" });
     } finally{
       setBackdrop(false)
     }

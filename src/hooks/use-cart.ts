@@ -21,6 +21,7 @@ export function useCart(): CartHook {
           i.serial === product.serial ? { ...i, count: i.count + 1 } : i
         );
       } else {
+        if (!product.category?.overstock && product.stock <= 0) throw ("จำนวนสินค้าในสต๊อกไม่ถูกต้อง!");
         return [
           {
             ...product,
