@@ -89,6 +89,14 @@ const CategoryDatatable = () => {
         editable: false,
       },
       {
+        field: "overstock",
+        sortable: false,
+        headerName: "การเบิก",
+        flex: 3,
+        editable: false,
+        renderCell: ({value}) => value ? "อณุญาต" : "ไม่อนุญาต"
+      },
+      {
         field: "_count",
         sortable: false,
         headerName: "จำนวนสินค้า",

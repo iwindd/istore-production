@@ -9,6 +9,7 @@ import {
   DialogTitle,
   FormControlLabel,
   FormGroup,
+  FormLabel,
   Stack,
   TextField,
 } from "@mui/material";
@@ -76,7 +77,10 @@ export function CategoryFormDialog({
   };
 
   React.useEffect(() => {
-    setValue("label", category?.label || "");
+    if (category){
+      setValue("label", category.label);
+      setValue("overstock", category.overstock);
+    }
   }, [category, setValue]);
 
   return (
@@ -102,7 +106,12 @@ export function CategoryFormDialog({
             error={errors["label"] !== undefined}
             helperText={errors["label"]?.message}
           />
-          <FormGroup>
+          <FormGroup sx={{ mt: 1 }}>
+            <FormLabel component="legend">ตัวเลือก</FormLabel>
+            <FormControlLabel
+              control={<Checkbox {...register("overstock")} defaultChecked={category?.overstock} />}
+              label="อณุญาตให้เบิกสินค้า"
+            />
             <FormControlLabel
               control={<Checkbox {...register("active", {})} />}
               label="ต้องการใช้กับสินค้าไม่มีประเภท"

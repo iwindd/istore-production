@@ -16,7 +16,7 @@ const UpdateCategory = async (
         id: id,
         store_id: Number(session?.user.store),
       },
-      data: { label: validated.label },
+      data: { label: validated.label, overstock: validated.overstock },
     });
 
     if (payload.active){
