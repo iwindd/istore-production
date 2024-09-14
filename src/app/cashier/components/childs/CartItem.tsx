@@ -1,6 +1,6 @@
 "use client";
 import React from 'react'
-import { TableCell, TableRow, IconButton, Stack, Box, TextField, Input } from '@mui/material';
+import { TableCell, TableRow, IconButton, Stack, Box, TextField, Input, debounce } from '@mui/material';
 import { Add, AddTwoTone, DeleteTwoTone, Remove, RemoveTwoTone } from '@mui/icons-material';
 import { CartItem, CartState } from '@/atoms/cart'
 import { useRecoilState } from 'recoil';
@@ -36,6 +36,7 @@ export const Item = (props: CartItem) => {
   const [grow, setGrow] = React.useState<boolean>(false);
   const [, setCart] = useRecoilState(CartState);
   const _count = getRealCount(props);
+  const prevCountRef = React.useRef(props.count);
 
   function limitNumberWithinRange(num : number, min : number, max : number){
     const MIN = min ?? 1;
@@ -72,13 +73,19 @@ export const Item = (props: CartItem) => {
     onConfirm: async () => setCart(prev => prev.filter(i => i.serial != props.serial))
   });
 
-  React.useEffect(() => {
-    setGrow(true)
-    setTimeout(() => {
-      setGrow(false)
-    }, 200)
-  }, [props.count])
+  const debouncedGrow =  React.useCallback(debounce(() => {
+    setGrow(false);
+  }, 200), []);
 
+  React.useEffect(() => {
+    if (props.count > prevCountRef.current) {
+      setGrow(true);
+      debouncedGrow(); 
+    }
+
+    prevCountRef.current = props.count;
+  }, [props.count, debouncedGrow]);
+  
   return (
     <TableRow
       sx={{ 
