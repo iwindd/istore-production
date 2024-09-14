@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const CategorySchema = z.object({
-  label: z.string(),
+  label: z.string().min(3).max(60),
   active: z.boolean()
 }).required();
 
