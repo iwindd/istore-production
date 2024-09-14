@@ -21,7 +21,7 @@ const Cart = () => {
   return (
     <Stack spacing={1}>
       {
-        cart.some(val => val.count > val.stock) && (
+        cart.some(val => val.category?.overstock && val.count > val.stock) && (
           <Alert severity="error" >สินค้าสีแดงเป็นสินค้าที่สต๊อกคงเหลือไม่เพียงพอและระบบจะทำการค้างสินค้าไว้ คุณสามารถจัดการได้ภายหลังที่เมนูสินค้าค้าง</Alert>
         )
       }
