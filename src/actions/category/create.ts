@@ -10,12 +10,23 @@ const CreateCategory = async (
   try {
     const session = await getServerSession();
     const validated = CategorySchema.parse(payload);
-    await db.category.create({
+    const category = await db.category.create({
       data: {
         label: validated.label,
         store_id: Number(session?.user.store),
       },
     });
+
+    if (payload.active){
+      await db.product.updateMany({
+        where: {
+          category_id: null
+        },
+        data: {
+          category_id: category.id
+        }
+      })
+    }
 
     return { success: true, data: validated };
   } catch (error) {

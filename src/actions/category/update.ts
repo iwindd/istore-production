@@ -19,6 +19,17 @@ const UpdateCategory = async (
       data: { label: validated.label },
     });
 
+    if (payload.active){
+      await db.product.updateMany({
+        where: {
+          category_id: null
+        },
+        data: {
+          category_id: id
+        }
+      })
+    }
+
     return { success: true, data: validated };
   } catch (error) {
     return ActionError(error) as ActionResponse<CategoryValues>;

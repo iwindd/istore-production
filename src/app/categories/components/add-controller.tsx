@@ -2,10 +2,13 @@
 import React from "react";
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
+  FormGroup,
   Stack,
   TextField,
 } from "@mui/material";
@@ -39,7 +42,11 @@ export function CategoryFormDialog({
     formState: { errors },
     setValue,
     reset,
-  } = useForm<CategoryValues>({ resolver: zodResolver(CategorySchema) });
+  } = useForm<CategoryValues>({
+    resolver: zodResolver(CategorySchema),
+    defaultValues: { active: false },
+  });
+  
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
@@ -48,7 +55,9 @@ export function CategoryFormDialog({
   ) => {
     try {
       setBackdrop(true);
-      const resp = await (!category ? CreateCategory(payload) : UpdateCategory(payload, category.id));
+      const resp = await (!category
+        ? CreateCategory(payload)
+        : UpdateCategory(payload, category.id));
       if (!resp.success) throw Error("error");
       onClose();
       reset();
@@ -92,6 +101,12 @@ export function CategoryFormDialog({
             error={errors["label"] !== undefined}
             helperText={errors["label"]?.message}
           />
+          <FormGroup>
+            <FormControlLabel
+              control={<Checkbox {...register("active", {})} />}
+              label="ต้องการใช้กับสินค้าไม่มีประเภท"
+            />
+          </FormGroup>
         </Stack>
       </DialogContent>
       <DialogActions>
