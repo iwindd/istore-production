@@ -7,9 +7,35 @@ import { useRecoilState } from 'recoil';
 import { Confirmation, useConfirm } from '@/hooks/use-confirm';
 import { number } from '@/libs/formatter';
 
+const getRealCount = (item: CartItem) => {
+  const canOverstock = item.category?.overstock;
+  const isOverstock = item.count > item.stock;
+
+  console.log(item);
+  
+  if (!canOverstock && isOverstock) return item.stock;
+  return item.count;
+}
+
+const getBackgroundColor = (item : CartItem, grow : boolean) => {
+  const canOverstock = item.category?.overstock || false;
+  
+  // OVERSTOCK
+  if (item.count > item.stock && canOverstock && grow) return 'var(--mui-palette-Slider-errorTrack)';
+  if (item.count > item.stock && canOverstock) return 'var(--mui-palette-Alert-errorStandardBg)';
+
+  // FULL
+  if (item.count >= item.stock && !canOverstock && grow) return 'var(--mui-palette-Slider-warningTrack)';
+  if (item.count >= item.stock && !canOverstock) return 'var(--mui-palette-Alert-warningStandardBg)';
+
+  // NORMAL
+  if (grow) return 'var(--mui-palette-Alert-successStandardBg)';
+}
+
 export const Item = (props: CartItem) => {
   const [grow, setGrow] = React.useState<boolean>(false);
   const [, setCart] = useRecoilState(CartState);
+  const _count = getRealCount(props);
 
   function limitNumberWithinRange(num : number, min : number, max : number){
     const MIN = min ?? 1;
@@ -18,10 +44,13 @@ export const Item = (props: CartItem) => {
   }
 
   const countController = (delta : number) => {
+    const isFull = props.count >= props.stock;
+    if (isFull && !props.category?.overstock && delta > 0) return ;
+
     setCart(prevCart => {
       return prevCart.map(item => 
         item.serial === props.serial 
-          ? { ...item, count: limitNumberWithinRange(item.count + delta, 1, 1000) } 
+          ? { ...item, count: limitNumberWithinRange(_count + delta, 1, 1000) } 
           : item
       );
     });
@@ -50,22 +79,20 @@ export const Item = (props: CartItem) => {
     }, 200)
   }, [props.count])
 
-  const isOverstock = props.count > props.stock
-
   return (
     <TableRow
       sx={{ 
-        'backgroundColor': (grow ? isOverstock ? 'var(--mui-palette-error-main)' : undefined : isOverstock ? "var(--mui-palette-error-light)" : ""),
+        'backgroundColor': getBackgroundColor(props, grow),
         '&:last-child td, &:last-child th': { border: 0 } 
       }}
     >
       <TableCell >{props.serial}</TableCell>
       <TableCell >{props.label}</TableCell>
-      <TableCell >{number(props.price * props.count)}{props.count > 1 && ` (${number(props.price)})`}</TableCell>
+      <TableCell >{number(props.price * _count)}{_count > 1 && ` (${number(props.price)})`}</TableCell>
       <TableCell >{number(props.stock)}</TableCell>
       <TableCell >
         <IconButton onClick={() => countController(-1)}><RemoveTwoTone/></IconButton>
-        <Input disableUnderline sx={{width: '3em'}} inputProps={{min: 0, style: { textAlign: 'center' }}}  type='number' value={props.count} onChange={onChange}/>
+        <Input disableUnderline sx={{width: '3em'}} inputProps={{min: 0, style: { textAlign: 'center' }}}  type='number' value={_count} onChange={onChange}/>
         <IconButton onClick={() => countController(1)}><AddTwoTone /></IconButton>
       </TableCell>
       <TableCell>

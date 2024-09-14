@@ -1,8 +1,6 @@
 "use server";
-import { TableFetch } from "@/components/Datatable";
 import { ActionError, ActionResponse } from "@/libs/action";
 import db from "@/libs/db";
-import { order } from "@/libs/formatter";
 import { getServerSession } from "@/libs/session";
 import { Product } from "@prisma/client";
 
@@ -19,6 +17,13 @@ const GetProduct = async (serial : string, includeDelete?: boolean): Promise<Act
           }
         ): {})
       },
+      include: {
+        category: {
+          select: {
+            overstock: true
+          }
+        }
+      }
     })
 
     return {

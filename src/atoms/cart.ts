@@ -1,4 +1,5 @@
 "use client";
+import { Category } from "@prisma/client";
 import { atom } from "recoil";
 import { PersistStorage, recoilPersist } from 'recoil-persist'
 
@@ -9,6 +10,9 @@ export interface CartItem {
   price: number,
   count: number,
   stock: number,
+  category: {
+    overstock: Category['overstock']
+  } | null
 }
 
 const localStorage = typeof window !== `undefined` ? window.localStorage : null

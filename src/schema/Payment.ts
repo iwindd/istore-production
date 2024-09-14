@@ -6,7 +6,10 @@ const CartItemSchema = z.object({
   label: z.string(),
   price: z.number(),
   count: z.number(),
-  stock: z.number()
+  stock: z.number(),
+  category: z.object({
+    overstock: z.boolean()
+  }).nullable()
 });
 
 export const PaymentSchema = z

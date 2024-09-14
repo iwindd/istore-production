@@ -17,13 +17,16 @@ const validateProducts = async (session: Session, cart: CartItem[]) => {
       category: {
         select: {
           label: true,
+          overstock: true
         },
       },
     },
   });
 
   const validated = rawProducts.map((product) => {
-    const count = (cart.find((p) => p.id == product.id) as CartItem).count;
+    const cartProduct = (cart.find((p) => p.id == product.id) as CartItem);
+    const count = product.category?.overstock ? cartProduct.count : product.stock;
+    
     return {
       id: product.id,
       serial: product.serial,
@@ -31,7 +34,7 @@ const validateProducts = async (session: Session, cart: CartItem[]) => {
       price: product.price,
       cost: product.cost,
       count: count,
-      category: product.category.label,
+      category: product.category?.label || "ไม่มีประเภท",
       overstock: count - product.stock,
     };
   }) as {
