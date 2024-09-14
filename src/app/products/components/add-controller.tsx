@@ -106,6 +106,7 @@ function SearchDialog({
       }}
       maxWidth="xs"
       fullWidth
+      disableRestoreFocus
     >
       <DialogTitle>ค้นหาสินค้า</DialogTitle>
       <DialogContent>
@@ -207,7 +208,6 @@ export function ProductFormDialog({
                 fullWidth
                 label="รหัสสินค้า"
                 {...register("serial")}
-                autoFocus
                 disabled
                 hidden
               />
