@@ -61,6 +61,7 @@ function SearchDialog({
     handleSubmit,
     formState: { errors },
     setValue,
+    reset
   } = useForm<ProductFindValues>({
     resolver: zodResolver(ProductFindSchema),
   });
@@ -80,6 +81,7 @@ function SearchDialog({
         variant: "error",
       });
     } finally {
+      reset();
       setLoading(false);
     }
   };
@@ -89,10 +91,15 @@ function SearchDialog({
     setValue("serial", randomSerial);
   };
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  }
+
   return (
     <Dialog
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       PaperProps={{
         component: "form",
         onSubmit: handleSubmit(searchSubmit),
@@ -121,7 +128,7 @@ function SearchDialog({
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>ยกเลิก</Button>
+        <Button onClick={handleClose}>ยกเลิก</Button>
         <Button type="submit"> ค้นหา </Button>
       </DialogActions>
     </Dialog>
