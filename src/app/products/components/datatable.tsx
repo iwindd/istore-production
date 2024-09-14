@@ -79,7 +79,7 @@ const ProductDatatable = ({ categories }: { categories: Category[] }) => {
         sortable: true,
         headerName: "ประเภทสินค้า",
         flex: 1,
-        renderCell: ({row}: any) => row.category.label,
+        renderCell: ({row}: any) => row.category?.label || "ไม่มีประเภท",
       },
       {
         field: "price",

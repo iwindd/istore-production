@@ -64,12 +64,6 @@ const CategoryDatatable = () => {
     ),
     delete: React.useCallback(
       (category: Category) => () => {
-        if (category._count.product > 0) {
-          return enqueueSnackbar(
-            "ไม่สามารถลบได้เนื่องจากมีสินค้าที่กำลังใช้งานประเภทสินค้านี้อยู่!",
-            { variant: "error" }
-          );
-        }
         confirmation.with(category.id);
         confirmation.handleOpen();
       },
