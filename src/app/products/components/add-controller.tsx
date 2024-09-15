@@ -284,6 +284,7 @@ export function ProductFormDialog({
               <TextField
                 fullWidth
                 label="คีย์เวิร์ด"
+                placeholder="เช่น รหัสสินค้าจากเว็บสั่งซื้อ ชื่ออื่นสำหรับค้นหา เป็นต้น"
                 error={errors["keywords"] !== undefined}
                 helperText={errors["keywords"]?.message}
                 {...register("keywords")}
