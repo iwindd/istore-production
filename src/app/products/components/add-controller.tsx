@@ -231,27 +231,6 @@ export function ProductFormDialog({
               <CategorySelector 
                 onSubmit={onSelectCategory}
               /> 
-        {/*       <FormControl fullWidth>
-                <InputLabel>
-                  {categories.length <= 0
-                    ? "ไม่พบประเภทสินค้า"
-                    : "ประเภทสินค้า"}
-                </InputLabel>
-                {categories.length > 0 ? (
-                  <Select
-                    label="ประเภทสินค้า"
-                    defaultValue={defaultCategory}
-                    fullWidth
-                    {...register("category_id", { valueAsNumber: true })}
-                  >
-                    {categories.map((category: Category) => (
-                      <MenuItem value={category.id} key={category.id}>
-                        {category.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                ) : null}
-              </FormControl> */}
             </Grid>
             <Grid xs={6}>
               <TextField
