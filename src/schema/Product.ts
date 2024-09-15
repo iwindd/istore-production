@@ -9,7 +9,7 @@ export const ProductSchema = z
     cost: z.number(),
     stock_min: z.number(),
     keywords: z.string(),
-    category_id: z.number(),
+    category_id: z.number().nullable().transform((val) => val == null || val <= 0 ? null : val),
   })
   .required();
 

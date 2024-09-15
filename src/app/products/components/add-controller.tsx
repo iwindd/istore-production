@@ -34,6 +34,8 @@ import GetProduct from "@/actions/product/find";
 import { randomEan } from "@/libs/ean";
 import CreateProduct from "@/actions/product/create";
 import UpdateProduct from "@/actions/product/update";
+import CategorySelector from "@/components/CategorySelector";
+import { SearchCategory } from "@/actions/category/search";
 
 interface AddDialogProps {
   onClose: () => void;
@@ -190,6 +192,10 @@ export function ProductFormDialog({
     setDefaultCategory(product?.category_id || 0);
   }, [product, setValue]);
 
+  const onSelectCategory = (category: SearchCategory) => {
+    setValue("category_id", category?.id || 0);
+  }
+
   return (
     <Dialog
       open={open}
@@ -222,7 +228,10 @@ export function ProductFormDialog({
               />
             </Grid>
             <Grid xs={6}>
-              <FormControl fullWidth>
+              <CategorySelector 
+                onSubmit={onSelectCategory}
+              /> 
+        {/*       <FormControl fullWidth>
                 <InputLabel>
                   {categories.length <= 0
                     ? "ไม่พบประเภทสินค้า"
@@ -242,7 +251,7 @@ export function ProductFormDialog({
                     ))}
                   </Select>
                 ) : null}
-              </FormControl>
+              </FormControl> */}
             </Grid>
             <Grid xs={6}>
               <TextField

@@ -10,6 +10,7 @@ const CreateProduct = async (
   try {
     const session = await getServerSession();
     const validated = ProductSchema.parse(payload);
+    
     await db.product.create({
       data: {
         serial: validated.serial,
