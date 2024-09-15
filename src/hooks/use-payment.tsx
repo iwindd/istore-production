@@ -121,6 +121,7 @@ const PaymentDialog = ({ open, onClose }: PaymentDialogProps) => {
             label="หมายเหตุ"
             type="text"
             fullWidth
+            placeholder="เช่น ชื่อผู้ใช้ รหัสการสั่งจอง คำอธิบาย ข้อมูล คำชี้แจงเพิ่มเติม หรือ อื่นๆ"
             error={!!errors["note"]?.message}
             helperText={errors["note"]?.message}
             {...register("note")}

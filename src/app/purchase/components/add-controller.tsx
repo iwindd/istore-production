@@ -102,6 +102,7 @@ export function PurchaseFormDialog({
           <TextField
             label="หมายเหตุ"
             fullWidth
+            placeholder="เช่น ชื่อผู้ใช้ รหัสการสั่งจอง คำอธิบาย ข้อมูล คำชี้แจงเพิ่มเติม หรือ อื่นๆ"
             {...register("note")}
             error={errors["note"] !== undefined}
             helperText={errors["note"]?.message}

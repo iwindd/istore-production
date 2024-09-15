@@ -122,6 +122,7 @@ const CommitDialog = ({
           <TextField
             label="หมายเหตุ"
             value={note}
+            placeholder="เช่น ชื่อผู้ใช้ รหัสการสั่งจอง คำอธิบาย ข้อมูล คำชี้แจงเพิ่มเติม หรือ อื่นๆ"
             onChange={(e) => setNote(e.target.value)}
           />
         </Stack>
