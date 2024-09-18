@@ -87,6 +87,7 @@ const AddForm = () => {
             label="หมายเหตุ"
             error={errors["note"] !== undefined}
             helperText={errors["note"]?.message}
+            placeholder="เช่น ชื่อผู้ใช้ รหัสการสั่งจอง คำอธิบาย ข้อมูล คำชี้แจงเพิ่มเติม หรือ อื่นๆ"
             {...register("note")}
           />
         </Stack>
