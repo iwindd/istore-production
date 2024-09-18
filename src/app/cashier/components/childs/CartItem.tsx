@@ -73,18 +73,24 @@ export const Item = (props: CartItem) => {
     onConfirm: async () => setCart(prev => prev.filter(i => i.serial != props.serial))
   });
 
-  const debouncedGrow =  React.useCallback(() => debounce(() => {
-    setGrow(false);
-  }, 200), []);
-
   React.useEffect(() => {
+    let timeout : NodeJS.Timeout | null = null;
     if (props.count > prevCountRef.current) {
       setGrow(true);
-      debouncedGrow(); 
+      timeout = setTimeout(() => {
+        setGrow(false);
+      }, 200);
     }
-
+    
     prevCountRef.current = props.count;
-  }, [props.count, debouncedGrow]);
+    
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+        setGrow(false);
+      }
+    }
+  }, [props.count]);
 
   return (
     <TableRow
